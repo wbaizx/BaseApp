@@ -1,0 +1,5 @@
+include ':ndk'
+include ':app'
+include ':login'
+include ':common'
+include ':video'
