@@ -6,7 +6,6 @@ import com.baseapp.R
 import kotlinx.android.synthetic.main.activity_circle_rc.*
 
 class CircleRCActivity : BaseActivity() {
-    private val TAG = "CircleRCActivity"
 
     override fun getContentView() = R.layout.activity_circle_rc
 

@@ -7,7 +7,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
-import com.base.common.BaseAPP
+import com.base.common.getBaseAppContext
 import java.io.*
 
 object ImageUtil {
@@ -64,10 +64,10 @@ object ImageUtil {
         values.put(MediaStore.Images.Media.WIDTH, width)
         values.put(MediaStore.Images.Media.HEIGHT, height)
         values.put(MediaStore.Images.Media.DESCRIPTION, "description")
-        val uri = BaseAPP.baseAppContext.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        val uri = getBaseAppContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
 
         if (uri != null) {
-            val out = BaseAPP.baseAppContext.contentResolver.openOutputStream(uri)
+            val out = getBaseAppContext().contentResolver.openOutputStream(uri)
             if (out != null) {
                 BufferedOutputStream(out).use { o ->
                     BufferedInputStream(FileInputStream(file)).use { i ->

@@ -8,8 +8,6 @@ import androidx.databinding.ViewDataBinding
 import com.base.common.base.BaseFragment
 
 abstract class BaseMVVMFragment<B : ViewDataBinding> : BaseFragment() {
-    private val TAG = "BaseMVVMFragment"
-
     abstract val viewModel: BaseMVVMViewModel
     private lateinit var binding: B
 

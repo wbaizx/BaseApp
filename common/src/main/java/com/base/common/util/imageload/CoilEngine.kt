@@ -13,8 +13,9 @@ import coil.transform.BlurTransformation
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import coil.util.DebugLogger
-import com.base.common.BaseAPP
 import com.base.common.R
+import com.base.common.getBaseAppContext
+import com.base.common.isDebug
 import com.base.common.util.log
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,7 +31,7 @@ class CoilEngine : LoadEngine {
 
     init {
         //通过配置imageLoader设置Gif和Svg支持，以及磁盘缓存配置
-        val imageLoaderBuilder = ImageLoader.Builder(BaseAPP.baseAppContext)
+        val imageLoaderBuilder = ImageLoader.Builder(getBaseAppContext())
             .availableMemoryPercentage(0.25) // Use 25% of the application's available memory.
             .componentRegistry {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -38,10 +39,10 @@ class CoilEngine : LoadEngine {
                 } else {
                     add(GifDecoder())
                 }
-                add(SvgDecoder(BaseAPP.baseAppContext))
+                add(SvgDecoder(getBaseAppContext()))
             }
             .okHttpClient {
-                val cacheDirectory = File(BaseAPP.baseAppContext.cacheDir, "image_cache").apply { mkdirs() }
+                val cacheDirectory = File(getBaseAppContext().cacheDir, "image_cache").apply { mkdirs() }
                 val cache = Cache(cacheDirectory, CACHEMAXSIZE)//缓存大小10Mb
                 val dispatcher = Dispatcher().apply { maxRequestsPerHost = maxRequests }
 
@@ -49,27 +50,25 @@ class CoilEngine : LoadEngine {
                 clientBuilder.cache(cache)
                     .dispatcher(dispatcher)
 
-                if (BaseAPP.isDebug()) {
+                if (isDebug()) {
                     //和网络请求相同的网络log打印
                     clientBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 }
 
                 //拦截器，设置缓存时间
-                clientBuilder.addNetworkInterceptor(object : Interceptor {
-                    override fun intercept(chain: Interceptor.Chain): Response {
-                        log("CoilEngine", "cacheInterceptor  request")
-                        val response = chain.proceed(chain.request())
-                        val finalResponse = response.newBuilder().removeHeader("pragma")
-                            .header("Cache-Control", "max-age=$CACHETIME").build()
+                clientBuilder.addNetworkInterceptor(Interceptor { chain ->
+                    log("CoilEngine", "cacheInterceptor  request")
+                    val response = chain.proceed(chain.request())
+                    val finalResponse = response.newBuilder().removeHeader("pragma")
+                        .header("Cache-Control", "max-age=$CACHETIME").build()
 
-                        log("CoilEngine", "cacheInterceptor  response")
+                    log("CoilEngine", "cacheInterceptor  response")
 
-                        return finalResponse
-                    }
+                    finalResponse
                 })
                 clientBuilder.build()
             }
-        if (BaseAPP.isDebug()) {
+        if (isDebug()) {
             imageLoaderBuilder.logger(DebugLogger(Log.VERBOSE))
         }
         //配置

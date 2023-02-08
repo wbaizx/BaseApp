@@ -6,7 +6,6 @@ import com.baseapp.R
 import kotlinx.android.synthetic.main.activity_connection_rc.*
 
 class ConnectionRCActivity : BaseActivity() {
-    private val TAG = "ConnectionRCActivity"
 
     override fun getContentView() = R.layout.activity_connection_rc
 

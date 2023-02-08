@@ -9,7 +9,6 @@ import com.base.common.base.mvp.contract.BaseMVPViewI
  * 或者只复用其他的 Presenter实例的。泛型直接传 BaseMVPPresenterI ，presenter实例赋空值就可以
  */
 abstract class BaseMVPFragment<P : BaseMVPPresenterI> : BaseFragment(), BaseMVPViewI {
-    private val TAG = "BaseMVPFragment"
 
     protected abstract var presenter: P?
 

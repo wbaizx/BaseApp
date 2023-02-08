@@ -14,7 +14,7 @@ import android.view.Gravity
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import com.base.common.BaseAPP
+import com.base.common.getBaseAppContext
 import com.gyf.immersionbar.ImmersionBar
 import java.io.File
 
@@ -22,14 +22,16 @@ import java.io.File
  * adb logcat -s GL_Thread -f /sdcard/log.txt
  * 输入GL_Thread的Log日志到sd卡中，需要数据线连接电脑
  */
+
+private const val TAG = "AndroidUtil"
+
 object AndroidUtil {
-    private val TAG = "AndroidUtil"
 
     /**
      * 获取屏幕宽度
      */
     fun getScreenWidth(): Int {
-        return BaseAPP.baseAppContext.resources.displayMetrics.widthPixels
+        return getBaseAppContext().resources.displayMetrics.widthPixels
     }
 
     /**
@@ -37,7 +39,7 @@ object AndroidUtil {
      * 可能不包含导航栏和刘海屏高度
      */
     fun getScreenShowHeight(): Int {
-        return BaseAPP.baseAppContext.resources.displayMetrics.heightPixels
+        return getBaseAppContext().resources.displayMetrics.heightPixels
     }
 
     /**
@@ -74,16 +76,16 @@ object AndroidUtil {
 
     //如果不想要BaseAPP实例（自定义view布局预览会无效），可以换成Resources.getSystem().displayMetrics
     fun sp2px(f: Float) =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, f, BaseAPP.baseAppContext.resources.displayMetrics)
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, f, getBaseAppContext().resources.displayMetrics)
 
     fun dp2px(f: Float) =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, BaseAPP.baseAppContext.resources.displayMetrics)
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, getBaseAppContext().resources.displayMetrics)
 
     /**
      * 获取手机网络连接状况
      */
     fun isNetworkAvailable(): Boolean {
-        val connectivityManager = BaseAPP.baseAppContext.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        val connectivityManager = getBaseAppContext().getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
         if (connectivityManager != null) {
             val activeNetwork = connectivityManager.activeNetwork
             if (activeNetwork != null) {
@@ -107,8 +109,8 @@ object AndroidUtil {
      * 获取当前版本号
      */
     fun getVersionCode(): Int {
-        val manager = BaseAPP.baseAppContext.packageManager
-        val info = manager.getPackageInfo(BaseAPP.baseAppContext.packageName, 0)
+        val manager = getBaseAppContext().packageManager
+        val info = manager.getPackageInfo(getBaseAppContext().packageName, 0)
         return info.versionCode
     }
 
@@ -116,9 +118,9 @@ object AndroidUtil {
      * 获取apk的版本号
      */
     fun getVersionCodeFromApk(filePath: String): Int {
-        val pm = BaseAPP.baseAppContext.packageManager
+        val pm = getBaseAppContext().packageManager
         val packInfo = pm.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES)
-        return packInfo!!.versionCode
+        return packInfo?.versionCode ?: 0
     }
 
     /**
@@ -133,13 +135,13 @@ object AndroidUtil {
         val type = "application/vnd.android.package-archive"
         val uri: Uri
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(BaseAPP.baseAppContext, BaseAPP.baseAppContext.packageName + ".fileProvider", file)
+            uri = FileProvider.getUriForFile(getBaseAppContext(), getBaseAppContext().packageName + ".fileProvider", file)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         } else {
             uri = Uri.fromFile(file)
         }
         intent.setDataAndType(uri, type)
-        BaseAPP.baseAppContext.startActivity(intent)
+        getBaseAppContext().startActivity(intent)
     }
 
     /**
@@ -153,7 +155,7 @@ object AndroidUtil {
     }
 
     fun showToast(context: Context?, msg: String) {
-        val toast = Toast.makeText(context ?: BaseAPP.baseAppContext, msg, Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(context ?: getBaseAppContext(), msg, Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()
     }

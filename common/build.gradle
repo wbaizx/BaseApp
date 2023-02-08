@@ -1,122 +1,17 @@
 plugins {
     id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-android-extensions'
-    id 'kotlin-kapt'
 }
 
-android {
-    compileSdkVersion 31
-
-    defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 31
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
-
-        kapt {
-            arguments {
-                arg("AROUTER_MODULE_NAME", project.getName())
-            }
-        }
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    //使用dataBinding
-    dataBinding {
-        enabled = true
-    }
-}
+apply from: rootProject.file('common.gradle')
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    api 'androidx.constraintlayout:constraintlayout:2.1.4'
-    api 'androidx.legacy:legacy-support-v4:1.0.0'
-
-    //design 不稳定版本
-    api 'com.google.android.material:material:1.6.0'
-
-    //kotlin
-    implementation 'androidx.core:core-ktx:1.7.0'
-
-    //协程
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-
-    //viewModel相关
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
-//    api "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
-//    api "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
-
-    //WorkManager
-    api "androidx.work:work-runtime-ktx:2.8.0-alpha01"
-
-    // Koin 依赖注入，之后可替换成hilt注入
-    api "io.insert-koin:koin-android:3.1.5"
-    api "io.insert-koin:koin-core:3.1.5"
-
-    //adapter
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.10'
-
-    //下拉刷新，上拉加载
-    api  'io.github.scwang90:refresh-layout-kernel:2.0.5'      //核心必须依赖
-    api  'io.github.scwang90:refresh-header-classics:2.0.5'    //经典刷新头
-
-    //圆形imageView，主要用于带边框，否则应用图片加载框架裁剪圆图
-    api 'de.hdodenhof:circleimageview:3.1.0'
-
-    //权限
-    api 'pub.devrel:easypermissions:3.0.0'
-
-    //状态栏
-    api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
-
-    //recyclerview item动画
-    api 'jp.wasabeef:recyclerview-animators:4.0.2'
-
-    //折叠布局滑动抖动解决方案
-//    implementation 'com.github.yuruiyin:AppbarLayoutBehavior:v1.0.3'
-
-    //retrofit2 http相关
-    api "com.squareup.retrofit2:retrofit:2.9.0"//包含Okttp库
-    api "com.squareup.retrofit2:converter-gson:2.9.0"//包含Gson库
-    api 'com.squareup.okhttp3:logging-interceptor:4.9.1'
-
-    //路由跳转(公共Module中添加基础依赖)
-    api 'com.alibaba:arouter-api:1.5.2'
-    //路由跳转(每个需要的Module中需分别添加处理器)
-    kapt 'com.alibaba:arouter-compiler:1.5.2'
-
-    //room(公共Module中添加基础依赖)
-    api "androidx.room:room-runtime:2.4.1"
-    api "androidx.room:room-ktx:2.4.1"
+    //图片加载框架
+    implementation("io.coil-kt:coil:1.0.0")
+    implementation("io.coil-kt:coil-gif:1.0.0")
+    implementation("io.coil-kt:coil-svg:1.0.0")
 
     //图片加载框架
-    api("io.coil-kt:coil:1.0.0")
-    api("io.coil-kt:coil-gif:1.0.0")
-    api("io.coil-kt:coil-svg:1.0.0")
-
-    //图片加载框架
-    api 'com.github.bumptech.glide:glide:4.13.0'
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
     kapt 'com.github.bumptech.glide:compiler:4.13.0'
-    api 'jp.wasabeef:glide-transformations:4.3.0'
 }

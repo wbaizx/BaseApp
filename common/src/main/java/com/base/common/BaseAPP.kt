@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
-import android.util.Log
 import com.alibaba.android.arouter.launcher.ARouter
 import com.base.common.util.log
 import java.util.*
@@ -16,11 +15,23 @@ import java.util.*
  *
  * 初始化三方 sdk 还可以可以使用 App Startup 方案
  */
+
+private const val TAG = "BaseAPP-Application"
+
+fun isDebug() = BaseAPP.isDebug
+fun getBaseAppContext() = BaseAPP.baseAppContext
+
 abstract class BaseAPP : Application() {
     companion object {
-        private val TAG = "BaseAPP-Application"
-
         lateinit var baseAppContext: BaseAPP
+
+        /**
+         * 判断是否是 Debug 模式
+         * 也可以使用 BuildConfig.DEBUG 判断（有些情况不准，具体什么情况百度）
+         */
+        val isDebug by lazy {
+            baseAppContext.applicationInfo != null && baseAppContext.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
+        }
 
         /**
          * 线程安全ArrayList
@@ -83,25 +94,6 @@ abstract class BaseAPP : Application() {
 
             log(TAG, "exitApp ${allActivities.size}")
         }
-
-        /**
-         * 判断是否是 Debug 模式
-         * 也可以使用 BuildConfig.DEBUG 判断（有些情况不准，具体什么情况百度）
-         */
-        private var isDebug: Boolean? = null
-
-        fun isDebug(): Boolean {
-            if (isDebug == null) {
-                synchronized(this) {
-                    if (isDebug == null) {
-                        isDebug =
-                            baseAppContext.applicationInfo != null && baseAppContext.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
-                        Log.d("isDebug", "$isDebug")
-                    }
-                }
-            }
-            return isDebug!!
-        }
     }
 
     override fun onCreate() {
@@ -120,7 +112,7 @@ abstract class BaseAPP : Application() {
             ARouter.openLog()
             ARouter.openDebug()
         }
-        ARouter.init(baseAppContext)
+        ARouter.init(getBaseAppContext())
     }
 
     /**

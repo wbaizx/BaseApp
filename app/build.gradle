@@ -1,53 +1,22 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-android-extensions'
-    id 'kotlin-kapt'
 }
-android {
-    compileSdkVersion 31
 
+apply from: rootProject.file('common.gradle')
+
+android {
     defaultConfig {
         applicationId "com.baseapp"
-        minSdkVersion 23
-        targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        kapt {
-            arguments {
-                arg("AROUTER_MODULE_NAME", project.getName())
-                arg("room.schemaLocation", "$projectDir/schemas".toString())
-            }
-        }
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    //使用dataBinding
-    dataBinding {
-        enabled = true
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    //路由跳转(每个需要的Module中需分别添加处理器)
-    kapt 'com.alibaba:arouter-compiler:1.5.2'
-
-    //room(每个需要的Module中需分别添加处理器)
-    kapt "androidx.room:room-compiler:2.4.2"
-
     implementation 'androidx.paging:paging-common-ktx:3.1.1'
     implementation 'androidx.paging:paging-runtime-ktx:3.1.1'
-    implementation project(path: ':video')
 
+    implementation project(path: ':video')
     implementation project(path: ':common')
     implementation project(path: ':login')
     implementation project(path: ':ndk')

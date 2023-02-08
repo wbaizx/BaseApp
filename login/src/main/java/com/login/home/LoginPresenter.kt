@@ -6,7 +6,6 @@ import kotlinx.coroutines.async
 
 class LoginPresenter(view: LoginViewInterface?) : BaseMVPPresenter<LoginViewInterface, LoginModelInterface>(view, LoginModel()),
     LoginPresenterInterface {
-    private val TAG = "LoginPresenter"
 
     override fun loginBean() = runTask(bgAction = { model.loginBean() }, uiAction = { view?.loginSuccessBean(it) })
 

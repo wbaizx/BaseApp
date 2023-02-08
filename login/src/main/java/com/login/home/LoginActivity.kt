@@ -15,10 +15,10 @@ import com.base.common.util.log
 import com.base.common.util.normalNavigation
 import com.login.R
 
+private const val TAG = "LoginActivity"
+
 @Route(path = "/login/login_home", name = "组件化登录模块首页")
 class LoginActivity : BaseActivity() {
-    private val TAG = "LoginActivity"
-
     @JvmField
     @Autowired(name = "is_goto_main")
     var isGotoMain: Boolean = false

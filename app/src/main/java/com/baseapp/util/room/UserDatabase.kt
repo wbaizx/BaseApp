@@ -3,7 +3,7 @@ package com.baseapp.util.room
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.base.common.BaseAPP
+import com.base.common.getBaseAppContext
 
 /**
  * 数据库名
@@ -15,7 +15,7 @@ abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
     companion object {
-        private val bulid = Room.databaseBuilder(BaseAPP.baseAppContext, UserDatabase::class.java, DBNAME).build()
+        private val bulid = Room.databaseBuilder(getBaseAppContext(), UserDatabase::class.java, DBNAME).build()
 
         val DB_USER by lazy {
             bulid.userDao()

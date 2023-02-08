@@ -1,7 +1,7 @@
 package com.baseapp.main.special_rc.connection_rc
 
 import android.graphics.*
-import com.base.common.BaseAPP
+import com.base.common.getBaseAppContext
 import com.base.common.util.AndroidUtil
 import com.base.common.view.SimpleItemDecoration
 import com.baseapp.R
@@ -9,7 +9,7 @@ import com.baseapp.R
 class ConnectionDecoration(adapter: ConnectionAdapter) : SimpleItemDecoration<String>(adapter) {
     override var decorationHeight: Int = AndroidUtil.dp2px(8f).toInt()
 
-    private val icon = BitmapFactory.decodeResource(BaseAPP.baseAppContext.resources, R.mipmap.transit_icon)
+    private val icon = BitmapFactory.decodeResource(getBaseAppContext().resources, R.mipmap.transit_icon)
 
     //图片位置矩形
     private val rectF = RectF(0f, 0f, 0f, 0f)

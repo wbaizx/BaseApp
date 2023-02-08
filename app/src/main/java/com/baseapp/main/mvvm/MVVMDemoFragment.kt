@@ -15,7 +15,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * 测试 mvvm 下的 adapter
  */
 class MVVMDemoFragment : BaseMVVMFragment<FragmentMvvmDemoFBinding>() {
-    private val TAG = "MVVMDemoFragment"
 
     /**
      * viewModel 使用koin注入方式

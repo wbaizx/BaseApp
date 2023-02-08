@@ -8,9 +8,9 @@ import com.login.home.bean.LoginBean
 import kotlinx.android.synthetic.main.fragment_login.*
 import okhttp3.ResponseBody
 
-class LoginFragment : BaseMVPFragment<LoginPresenterInterface>(), LoginViewInterface {
-    private val TAG = "LoginFragment"
+private const val TAG = "LoginFragment"
 
+class LoginFragment : BaseMVPFragment<LoginPresenterInterface>(), LoginViewInterface {
     override var presenter: LoginPresenterInterface? = LoginPresenter(this)
 
     override fun getContentView() = R.layout.fragment_login
