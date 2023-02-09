@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PagingActivity : BaseMVVMActivity<ActivityPagingDemoBinding>() {
+class PagingActivity : BaseMVVMActivity<PagingViewModel, ActivityPagingDemoBinding>() {
     override val viewModel by viewModel<PagingViewModel>()
 
     override fun getContentView() = R.layout.activity_paging_demo

@@ -1,10 +1,10 @@
 package com.base.common.base.mvp
 
 import com.base.common.base.mvp.contract.BaseMVPModelI
-import com.base.common.util.AndroidUtil
 import com.base.common.util.http.BaseBean
 import com.base.common.util.http.CodeException
 import com.base.common.util.http.NoNetworkException
+import com.base.common.util.isNetworkAvailable
 import okhttp3.ResponseBody
 
 abstract class BaseMVPModel : BaseMVPModelI {
@@ -14,7 +14,7 @@ abstract class BaseMVPModel : BaseMVPModelI {
      * 根据需求抛出不同的异常
      */
     inline fun <T> requestNetwork(call: () -> BaseBean<T>): T {
-        if (AndroidUtil.isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
             val bean = call.invoke()
             if (bean.code == 200) {
                 return call.invoke().data
@@ -30,7 +30,7 @@ abstract class BaseMVPModel : BaseMVPModelI {
      * 返回值为okhttp原始ResponseBody的网络请求，主要用于下载
      */
     inline fun <T : ResponseBody> requestNetworkBase(call: () -> T): T {
-        if (AndroidUtil.isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
             return call.invoke()
         } else {
             throw NoNetworkException("No network")

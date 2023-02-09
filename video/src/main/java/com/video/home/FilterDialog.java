@@ -10,12 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.base.common.util.imageload.LoadImage;
-import com.video.R;
-import com.video.home.gl.renderer.filter.FilterType;
+import com.base.common.util.imageload.LoadImageKt;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.video.R;
+import com.video.home.gl.renderer.filter.FilterType;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +36,7 @@ public class FilterDialog {
             BaseQuickAdapter<FilterType, BaseViewHolder> adapter = new BaseQuickAdapter<FilterType, BaseViewHolder>(R.layout.bottom_filter_item) {
                 @Override
                 protected void convert(@NotNull BaseViewHolder holder, FilterType type) {
-                    LoadImage.INSTANCE.load(type.getPng(), holder.getView(R.id.filterItemImg));
+                    LoadImageKt.loadImg(holder.getView(R.id.filterItemImg), type.getPng());
                     holder.setText(R.id.name, type.getName());
                 }
             };

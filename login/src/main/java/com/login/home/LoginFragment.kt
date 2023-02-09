@@ -1,7 +1,8 @@
 package com.login.home
 
 import com.base.common.base.mvp.BaseMVPFragment
-import com.base.common.util.imageload.LoadImage
+import com.base.common.util.imageload.imgUrl
+import com.base.common.util.imageload.loadImg
 import com.base.common.util.log
 import com.login.R
 import com.login.home.bean.LoginBean
@@ -22,7 +23,7 @@ class LoginFragment : BaseMVPFragment<LoginPresenterInterface>(), LoginViewInter
     override fun onFirstVisible() {
         log(TAG, "onFirstVisible")
 
-        LoadImage.load(LoadImage.imgUrl, loginImg)
+        loginImg.loadImg(imgUrl)
 
         loginBtn.setOnClickListener {
 //            presenter?.loginBean()

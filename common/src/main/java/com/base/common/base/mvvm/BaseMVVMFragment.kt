@@ -18,7 +18,7 @@ abstract class BaseMVVMFragment<B : ViewDataBinding> : BaseFragment() {
 
         //如果采用sharedViewModel共用viewModel，那么统一交给activity注册的基本监听接收
         //在fragment中不需要注册基本监听,以免重复接收
-        if ((activity as? BaseMVVMActivity<*>)?.viewModel != viewModel) {
+        if ((activity as? BaseMVVMActivity<*,*>)?.viewModel != viewModel) {
             initBaseObserve()
         }
 
@@ -31,17 +31,17 @@ abstract class BaseMVVMFragment<B : ViewDataBinding> : BaseFragment() {
     abstract fun bindModelId(binding: B)
 
     private fun initBaseObserve() {
-        viewModel.error.observe(this, {
+        viewModel.error.observe(this) {
             runError(it)
-        })
+        }
 
-        viewModel.showLoad.observe(this, {
+        viewModel.showLoad.observe(this) {
             if (it) {
                 showLoadDialog()
             } else {
                 hideLoadDialog()
             }
-        })
+        }
     }
 
     override fun onDestroy() {

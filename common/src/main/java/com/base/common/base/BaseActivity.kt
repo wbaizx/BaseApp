@@ -1,24 +1,20 @@
 package com.base.common.base
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.alibaba.android.arouter.launcher.ARouter
 import com.base.common.R
-import com.base.common.extension.setOnAvoidRepeatedClick
-import com.base.common.util.AndroidUtil
+import com.base.common.extension.setOnSingleClickListener
 import com.base.common.util.http.CodeException
 import com.base.common.util.http.NoNetworkException
 import com.base.common.util.log
+import com.base.common.util.showToast
 import com.google.gson.stream.MalformedJsonException
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_base_layout.*
@@ -32,9 +28,9 @@ import java.net.UnknownHostException
 /**
  *  Activity基类
  */
-abstract class BaseActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
-    private val TAG = "BaseActivity"
+private const val TAG = "BaseActivity"
 
+abstract class BaseActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
     private val loadDialog by lazy { LoadDialog(this) }
 
     private lateinit var contentLayout: View
@@ -92,7 +88,7 @@ abstract class BaseActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     protected open fun setImmersionBar() {
         ImmersionBar.with(this)
-            .statusBarColor(R.color.color_336)
+            .statusBarColor(R.color.colorPrimary)
             .fitsSystemWindows(true)
             .init()
     }
@@ -108,23 +104,6 @@ abstract class BaseActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     }
 
     /**
-     * 关闭软键盘
-     */
-    fun closeSoftInput() {
-        val aa = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        aa.hideSoftInputFromWindow(findViewById<View>(android.R.id.content).windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-    }
-
-    /**
-     * 打开软键盘
-     */
-    fun openSoftInput(ed: EditText) {
-        ed.requestFocus()
-        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(ed, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    /**
      * 展示内容视图布局
      */
     fun showContent() {
@@ -137,23 +116,22 @@ abstract class BaseActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     /**
      * 展示错误视图布局
      */
-    fun showErrorContent(msg: String? = null) {
+    fun showErrorContent(msg: String? = "统一错误视图") {
         if (isLoadErrorLayout) {
             errorLayout.visibility = View.VISIBLE
+
         } else {
             errorLayoutStub.inflate()
 //            errorLayoutStub.visibility = View.VISIBLE
 
-            errorBtn.setOnAvoidRepeatedClick {
+            errorBtn.setOnSingleClickListener {
                 errorContentClick()
             }
         }
 
         contentLayout.visibility = View.GONE
 
-        if (!TextUtils.isEmpty(msg)) {
-            errorMsg.text = msg
-        }
+        errorMsg.text = msg
 
         isLoadErrorLayout = true
     }
@@ -184,12 +162,12 @@ abstract class BaseActivity : AppCompatActivity(), EasyPermissions.PermissionCal
      */
     open fun runError(e: Exception) {
         when (e) {
-            is SocketTimeoutException -> AndroidUtil.showToast(this, "连接超时")
-            is UnknownHostException -> AndroidUtil.showToast(this, "网络错误")
-            is NoNetworkException -> AndroidUtil.showToast(this, "无网络")
-            is MalformedJsonException -> AndroidUtil.showToast(this, "json解析错误")
-            is CodeException -> AndroidUtil.showToast(this, "服务器code码错误 + code=${e.message}")
-            else -> AndroidUtil.showToast(this, "未知错误")
+            is SocketTimeoutException -> showToast(this, "连接超时")
+            is UnknownHostException -> showToast(this, "网络错误")
+            is NoNetworkException -> showToast(this, "无网络")
+            is MalformedJsonException -> showToast(this, "json解析错误")
+            is CodeException -> showToast(this, "服务器code码错误 + code=${e.message}")
+            else -> showToast(this, "未知错误")
         }
     }
 

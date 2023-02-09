@@ -44,21 +44,20 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    // Koin 依赖注入，之后可替换成hilt注入
-    implementation "io.insert-koin:koin-android:3.1.5"
-    implementation "io.insert-koin:koin-core:3.1.5"
+    // Koin 依赖注入，也可替换成hilt注入
+    implementation "io.insert-koin:koin-android:3.3.3"
 
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.android.material:material:1.8.0'
 
     //kotlin
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
 
     //协程
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
@@ -69,18 +68,24 @@ dependencies {
 //    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
 
     //WorkManager
-    implementation "androidx.work:work-runtime-ktx:2.8.0-alpha01"
+    implementation "androidx.work:work-runtime-ktx:2.8.0-rc01"
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.10'
+
+    //下拉刷新，上拉加载
+    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.5'      //核心必须依赖
+    implementation  'io.github.scwang90:refresh-header-classics:2.0.5'    //经典刷新头
 
     //权限
     implementation 'pub.devrel:easypermissions:3.0.0'
 
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
 
-    //下拉刷新，上拉加载
-    implementation  'io.github.scwang90:refresh-layout-kernel:2.0.5'      //核心必须依赖
-    implementation  'io.github.scwang90:refresh-header-classics:2.0.5'    //经典刷新头
+    //图片加载框架
+    implementation "io.coil-kt:coil:2.2.2"
+    implementation "io.coil-kt:coil-gif:2.2.2"
+    implementation "io.coil-kt:coil-svg:2.2.2"
+    implementation "io.coil-kt:coil-video:2.2.2"
 
     //圆形imageView，主要用于带边框，否则应用图片加载框架裁剪圆图
     implementation 'de.hdodenhof:circleimageview:3.1.0'
@@ -102,8 +107,8 @@ dependencies {
     kapt 'com.alibaba:arouter-compiler:1.5.2'
 
     //room(公共Module中添加基础依赖)
-    implementation "androidx.room:room-runtime:2.4.1"
-    implementation "androidx.room:room-ktx:2.4.1"
+    implementation "androidx.room:room-runtime:2.5.0"
+    implementation "androidx.room:room-ktx:2.5.0"
     //room(每个需要的Module中需分别添加处理器)
-    kapt "androidx.room:room-compiler:2.4.2"
+    kapt "androidx.room:room-compiler:2.5.0"
 }

@@ -16,8 +16,10 @@ import android.view.animation.OvershootInterpolator
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.base.common.util.AndroidUtil
+import com.base.common.util.dp2px
+import com.base.common.util.getScreenWidth
 import com.base.common.util.log
+import com.base.common.util.sp2px
 
 class SimpleTabLayout(context: Context, attrs: AttributeSet) : HorizontalScrollView(context, attrs) {
     private val TAG = "SimpleTabLayout"
@@ -25,29 +27,33 @@ class SimpleTabLayout(context: Context, attrs: AttributeSet) : HorizontalScrollV
 
     private val textViewList = arrayListOf<TextView>()
 
-    private val unSelectSize = AndroidUtil.sp2px(16f)
+    private val unSelectSize = sp2px(16f)
     private val unSelectColor = Color.parseColor("#6D7278")
 
-    private val selectSize = AndroidUtil.sp2px(18f)
+    private val selectSize = sp2px(18f)
     private val selectColor = Color.parseColor("#000000")
 
     private var currentPos = -1
     private var currentTex: TextView? = null
 
     //下划线高度
-    private var lineHeight = AndroidUtil.dp2px(3f)
+    private var lineHeight = dp2px(3f)
+
     //下划线宽度
-    private var lineWidth = AndroidUtil.dp2px(35f)
+    private var lineWidth = dp2px(35f)
+
     //item宽度
-    private var itemWidth = AndroidUtil.dp2px(69f)
+    private var itemWidth = dp2px(69f)
+
     //屏幕宽度
-    private var screenWidth = AndroidUtil.getScreenWidth()
+    private var screenWidth = getScreenWidth()
 
     //HorizontalScrollView总宽度
     private var tabWidth = 0f
 
     //下划线绘制起点X
     private var lineX = 0f
+
     //下划线动画结束最终会到的起点X
     private var lineToX = 0f
 
@@ -58,7 +64,7 @@ class SimpleTabLayout(context: Context, attrs: AttributeSet) : HorizontalScrollV
     private var listener: ((Int) -> Unit)? = null
 
     private val itemListener = OnClickListener {
-        val tag = it.getTag() as Int
+        val tag = it.tag as Int
         log(TAG, "itemClick $tag")
         if (tag != currentPos) {
             listener?.invoke(tag)
@@ -178,7 +184,6 @@ class SimpleTabLayout(context: Context, attrs: AttributeSet) : HorizontalScrollV
             val off = rightStartX + (screenWidth - itemWidth) / 2 + itemWidth
             this.smoothScrollBy(-off.toInt(), 0)
         }
-
     }
 
     private val updateLisenter = ValueAnimator.AnimatorUpdateListener {
@@ -187,7 +192,7 @@ class SimpleTabLayout(context: Context, attrs: AttributeSet) : HorizontalScrollV
     }
 
     private val animatorLisenter = object : AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator?) {
+        override fun onAnimationEnd(animation: Animator) {
             lineX = lineToX
             invalidate()
         }

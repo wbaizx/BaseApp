@@ -3,8 +3,8 @@ package com.base.common.base.mvvm
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.base.common.util.AndroidUtil
 import com.base.common.util.log
+import com.base.common.util.showToast
 import kotlinx.coroutines.*
 
 /**
@@ -54,7 +54,7 @@ abstract class BaseMVVMViewModel : ViewModel() {
 
         //CancellationException 协程取消异常，由于detachView主动取消了协程，此时view为空，无法在基类中捕获
         if (e is CancellationException) {
-            AndroidUtil.showToast(null, "协程被取消")
+            showToast(null, "协程被取消")
         } else {
             error.postValue(e)
         }

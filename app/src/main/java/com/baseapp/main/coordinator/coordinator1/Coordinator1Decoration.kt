@@ -2,13 +2,14 @@ package com.baseapp.main.coordinator.coordinator1
 
 import android.graphics.*
 import com.base.common.getBaseAppContext
-import com.base.common.util.AndroidUtil
+import com.base.common.util.dp2px
+import com.base.common.util.sp2px
 import com.base.common.view.SimpleItemDecoration
 import com.baseapp.R
 
 class Coordinator1Decoration(adapter: Coordinator1Adapter) : SimpleItemDecoration<String>(adapter) {
 
-    override var decorationHeight: Int = AndroidUtil.dp2px(90f).toInt()
+    override var decorationHeight: Int = dp2px(90f).toInt()
 
     private val bgColor: Int = Color.parseColor("#898989")
     private val bgColor2: Int = Color.parseColor("#FF9500")
@@ -19,14 +20,14 @@ class Coordinator1Decoration(adapter: Coordinator1Adapter) : SimpleItemDecoratio
     private val mPaint: Paint = Paint()
 
     private val textTitleColor = Color.BLACK
-    private val textTitleSize = AndroidUtil.sp2px(18f)
+    private val textTitleSize = sp2px(18f)
     private val textTitleLineColor = Color.parseColor("#BBEDFF")
 
     private val textDayColor = Color.parseColor("#9B9B9B")
-    private val textDaySize = AndroidUtil.sp2px(16f)
+    private val textDaySize = sp2px(16f)
 
     private val textTimeColor = Color.parseColor("#B4B4B4")
-    private val textTimeSize = AndroidUtil.sp2px(12f)
+    private val textTimeSize = sp2px(12f)
 
     private val textLabelColor = Color.parseColor("#5CC1FF")
     private val icon =
@@ -42,14 +43,14 @@ class Coordinator1Decoration(adapter: Coordinator1Adapter) : SimpleItemDecoratio
     private val rectF = RectF(0f, 0f, 0f, 0f)
 
     //图标左偏移
-    private val iconLeftOff = AndroidUtil.dp2px(34f)
+    private val iconLeftOff = dp2px(34f)
 
     //图标右偏移
-    private val iconRightOff = AndroidUtil.dp2px(16f)
+    private val iconRightOff = dp2px(16f)
 
     //画笔宽度
-    private val strokeWidth1 = AndroidUtil.dp2px(3f)
-    private val strokeWidth2 = AndroidUtil.dp2px(6f)
+    private val strokeWidth1 = dp2px(3f)
+    private val strokeWidth2 = dp2px(6f)
 
 
     init {
@@ -97,18 +98,18 @@ class Coordinator1Decoration(adapter: Coordinator1Adapter) : SimpleItemDecoratio
         //画竖线
         mPaint.strokeWidth = strokeWidth1
         mPaint.color = textLabelColor
-        var startX = AndroidUtil.dp2px(17f)
+        var startX = dp2px(17f)
         var bottomY = top + decorationHeight / 2 + height
-        c.drawLine(startX, bottomY - strokeWidth1 / 2, startX, bottomY - AndroidUtil.dp2px(13f) + strokeWidth1 / 2, mPaint)
+        c.drawLine(startX, bottomY - strokeWidth1 / 2, startX, bottomY - dp2px(13f) + strokeWidth1 / 2, mPaint)
 
         //画天
         mPaint.color = textDayColor
         mPaint.textSize = textDaySize
-        startX = AndroidUtil.dp2px(24f)
-        c.drawText("DAY$position", startX, bottomY - AndroidUtil.dp2px(7f) - getTextOffset(mPaint), mPaint)
+        startX = dp2px(24f)
+        c.drawText("DAY$position", startX, bottomY - dp2px(7f) - getTextOffset(mPaint), mPaint)
 
         //画大title--------------------------
-        startX += AndroidUtil.dp2px(5f) + mPaint.measureText("DAY$position")
+        startX += dp2px(5f) + mPaint.measureText("DAY$position")
         //画大title下划线
         mPaint.textSize = textTitleSize
 
@@ -130,12 +131,12 @@ class Coordinator1Decoration(adapter: Coordinator1Adapter) : SimpleItemDecoratio
 
         //画日期
         mPaint.typeface = DEFAULT
-        startX = AndroidUtil.dp2px(24f)
-        bottomY += AndroidUtil.dp2px(9f)
+        startX = dp2px(24f)
+        bottomY += dp2px(9f)
         mPaint.color = textTimeColor
         mPaint.textSize = textTimeSize
 
-        c.drawText("--$position", startX, bottomY + AndroidUtil.dp2px(6f) - getTextOffset(mPaint), mPaint)
+        c.drawText("--$position", startX, bottomY + dp2px(6f) - getTextOffset(mPaint), mPaint)
 
         //画图标
         rectF.set(

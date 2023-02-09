@@ -2,14 +2,14 @@ package com.baseapp.main.mvvm
 
 import com.base.common.base.adapter.BaseViewPagerAdapter
 import com.base.common.base.mvvm.BaseMVVMActivity
-import com.base.common.extension.setOnAvoidRepeatedClick
+import com.base.common.extension.setOnSingleClickListener
 import com.base.common.util.log
 import com.baseapp.R
 import com.baseapp.databinding.ActivityMvvmDemoBinding
 import kotlinx.android.synthetic.main.activity_mvvm_demo.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MVVMDemoActivity : BaseMVVMActivity<ActivityMvvmDemoBinding>() {
+class MVVMDemoActivity : BaseMVVMActivity<MVVMDemoViewModel, ActivityMvvmDemoBinding>() {
     private val TAG = "MVVMDemoActivity"
 
     /**
@@ -30,7 +30,7 @@ class MVVMDemoActivity : BaseMVVMActivity<ActivityMvvmDemoBinding>() {
             viewModel.saveData()
         }
 
-        query.setOnAvoidRepeatedClick {
+        query.setOnSingleClickListener {
             viewModel.queryData()
         }
 

@@ -1,9 +1,9 @@
 package com.video.home.videolist;
 
-import com.base.common.util.imageload.LoadImage;
-import com.video.R;
+import com.base.common.util.imageload.LoadImageKt;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.video.R;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +34,7 @@ public class VideoListAdapter extends BaseQuickAdapter<VideoListAdapter.FileBean
         holder.setGone(R.id.videoItemSelect, !bean.isSelect())
                 .setText(R.id.videoItemTitle, bean.file.getName());
 
-        LoadImage.INSTANCE.load(bean.file, holder.getView(R.id.videoItemImg));
+        LoadImageKt.loadImg(holder.getView(R.id.videoItemImg), bean.file);
     }
 
     public void select(int position) {

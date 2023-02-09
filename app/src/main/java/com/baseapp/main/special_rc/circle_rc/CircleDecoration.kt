@@ -2,7 +2,7 @@ package com.baseapp.main.special_rc.circle_rc
 
 import android.graphics.Canvas
 import android.graphics.Rect
-import com.base.common.util.AndroidUtil
+import com.base.common.util.dp2px
 import com.base.common.view.SimpleItemDecoration
 
 class CircleDecoration(adapter: CircleAdapter) : SimpleItemDecoration<String>(adapter) {
@@ -11,7 +11,7 @@ class CircleDecoration(adapter: CircleAdapter) : SimpleItemDecoration<String>(ad
 
     override fun offsets(outRect: Rect, dataPosition: Int, bean: String) {
         if (dataPosition != 0) {
-            outRect.left = -AndroidUtil.dp2px(22f).toInt()
+            outRect.left = -dp2px(22f).toInt()
         }
     }
 

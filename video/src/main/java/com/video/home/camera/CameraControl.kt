@@ -19,7 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.work.await
-import com.base.common.util.AndroidUtil
+import com.base.common.util.getScreenRealHeight
+import com.base.common.util.getScreenWidth
 import com.base.common.util.log
 import com.video.home.SavePicture
 import kotlinx.coroutines.launch
@@ -103,7 +104,7 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
     }
 
     private fun aspectRatio(activity: FragmentActivity): Int {
-        val previewRatio = AndroidUtil.getScreenRealHeight(activity).toDouble() / AndroidUtil.getScreenWidth()
+        val previewRatio = getScreenRealHeight(activity).toDouble() / getScreenWidth()
         if (abs(previewRatio - RATIO_4_3_VALUE) <= abs(previewRatio - RATIO_16_9_VALUE)) {
             return AspectRatio.RATIO_4_3
         }
@@ -164,7 +165,7 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
                     //这里确定最终的分辨率， request.resolution是cameraX选择的最合适的预览分辨率
                     //这个分辨率决定 预览、surface模式拍照、录制的分辨率
                     //你也可以不用这个分辨率，从checkSize方法中遍历一个你想要的分辨率设置进去，不会影响录制尺寸，但可能影响拍照尺寸
-                    resetPreviewSize(Size(AndroidUtil.getScreenRealHeight(activity), AndroidUtil.getScreenWidth()))
+                    resetPreviewSize(Size(getScreenRealHeight(activity), getScreenWidth()))
 
                     request.provideSurface(surface, cameraExecutor) {
                         log(TAG, "provideSurface")

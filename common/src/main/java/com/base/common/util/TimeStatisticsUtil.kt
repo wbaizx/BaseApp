@@ -1,10 +1,10 @@
 package com.base.common.util
 
-class TimeStatisticsUtil {
-    private val STATUS_RUNING = 0
-    private val STATUS_PAUSE = 1
-    private val STATUS_FINISH = 2
+private const val STATUS_RUNING = 0
+private const val STATUS_PAUSE = 1
+private const val STATUS_FINISH = 2
 
+class TimeStatisticsUtil {
     private var status = STATUS_FINISH
 
     private var time = 0L

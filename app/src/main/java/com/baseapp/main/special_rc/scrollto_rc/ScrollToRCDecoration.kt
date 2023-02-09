@@ -4,12 +4,13 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
-import com.base.common.util.AndroidUtil
+import com.base.common.util.dp2px
+import com.base.common.util.sp2px
 import com.base.common.view.SimpleItemDecoration
 
 class ScrollToRCDecoration(adapter: ScrollToRCAdapter) : SimpleItemDecoration<String>(adapter) {
 
-    override var decorationHeight: Int = AndroidUtil.dp2px(90f).toInt()
+    override var decorationHeight: Int = dp2px(90f).toInt()
 
     private val bgColor: Int = Color.parseColor("#898989")
     private val bgColor2: Int = Color.parseColor("#FF9500")
@@ -26,7 +27,7 @@ class ScrollToRCDecoration(adapter: ScrollToRCAdapter) : SimpleItemDecoration<St
         mPaint.isAntiAlias = true
         mPaint.strokeCap = Paint.Cap.ROUND
         mPaint.textAlign = Paint.Align.LEFT
-        mPaint.textSize = AndroidUtil.sp2px(18f)
+        mPaint.textSize = sp2px(18f)
     }
 
     override fun offsets(outRect: Rect, dataPosition: Int, bean: String) {

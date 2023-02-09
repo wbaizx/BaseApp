@@ -3,7 +3,16 @@ package com.base.common
 import android.app.Activity
 import android.app.Application
 import android.content.pm.ApplicationInfo
+import android.os.Build
 import android.os.Bundle
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.decode.SvgDecoder
+import coil.decode.VideoFrameDecoder
+import coil.disk.DiskCache
+import coil.memory.MemoryCache
 import com.alibaba.android.arouter.launcher.ARouter
 import com.base.common.util.log
 import java.util.*
@@ -21,7 +30,7 @@ private const val TAG = "BaseAPP-Application"
 fun isDebug() = BaseAPP.isDebug
 fun getBaseAppContext() = BaseAPP.baseAppContext
 
-abstract class BaseAPP : Application() {
+abstract class BaseAPP : Application(), ImageLoaderFactory {
     companion object {
         lateinit var baseAppContext: BaseAPP
 
@@ -33,18 +42,6 @@ abstract class BaseAPP : Application() {
             baseAppContext.applicationInfo != null && baseAppContext.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
         }
 
-        /**
-         * 线程安全ArrayList
-         * CopyOnWriteArrayList 耗
-         * 耗内存
-         * 只有写加锁，性能好
-         * 只能保证数据的最终一致性，不能保证数据的实时一致性
-         * 多读少写
-         *
-         * Collections.synchronizedList
-         * 全锁（遍历除外），性能差
-         * 多写少读
-         */
         private val allActivities = Collections.synchronizedList(arrayListOf<Activity>())
 
         private val activityLifecycleCallbacks = object : ActivityLifecycleCallbacks {
@@ -112,7 +109,7 @@ abstract class BaseAPP : Application() {
             ARouter.openLog()
             ARouter.openDebug()
         }
-        ARouter.init(getBaseAppContext())
+        ARouter.init(this)
     }
 
     /**
@@ -121,4 +118,34 @@ abstract class BaseAPP : Application() {
      * 参考MainApp
      */
     abstract fun initKoin()
+
+    override fun newImageLoader(): ImageLoader {
+        val imageLoader = ImageLoader.Builder(this)
+            .crossfade(2000)
+            .memoryCache {
+                MemoryCache.Builder(this)
+                    .maxSizePercent(0.25)
+                    .build()
+            }
+            .diskCache {
+                DiskCache.Builder()
+                    .directory(this.cacheDir.resolve("image_cache"))
+                    .maxSizePercent(0.02)
+                    .build()
+            }
+            .components {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    add(ImageDecoderDecoder.Factory())
+                } else {
+                    add(GifDecoder.Factory())
+                }
+                add(SvgDecoder.Factory())
+                add(VideoFrameDecoder.Factory())
+            }
+            .build()
+
+        log(TAG, "newImageLoader ${imageLoader.hashCode()}")
+
+        return imageLoader
+    }
 }

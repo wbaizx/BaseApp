@@ -16,6 +16,7 @@ class MainApp : BaseAPP() {
         val modules = arrayListOf<Module>().apply {
             addAll(mainDiList)
         }
+
         startKoin {
             // use AndroidLogger as Koin Logger - default Level.INFO
             // 使用默认的 default Level.INFO 在kotlin版本1.4.0会崩溃 NoSuchMethodError

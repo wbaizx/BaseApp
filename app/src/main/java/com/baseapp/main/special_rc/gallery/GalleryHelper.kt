@@ -109,7 +109,7 @@ class GalleryHelper(private var pageChangeListener: ((Int) -> Unit)? = null) {
     private class ScalableCardItemDecoration : RecyclerView.ItemDecoration() {
         override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
             val holder = parent.getChildViewHolder(view)
-            val position = if (holder.adapterPosition == RecyclerView.NO_POSITION) holder.oldPosition else holder.adapterPosition
+            val position = if (holder.bindingAdapterPosition == RecyclerView.NO_POSITION) holder.oldPosition else holder.bindingAdapterPosition
             val layoutManager = parent.layoutManager
             val itemCount = layoutManager!!.itemCount
 

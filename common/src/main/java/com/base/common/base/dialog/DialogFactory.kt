@@ -6,7 +6,7 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
 import com.base.common.R
-import com.base.common.util.AndroidUtil
+import com.base.common.util.getScreenWidth
 import kotlinx.android.synthetic.main.normal_dialog_view.*
 
 object DialogFactory {
@@ -50,7 +50,7 @@ class NormalDialog : BaseFragmentDialog() {
     override fun setWindowConfigure(win: Window) {
         val params = win.attributes
         params.gravity = Gravity.CENTER
-        params.width = AndroidUtil.getScreenWidth() / 10 * 7
+        params.width = getScreenWidth() / 10 * 7
         params.height = WindowManager.LayoutParams.WRAP_CONTENT
         win.attributes = params
     }

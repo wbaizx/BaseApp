@@ -2,7 +2,8 @@ package com.baseapp.main.item_animation.item_animation2
 
 import android.widget.TextView
 import com.base.common.base.adapter.BaseListAdapter
-import com.base.common.util.AndroidUtil
+import com.base.common.util.dp2px
+import com.base.common.util.getScreenShowHeight
 import com.baseapp.R
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
@@ -19,9 +20,9 @@ class ItemAnimation2Adapter : BaseListAdapter<String, BaseViewHolder>(R.layout.i
         val view = holder.getView<TextView>(R.id.sceneText)
         view.text = item
         if (isLine) {
-            view.layoutParams.height = AndroidUtil.getScreenShowHeight() - AndroidUtil.dp2px(200f).toInt()
+            view.layoutParams.height = getScreenShowHeight() - dp2px(200f).toInt()
         } else {
-            view.layoutParams.height = AndroidUtil.dp2px(160f).toInt()
+            view.layoutParams.height = dp2px(160f).toInt()
         }
     }
 

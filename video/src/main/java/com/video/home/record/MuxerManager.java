@@ -8,8 +8,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
-import com.base.common.util.AndroidUtil;
-import com.base.common.util.FileUtil;
+import com.base.common.util.AndroidUtilKt;
+import com.base.common.util.FileUtilKt;
 import com.base.common.util.LogUtilKt;
 
 import java.io.File;
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class MuxerManager {
     private static final String TAG = "MuxerManager";
 
-    private final String path = FileUtil.INSTANCE.getDiskFilePath("VIDEO") + File.separator;
+    private final String path = FileUtilKt.getDiskFilePath("VIDEO") + File.separator;
     private String thisPath;
 
     public static final int STATUS_READY = 0;
@@ -126,7 +126,7 @@ public class MuxerManager {
                 mMainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        AndroidUtil.INSTANCE.showToast(null, "录制成功 " + thisPath);
+                        AndroidUtilKt.showToast(null, "录制成功 " + thisPath);
                     }
                 });
             } catch (Exception e) {
@@ -137,7 +137,7 @@ public class MuxerManager {
                 mMainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        AndroidUtil.INSTANCE.showToast(null, "录制失败");
+                        AndroidUtilKt.showToast(null, "录制失败");
                     }
                 });
             } finally {

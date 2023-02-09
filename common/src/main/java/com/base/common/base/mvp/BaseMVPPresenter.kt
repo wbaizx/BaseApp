@@ -3,8 +3,8 @@ package com.base.common.base.mvp
 import com.base.common.base.mvp.contract.BaseMVPModelI
 import com.base.common.base.mvp.contract.BaseMVPPresenterI
 import com.base.common.base.mvp.contract.BaseMVPViewI
-import com.base.common.util.AndroidUtil
 import com.base.common.util.log
+import com.base.common.util.showToast
 import kotlinx.coroutines.*
 
 /**
@@ -65,7 +65,7 @@ abstract class BaseMVPPresenter<V : BaseMVPViewI, M : BaseMVPModelI>(var view: V
 
         //CancellationException 协程取消异常，由于detachView主动取消了协程，此时view为空，无法在基类中捕获
         if (e is CancellationException) {
-            AndroidUtil.showToast(null, "协程被取消")
+            showToast(null, "协程被取消")
         } else {
             view?.runTaskError(e)
         }

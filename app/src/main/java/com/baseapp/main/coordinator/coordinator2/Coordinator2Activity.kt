@@ -19,7 +19,7 @@ class Coordinator2Activity : BaseActivity() {
     override fun initView() {
         recyclerView.adapter = object : BaseListAdapter<String, BaseViewHolder>(R.layout.item_default_layout) {
             override fun convertUI(holder: BaseViewHolder, item: String) {
-                holder.setText(R.id.item_text, "$item  ${holder.adapterPosition - headerLayoutCount}")
+                holder.setText(R.id.item_text, "$item  ${holder.bindingAdapterPosition - headerLayoutCount}")
             }
         }.apply { setNewInstance(arrayListOf("啦啦", "啦啦", "啦啦", "啦啦", "啦啦", "啦啦", "啦啦", "啦啦", "啦啦", "啦啦", "啦啦", "啦啦", "啦啦")) }
 

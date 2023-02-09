@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Debug
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.base.common.BaseAPP
@@ -14,7 +15,8 @@ import com.base.common.util.http.ObjectBean
 import com.base.common.util.http.ParcelableBean
 import com.base.common.util.http.ParcelableBean2
 import com.base.common.util.http.SerializableBean
-import com.base.common.util.imageload.LoadImage
+import com.base.common.util.imageload.imgUrl
+import com.base.common.util.imageload.loadBlurImg
 import com.baseapp.R
 import com.baseapp.main.coordinator.CoordinatorActivity
 import com.baseapp.main.fragment_example.FragmentExampleActivity
@@ -29,7 +31,6 @@ import com.baseapp.main.special_rc.SpecialRCActivity
 import com.baseapp.main.workmanager.MainWork
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -50,16 +51,16 @@ class MainActivity : BaseActivity() {
     override fun initView() {
         //adb pull /sdcard/Android/data/com.baseapp/files/baseapp.trace  可用Profiler查看分析文件
         Debug.startMethodTracing("baseapp")
-        LoadImage.loadBlur(LoadImage.imgUrl, mainImg)
+        mainImg.loadBlurImg(imgUrl)
         Debug.stopMethodTracing()
 
         saveImg.setOnClickListener {
-            GlobalScope.launch(Dispatchers.IO) {
+            lifecycleScope.launch(Dispatchers.IO) {
                 val bitmap = ImageUtil.createBitmapFromView(mainImg)
                 val file = ImageUtil.savePicture(bitmap, "test.jpg")
                 if (ImageUtil.updateGallery(file, bitmap.width, bitmap.height)) {
                     withContext(Dispatchers.Main) {
-                        AndroidUtil.showToast(this@MainActivity, "保存成功")
+                        showToast(this@MainActivity, "保存成功")
                     }
                 }
                 //注意如果是 ImageView 直接返回的 bitmap，用完后不要 recycle

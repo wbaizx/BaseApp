@@ -44,7 +44,7 @@ object ImageUtil {
     }
 
     fun savePicture(bitmap: Bitmap, name: String): File {
-        val file = File(FileUtil.getDiskFilePath("IMG") + File.separator + name)
+        val file = File(getDiskFilePath("IMG") + File.separator + name)
         FileOutputStream(file).use {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
             it.flush()

@@ -12,7 +12,7 @@ class ItemAnimation3HAdapter : BaseListAdapter<String, BaseViewHolder>(R.layout.
     }
 
     override fun convertUI(holder: BaseViewHolder, item: String) {
-        holder.setText(R.id.item_text, "$item --  ${holder.adapterPosition - headerLayoutCount}")
+        holder.setText(R.id.item_text, "$item --  ${holder.bindingAdapterPosition - headerLayoutCount}")
     }
 
 }

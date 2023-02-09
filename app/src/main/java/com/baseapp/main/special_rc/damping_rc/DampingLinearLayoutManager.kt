@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.base.common.util.AndroidUtil
+import com.base.common.util.dp2px
 import com.base.common.util.log
 import kotlin.math.abs
 import kotlin.math.max
@@ -22,7 +22,7 @@ class DampingLinearLayoutManager(context: Context?) : LinearLayoutManager(contex
     private var topView: View? = null
     private var bottomView: View? = null
 
-    var barHeight = AndroidUtil.dp2px(80f)
+    var barHeight = dp2px(80f)
 
     //最终滚动标志，在最终滚动中，不记录偏移量
     private var isFinalScroll = false

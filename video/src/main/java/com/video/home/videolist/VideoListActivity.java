@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.base.common.base.BaseActivity;
-import com.base.common.util.FileUtil;
+import com.base.common.util.FileUtilKt;
 import com.base.common.util.RouterUtilKt;
-import com.video.R;
-import com.video.home.play.PlayActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnItemLongClickListener;
+import com.video.R;
+import com.video.home.play.PlayActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class VideoListActivity extends BaseActivity {
                 } else {
                     Intent intent = new Intent(VideoListActivity.this, PlayActivity.class);
                     intent.putExtra("path", videoListAdapter.getData().get(position).getFile().getAbsolutePath());
-                    RouterUtilKt.launchActivity(VideoListActivity.this, intent, 1);
+                    RouterUtilKt.launchActivity(VideoListActivity.this, intent);
                 }
             }
         });
@@ -76,7 +76,7 @@ public class VideoListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        File file = new File(FileUtil.INSTANCE.getDiskFilePath("VIDEO"));
+        File file = new File(FileUtilKt.getDiskFilePath("VIDEO"));
         File[] files = file.listFiles();
         if (files != null) {
             ArrayList<VideoListAdapter.FileBean> list = new ArrayList<>();

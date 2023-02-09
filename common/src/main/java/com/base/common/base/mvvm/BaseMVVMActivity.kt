@@ -7,10 +7,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.base.common.base.BaseActivity
 
-abstract class BaseMVVMActivity<B : ViewDataBinding> : BaseActivity() {
-    private val TAG = "BaseMVVMActivity"
-
-    abstract val viewModel: BaseMVVMViewModel
+abstract class BaseMVVMActivity<MV : BaseMVVMViewModel, B : ViewDataBinding> : BaseActivity() {
+    abstract val viewModel: MV
     private lateinit var binding: B
 
     override fun bindView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -32,17 +30,17 @@ abstract class BaseMVVMActivity<B : ViewDataBinding> : BaseActivity() {
     abstract fun bindModelId(binding: B)
 
     private fun initBaseObserve() {
-        viewModel.error.observe(this, {
+        viewModel.error.observe(this) {
             runError(it)
-        })
+        }
 
-        viewModel.showLoad.observe(this, {
+        viewModel.showLoad.observe(this) {
             if (it) {
                 showLoadDialog()
             } else {
                 hideLoadDialog()
             }
-        })
+        }
     }
 
     override fun onDestroy() {

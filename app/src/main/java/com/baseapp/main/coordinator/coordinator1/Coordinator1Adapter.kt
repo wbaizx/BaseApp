@@ -12,6 +12,6 @@ class Coordinator1Adapter : BaseListAdapter<String, BaseViewHolder>(R.layout.ite
     }
 
     override fun convertUI(holder: BaseViewHolder, item: String) {
-        holder.setText(R.id.item_text, "$item  ${holder.adapterPosition - headerLayoutCount}")
+        holder.setText(R.id.item_text, "$item  ${holder.bindingAdapterPosition - headerLayoutCount}")
     }
 }

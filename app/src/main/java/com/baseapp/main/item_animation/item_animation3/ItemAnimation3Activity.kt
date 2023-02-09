@@ -1,6 +1,5 @@
 package com.baseapp.main.item_animation.item_animation3
 
-import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,9 +36,6 @@ class ItemAnimation3Activity : BaseActivity() {
                     .setDuration(duration)
                     .translationX(0f)
                     .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationStart(animation: Animator?) {
-                            super.onAnimationStart(animation)
-                        }
                     })
                     .start()
 
@@ -47,9 +43,6 @@ class ItemAnimation3Activity : BaseActivity() {
                     .setDuration(duration)
                     .translationX(layout.width.toFloat())
                     .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator?) {
-                            super.onAnimationEnd(animation)
-                        }
                     })
                     .start()
             } else {
@@ -57,9 +50,6 @@ class ItemAnimation3Activity : BaseActivity() {
                     .setDuration(duration)
                     .translationX(-layout.width.toFloat())
                     .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator?) {
-                            super.onAnimationEnd(animation)
-                        }
                     })
                     .start()
 
@@ -67,9 +57,6 @@ class ItemAnimation3Activity : BaseActivity() {
                     .setDuration(duration)
                     .translationX(0f)
                     .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationStart(animation: Animator?) {
-                            super.onAnimationStart(animation)
-                        }
                     })
                     .start()
             }
@@ -79,5 +66,4 @@ class ItemAnimation3Activity : BaseActivity() {
 
     override fun initData() {
     }
-
 }

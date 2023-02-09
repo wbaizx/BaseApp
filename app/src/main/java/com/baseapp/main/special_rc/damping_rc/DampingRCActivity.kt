@@ -1,7 +1,7 @@
 package com.baseapp.main.special_rc.damping_rc
 
 import com.base.common.base.BaseActivity
-import com.base.common.util.AndroidUtil
+import com.base.common.util.dp2px
 import com.base.common.util.log
 import com.baseapp.R
 import com.gyf.immersionbar.ImmersionBar
@@ -26,9 +26,9 @@ class DampingRCActivity : BaseActivity() {
 
     override fun initView() {
         recyclerView.layoutManager = manager
-        recyclerView.adapter = DampingRCAdapter(this)
+        recyclerView.adapter = DampingRCAdapter()
 
-        manager.barHeight = AndroidUtil.dp2px(80f)
+        manager.barHeight = dp2px(80f)
 
         manager.setOffsetListener { upOffset, downOffset ->
             //upOffset 控制脚部偏移

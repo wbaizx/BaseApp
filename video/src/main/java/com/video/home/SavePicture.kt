@@ -7,9 +7,9 @@ import android.os.Handler
 import android.os.Looper
 import androidx.camera.core.impl.utils.Exif
 import androidx.exifinterface.media.ExifInterface
-import com.base.common.util.AndroidUtil.showToast
 import com.base.common.util.ImageUtil
 import com.base.common.util.log
+import com.base.common.util.showToast
 import java.util.*
 import java.util.concurrent.ArrayBlockingQueue
 
