@@ -22,9 +22,7 @@ class ScrollToRCActivity : BaseActivity() {
         recyclerView.addItemDecoration(decoration)
 
         tabLayoutBind()
-    }
 
-    override fun initData() {
         val data = arrayListOf<String>()
         repeat(20) {
             data.add("第 $it 个")

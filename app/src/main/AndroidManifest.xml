@@ -27,7 +27,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".main.show_dialog.ShowDialogActivity" />
-        <activity android:name=".main.mvp.MVPDemoActivity" />
         <activity android:name=".main.mvvm.MVVMDemoActivity" />
         <activity android:name=".main.paging.PagingActivity" />
         <activity android:name=".main.shape_btn.ShowShapeBtnActivity" />

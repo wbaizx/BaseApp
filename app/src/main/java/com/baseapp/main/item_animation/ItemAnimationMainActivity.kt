@@ -25,8 +25,4 @@ class ItemAnimationMainActivity : BaseActivity() {
             launchActivity(this, ItemAnimation3Activity::class.java)
         }
     }
-
-    override fun initData() {
-    }
-
 }

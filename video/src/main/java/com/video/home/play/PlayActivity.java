@@ -77,10 +77,6 @@ public class PlayActivity extends BaseActivity implements GLSurfaceListener, Pla
     }
 
     @Override
-    protected void initData() {
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         playManager.onResume();

@@ -23,7 +23,4 @@ class PictureIndicatorActivity : BaseActivity() {
             }
         })
     }
-
-    override fun initData() {
-    }
 }

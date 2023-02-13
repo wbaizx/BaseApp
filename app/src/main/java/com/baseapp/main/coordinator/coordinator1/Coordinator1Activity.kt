@@ -66,7 +66,4 @@ class Coordinator1Activity : BaseActivity() {
             log(TAG, "testArea click")
         }
     }
-
-    override fun initData() {
-    }
 }

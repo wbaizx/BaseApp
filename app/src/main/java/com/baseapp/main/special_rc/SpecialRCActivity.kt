@@ -44,8 +44,4 @@ class SpecialRCActivity : BaseActivity() {
             launchActivity(this, PictureIndicatorActivity::class.java)
         }
     }
-
-    override fun initData() {
-    }
-
 }

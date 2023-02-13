@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="vm"
             type="com.baseapp.main.paging.PagingViewModel" />
     </data>
 

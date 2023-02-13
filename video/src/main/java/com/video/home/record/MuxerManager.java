@@ -4,8 +4,6 @@ import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
 import android.os.ConditionVariable;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 
 import com.base.common.util.AndroidUtilKt;
@@ -35,8 +33,6 @@ public class MuxerManager {
 
     private int audioTrackIndex = -1;
     private int videoTrackIndex = -1;
-
-    private final Handler mMainHandler = new Handler(Looper.getMainLooper());
 
     public int getStatus() {
         return status;
@@ -123,23 +119,16 @@ public class MuxerManager {
                 mediaMuxer.release();
                 LogUtilKt.log(TAG, "stop");
 
-                mMainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        AndroidUtilKt.showToast(null, "录制成功 " + thisPath);
-                    }
-                });
+                AndroidUtilKt.showToast("录制成功 " + thisPath, null);
+
             } catch (Exception e) {
                 if (!TextUtils.isEmpty(thisPath)) {
                     File file = new File(thisPath);
                     file.delete();
                 }
-                mMainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        AndroidUtilKt.showToast(null, "录制失败");
-                    }
-                });
+
+                AndroidUtilKt.showToast("录制失败", null);
+
             } finally {
                 status = STATUS_READY;
                 audioTrackIndex = -1;

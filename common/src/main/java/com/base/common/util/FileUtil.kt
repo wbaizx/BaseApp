@@ -1,7 +1,7 @@
 package com.base.common.util
 
 import android.os.Environment
-import com.base.common.getBaseAppContext
+import com.base.common.getBaseApplication
 import java.io.File
 
 private const val TAG = "FileUtil"
@@ -18,7 +18,7 @@ fun getDiskFilePath(name: String): String {
 
     //外部文件存储，能看
     if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState() && !Environment.isExternalStorageRemovable()) {
-        val externalFilesDir = getBaseAppContext().getExternalFilesDir(name)
+        val externalFilesDir = getBaseApplication().getExternalFilesDir(name)
         if (externalFilesDir != null) {
             //外部文件存储，能看
             path = externalFilesDir.absolutePath
@@ -28,7 +28,7 @@ fun getDiskFilePath(name: String): String {
     }
 
     //内部文件存储，不能看
-    path = getBaseAppContext().filesDir.absolutePath + File.separator + name
+    path = getBaseApplication().filesDir.absolutePath + File.separator + name
     checkExists(File(path))
     log(TAG, "filesDir - $path")
     return path

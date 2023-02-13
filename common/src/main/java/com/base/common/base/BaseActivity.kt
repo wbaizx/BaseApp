@@ -57,7 +57,6 @@ abstract class BaseActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         setImmersionBar()
 
         initView()
-        initData()
     }
 
     /**
@@ -80,9 +79,7 @@ abstract class BaseActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     /**
      * 有些操作需要在此位置实现的，可以根据需求覆写
      */
-    protected open fun configure() {
-
-    }
+    protected open fun configure() {}
 
     protected abstract fun getContentView(): Int
 
@@ -95,13 +92,10 @@ abstract class BaseActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     protected abstract fun initView()
 
-    protected abstract fun initData()
-
     /**
      * 在例如singleTask模式下重启activity，可能需要子类在这里做一些view和presenter的刷新重置清理等操作
      */
-    protected open fun resetView() {
-    }
+    protected open fun resetView() {}
 
     /**
      * 展示内容视图布局
@@ -154,20 +148,6 @@ abstract class BaseActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         if (loadDialog.isShow) {
             log(TAG, "hideLoadDialog")
             loadDialog.dismiss()
-        }
-    }
-
-    /**
-     * 某些情况下需要继承此方法做后续操作，比如关闭下拉刷新状态
-     */
-    open fun runError(e: Exception) {
-        when (e) {
-            is SocketTimeoutException -> showToast(this, "连接超时")
-            is UnknownHostException -> showToast(this, "网络错误")
-            is NoNetworkException -> showToast(this, "无网络")
-            is MalformedJsonException -> showToast(this, "json解析错误")
-            is CodeException -> showToast(this, "服务器code码错误 + code=${e.message}")
-            else -> showToast(this, "未知错误")
         }
     }
 

@@ -39,7 +39,4 @@ class ItemAnimation1Activity : BaseActivity() {
             addDuration = 2000
         }
     }
-
-    override fun initData() {
-    }
 }

@@ -8,11 +8,6 @@ import com.alibaba.android.arouter.facade.callback.NavCallback
 import com.alibaba.android.arouter.launcher.ARouter
 
 /**
- * 默认页面跳转code
- */
-const val REQUEST_CODE = 1314
-
-/**
  * 创建路由
  */
 fun launchARouter(path: String): Postcard = ARouter.getInstance().build(path)
@@ -26,7 +21,7 @@ fun Postcard.loginNavigation(context: Context, navCallback: NavCallback? = null)
     if (isLogin) {
         normalNavigation(context, navCallback)
     } else {
-        showToast(context, "未登录")
+        showToast("未登录", context)
     }
 }
 
@@ -45,7 +40,7 @@ fun launchActivityForLogin(context: Context, javaClass: Class<out Activity>) {
     if (isLogin) {
         launchActivity(context, javaClass)
     } else {
-        showToast(context, "未登录")
+        showToast("未登录", context)
     }
 }
 
@@ -64,7 +59,7 @@ fun launchActivityForLogin(context: Context, intent: Intent) {
     if (isLogin) {
         launchActivity(context, intent)
     } else {
-        showToast(context, "未登录")
+        showToast("未登录", context)
     }
 }
 

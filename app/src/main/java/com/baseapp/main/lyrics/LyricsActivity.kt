@@ -8,9 +8,6 @@ class LyricsActivity : BaseActivity(){
 
     override fun getContentView()= R.layout.activity_show_lyrics
 
-    override fun initData() {
-    }
-
     override fun initView() {
         readToolTextListView.updateLayout()
         readToolTextListView.startProgress()

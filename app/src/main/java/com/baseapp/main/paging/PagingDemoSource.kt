@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.base.common.util.log
 import kotlinx.coroutines.delay
 
-class PagingDemoSource(val repository: PagingRepository) : PagingSource<Int, String>() {
+class PagingDemoSource(val reps: PagingRepository) : PagingSource<Int, String>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, String> {
         val page = params.key ?: 0
         val pageSize = params.loadSize

@@ -1,5 +1,6 @@
 package com.base.common.base.mvvm
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,20 +8,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.base.common.base.BaseFragment
 
-abstract class BaseMVVMFragment<B : ViewDataBinding> : BaseFragment() {
-    abstract val viewModel: BaseMVVMViewModel
+abstract class BaseMVVMFragment<VM : BaseMVVMViewModel, B : ViewDataBinding> : BaseFragment() {
+    abstract val vm: VM
     private lateinit var binding: B
 
     override fun bindView(inflater: LayoutInflater, container: ViewGroup?): View {
         binding = DataBindingUtil.inflate(inflater, getContentView(), container, false)
         binding.lifecycleOwner = this
         bindModelId(binding)
-
-        //如果采用sharedViewModel共用viewModel，那么统一交给activity注册的基本监听接收
-        //在fragment中不需要注册基本监听,以免重复接收
-        if ((activity as? BaseMVVMActivity<*,*>)?.viewModel != viewModel) {
-            initBaseObserve()
-        }
 
         return binding.root
     }
@@ -30,12 +25,18 @@ abstract class BaseMVVMFragment<B : ViewDataBinding> : BaseFragment() {
      */
     abstract fun bindModelId(binding: B)
 
-    private fun initBaseObserve() {
-        viewModel.error.observe(this) {
-            runError(it)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //如果采用activityViewModels共用viewModel，那么统一交给activity注册的基本监听接收
+        //在fragment中不需要注册基本监听,以免重复接收
+        if ((activity as? BaseMVVMActivity<*, *>)?.vm != vm) {
+            initBaseObserve()
         }
+        initObserve()
+    }
 
-        viewModel.showLoad.observe(this) {
+    private fun initBaseObserve() {
+        vm.showLoad.observe(this) {
             if (it) {
                 showLoadDialog()
             } else {
@@ -43,6 +44,8 @@ abstract class BaseMVVMFragment<B : ViewDataBinding> : BaseFragment() {
             }
         }
     }
+
+    protected abstract fun initObserve()
 
     override fun onDestroy() {
         binding.unbind()

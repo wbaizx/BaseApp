@@ -96,13 +96,6 @@
                 android:text="展示FragmentDialog"
                 android:textAllCaps="false" />
 
-            <Button
-                android:id="@+id/mvpRoom"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="展示mvp + room"
-                android:textAllCaps="false" />
-
             <com.base.common.view.btn.ShapeButton
                 android:id="@+id/mvvmRoom"
                 android:layout_width="match_parent"

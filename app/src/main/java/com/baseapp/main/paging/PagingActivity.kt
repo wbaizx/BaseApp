@@ -12,19 +12,19 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PagingActivity : BaseMVVMActivity<PagingViewModel, ActivityPagingDemoBinding>() {
-    override val viewModel by viewModel<PagingViewModel>()
+    override val vm by viewModel<PagingViewModel>()
 
     override fun getContentView() = R.layout.activity_paging_demo
 
     override fun bindModelId(binding: ActivityPagingDemoBinding) {
-        binding.viewModel = viewModel
+        binding.vm = vm
     }
 
     override fun initView() {
         val pagingAdapter = PagingDemoAdapter()
 
         lifecycleScope.launch {
-            viewModel.flow.collectLatest {
+            vm.flow.collectLatest {
                 log("PagingDemo", "submitData")
                 pagingAdapter.submitData(it)
             }
@@ -80,6 +80,6 @@ class PagingActivity : BaseMVVMActivity<PagingViewModel, ActivityPagingDemoBindi
         }
     }
 
-    override fun initData() {
+    override fun initObserve() {
     }
 }

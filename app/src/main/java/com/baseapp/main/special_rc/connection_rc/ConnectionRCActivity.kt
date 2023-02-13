@@ -16,7 +16,4 @@ class ConnectionRCActivity : BaseActivity() {
         recyclerView.addItemDecoration(ConnectionDecoration(adapter))
 
     }
-
-    override fun initData() {
-    }
 }

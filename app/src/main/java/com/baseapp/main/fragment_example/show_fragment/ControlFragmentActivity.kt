@@ -22,11 +22,8 @@ class ControlFragmentActivity : BaseActivity() {
             fragmentControl.show(0)
             simpleTabLayout.setPosition(0)
         }
-    }
 
-    override fun initData() {
         simpleTabLayout.setData(arrayListOf("第1个", "第2个", "第3个", "第4个", "第5个", "第6个", "第7个"))
-
         fragmentControl.show(0)
     }
 }

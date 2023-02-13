@@ -2,7 +2,7 @@ package com.base.common.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.base.common.getBaseAppContext
+import com.base.common.getBaseApplication
 
 object SharedPreferencesUtil {
     class KeyValue<T : Comparable<T>>(val key: String)
@@ -10,7 +10,7 @@ object SharedPreferencesUtil {
     val LOGIN = KeyValue<Boolean>("is_login")
 
     private val sharedPreferences: SharedPreferences by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-        getBaseAppContext().getSharedPreferences("BASE", Context.MODE_PRIVATE)
+        getBaseApplication().getSharedPreferences("BASE", Context.MODE_PRIVATE)
     }
 
     private val edit by lazy { sharedPreferences.edit() }

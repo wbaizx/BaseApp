@@ -6,7 +6,6 @@ import com.base.common.base.adapter.BaseViewPagerAdapter
 import com.base.common.util.log
 import com.baseapp.R
 import com.baseapp.main.fragment_example.fm.TestFragment
-import com.baseapp.main.fragment_example.fm.TestMVPFragment
 import kotlinx.android.synthetic.main.activity_vpfragment.*
 
 class VP2FragmentActivity : BaseActivity() {
@@ -22,9 +21,9 @@ class VP2FragmentActivity : BaseActivity() {
                 TestFragment("2"),
                 TestFragment("3"),
                 TestFragment("4"),
-                TestMVPFragment("MVP 5"),
-                TestMVPFragment("MVP 6"),
-                TestMVPFragment("MVP 7")
+                TestFragment("5"),
+                TestFragment("6"),
+                TestFragment("7"),
             )
         )
 
@@ -49,9 +48,7 @@ class VP2FragmentActivity : BaseActivity() {
         simpleTabLayout.setListener {
             viewPager2.setCurrentItem(it, false)
         }
-    }
 
-    override fun initData() {
         simpleTabLayout.setData(arrayListOf("第1个", "第2个", "第3个", "第4个", "第5个", "第6个", "第7个"))
     }
 }

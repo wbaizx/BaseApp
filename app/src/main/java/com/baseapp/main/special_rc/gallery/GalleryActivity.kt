@@ -19,8 +19,4 @@ class GalleryActivity : BaseActivity() {
             log(TAG, "$it")
         }.attachToRecyclerView(recyclerView)
     }
-
-    override fun initData() {
-    }
-
 }

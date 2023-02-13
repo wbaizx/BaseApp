@@ -1,6 +1,7 @@
 package com.baseapp
 
 import com.base.common.BaseAPP
+import com.login.loginDiList
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -15,6 +16,7 @@ class MainApp : BaseAPP() {
          */
         val modules = arrayListOf<Module>().apply {
             addAll(mainDiList)
+            addAll(loginDiList)
         }
 
         startKoin {

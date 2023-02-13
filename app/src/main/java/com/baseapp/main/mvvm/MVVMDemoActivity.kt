@@ -9,29 +9,29 @@ import com.baseapp.databinding.ActivityMvvmDemoBinding
 import kotlinx.android.synthetic.main.activity_mvvm_demo.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MVVMDemoActivity : BaseMVVMActivity<MVVMDemoViewModel, ActivityMvvmDemoBinding>() {
-    private val TAG = "MVVMDemoActivity"
+private const val TAG = "MVVMDemoActivity"
 
+class MVVMDemoActivity : BaseMVVMActivity<MVVMDemoViewModel, ActivityMvvmDemoBinding>() {
     /**
      * viewModel 使用koin注入方式
      */
-    override val viewModel by viewModel<MVVMDemoViewModel>()
+    override val vm by viewModel<MVVMDemoViewModel>()
 
     override fun getContentView() = R.layout.activity_mvvm_demo
 
     override fun bindModelId(binding: ActivityMvvmDemoBinding) {
-        binding.viewModel = viewModel
+        binding.vm = vm
     }
 
     override fun initView() {
-        log(TAG, "viewModel ${viewModel.hashCode()}")
+        log(TAG, "viewModel ${vm.hashCode()}")
 
         save.setOnClickListener {
-            viewModel.saveData()
+            vm.saveData()
         }
 
         query.setOnSingleClickListener {
-            viewModel.queryData()
+            vm.queryData()
         }
 
         viewPager2.adapter = BaseViewPagerAdapter(
@@ -42,10 +42,10 @@ class MVVMDemoActivity : BaseMVVMActivity<MVVMDemoViewModel, ActivityMvvmDemoBin
         )
     }
 
-    override fun initData() {
-        viewModel.name.observe(this, {
+    override fun initObserve() {
+        vm.name.observe(this) {
             log(TAG, "name ${this.hashCode()}")
-        })
+        }
     }
 
     override fun onDestroy() {

@@ -4,18 +4,18 @@ import androidx.lifecycle.MutableLiveData
 import com.base.common.base.mvvm.BaseMVVMViewModel
 import com.baseapp.util.room.User
 
-class MVVMDemoViewModel(private val repository: MVVMDemoRepository) : BaseMVVMViewModel() {
+class MVVMDemoViewModel(private val reps: MVVMDemoRepository) : BaseMVVMViewModel() {
 
-    val name: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val name by lazy { MutableLiveData<String>() }
 
     fun saveData() = runTask(action = {
-        repository.insertUsers(User(9, "4", 6))
+        reps.insertUsers(User(9, "4", 6))
         name.postValue("存入成功")
     })
 
 
     fun queryData() = runTask(isShowDialog = false, action = {
-        name.postValue("${repository.getAllUsers().size}")
+        name.postValue("${reps.getAllUsers().size}")
     })
 
 }

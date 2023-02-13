@@ -4,7 +4,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import com.base.common.util.log
 import com.baseapp.main.fragment_example.fm.TestFragment
-import com.baseapp.main.fragment_example.fm.TestMVPFragment
 
 /**
  * 通过配合 setMaxLifecycle 控制生命周期
@@ -17,9 +16,9 @@ class FragmentControl(private val supportFragmentManager: FragmentManager, priva
         TestFragment("2"),
         TestFragment("3"),
         TestFragment("4"),
-        TestMVPFragment("MVP 5"),
-        TestMVPFragment("MVP 6"),
-        TestMVPFragment("MVP 7")
+        TestFragment("5"),
+        TestFragment("6"),
+        TestFragment("7"),
     )
 
     private var currentPosition = -1

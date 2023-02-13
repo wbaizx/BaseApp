@@ -1,7 +1,7 @@
 package com.baseapp.main.coordinator.coordinator1
 
 import android.graphics.*
-import com.base.common.getBaseAppContext
+import com.base.common.getBaseActOrAppContext
 import com.base.common.util.dp2px
 import com.base.common.util.sp2px
 import com.base.common.view.SimpleItemDecoration
@@ -31,7 +31,7 @@ class Coordinator1Decoration(adapter: Coordinator1Adapter) : SimpleItemDecoratio
 
     private val textLabelColor = Color.parseColor("#5CC1FF")
     private val icon =
-        BitmapFactory.decodeResource(getBaseAppContext().resources, R.mipmap.bill_details_main_item_line_icon)
+        BitmapFactory.decodeResource(getBaseActOrAppContext().resources, R.mipmap.bill_details_main_item_line_icon)
 
     //粗体文字
     private val BOLD = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)

@@ -2,6 +2,7 @@ package com.baseapp.main.mvvm
 
 import android.os.Handler
 import android.os.Looper
+import androidx.fragment.app.activityViewModels
 import com.base.common.base.mvvm.BaseMVVMFragment
 import com.baseapp.R
 import com.baseapp.databinding.FragmentMvvmDemoFBinding
@@ -9,22 +10,24 @@ import com.baseapp.main.mvvm.adapter.MVMMBindAdapter
 import com.baseapp.main.mvvm.adapter.MVMMListAdapter
 import com.baseapp.main.mvvm.adapter.MVVMBindBean
 import kotlinx.android.synthetic.main.fragment_mvvm_demo_f.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
  * 测试 mvvm 下的 adapter
  */
-class MVVMDemoFragment : BaseMVVMFragment<FragmentMvvmDemoFBinding>() {
+class MVVMDemoFragment : BaseMVVMFragment<MVVMDemoViewModel, FragmentMvvmDemoFBinding>() {
 
     /**
      * viewModel 使用koin注入方式
      */
-    override val viewModel by sharedViewModel<MVVMDemoViewModel>()
+    override val vm by activityViewModels<MVVMDemoViewModel>()
+
+    override fun initObserve() {
+    }
 
     override fun getContentView() = R.layout.fragment_mvvm_demo_f
 
     override fun bindModelId(binding: FragmentMvvmDemoFBinding) {
-        binding.viewModel = viewModel
+        binding.vm = vm
     }
 
     override fun createView() {

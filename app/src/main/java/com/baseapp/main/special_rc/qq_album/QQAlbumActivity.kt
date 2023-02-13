@@ -18,7 +18,4 @@ class QQAlbumActivity : BaseActivity() {
         recyclerView.layoutManager = GridLayoutManager(this, 4)
         recyclerView.adapter = QQAlbumAdapter()
     }
-
-    override fun initData() {
-    }
 }

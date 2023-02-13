@@ -11,9 +11,6 @@ class NDKHomeActivity : BaseActivity() {
 
     override fun initView() {
         text.text = NDKHelper.stringFromJNI()
-    }
-
-    override fun initData() {
         JavaTest().start()
     }
 }

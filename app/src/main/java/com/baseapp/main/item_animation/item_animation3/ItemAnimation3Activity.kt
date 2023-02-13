@@ -63,7 +63,4 @@ class ItemAnimation3Activity : BaseActivity() {
             isLine = !isLine
         }
     }
-
-    override fun initData() {
-    }
 }

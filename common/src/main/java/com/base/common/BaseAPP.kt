@@ -2,6 +2,7 @@ package com.base.common
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Build
 import android.os.Bundle
@@ -14,7 +15,9 @@ import coil.decode.VideoFrameDecoder
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import com.alibaba.android.arouter.launcher.ARouter
+import com.base.common.base.BaseActivity
 import com.base.common.util.log
+import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -28,11 +31,15 @@ import java.util.*
 private const val TAG = "BaseAPP-Application"
 
 fun isDebug() = BaseAPP.isDebug
-fun getBaseAppContext() = BaseAPP.baseAppContext
+fun getCurrAct() = BaseAPP.currAct?.get() as? BaseActivity
+fun getBaseApplication() = BaseAPP.baseAppContext
+fun getBaseActOrAppContext(): Context = getCurrAct() ?: getBaseApplication()
 
 abstract class BaseAPP : Application(), ImageLoaderFactory {
     companion object {
         lateinit var baseAppContext: BaseAPP
+
+        var currAct: WeakReference<Activity>? = null
 
         /**
          * 判断是否是 Debug 模式
@@ -55,6 +62,7 @@ abstract class BaseAPP : Application(), ImageLoaderFactory {
             }
 
             override fun onActivityResumed(activity: Activity) {
+                currAct = WeakReference<Activity>(activity)
                 log(TAG, "onActivityResumed ${activity.javaClass.simpleName} ${allActivities.size}")
             }
 

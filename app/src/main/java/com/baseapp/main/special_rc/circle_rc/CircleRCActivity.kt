@@ -15,7 +15,4 @@ class CircleRCActivity : BaseActivity() {
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(CircleDecoration(adapter))
     }
-
-    override fun initData() {
-    }
 }

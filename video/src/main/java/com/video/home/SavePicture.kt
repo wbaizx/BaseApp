@@ -56,9 +56,7 @@ class SavePicture : Thread() {
                 log(TAG, "exif.orientation ${exif.orientation} exif.width ${exif.width} exif.height ${exif.height}")
 
                 if (ImageUtil.updateGallery(file, exif.width, exif.height)) {
-                    mMainHandler.post {
-                        showToast(null, "拍照成功")
-                    }
+                    showToast("拍照成功")
                 }
                 log(TAG, "run save x")
             }

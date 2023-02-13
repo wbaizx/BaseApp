@@ -44,9 +44,4 @@ class DampingRCActivity : BaseActivity() {
             log(TAG, "Page  $page")
         }
     }
-
-    override fun initData() {
-
-    }
-
 }

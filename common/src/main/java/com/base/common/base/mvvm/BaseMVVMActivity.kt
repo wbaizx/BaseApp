@@ -1,5 +1,6 @@
 package com.base.common.base.mvvm
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,34 +8,31 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.base.common.base.BaseActivity
 
-abstract class BaseMVVMActivity<MV : BaseMVVMViewModel, B : ViewDataBinding> : BaseActivity() {
-    abstract val viewModel: MV
+abstract class BaseMVVMActivity<VM : BaseMVVMViewModel, B : ViewDataBinding> : BaseActivity() {
+    abstract val vm: VM
     private lateinit var binding: B
 
     override fun bindView(inflater: LayoutInflater, container: ViewGroup): View {
-//        binding = DataBindingUtil.setContentView(this, getContentView())
-
         //因为基类采用add方式添加的content布局，所以这里通过这种方式绑定DataBinding
         binding = DataBindingUtil.inflate(inflater, getContentView(), container, false)
         binding.lifecycleOwner = this
         bindModelId(binding)
-
-        initBaseObserve()
-
         return binding.root
     }
 
     /**
      * 绑定viewModel到UI
      */
-    abstract fun bindModelId(binding: B)
+    protected abstract fun bindModelId(binding: B)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initBaseObserve()
+        initObserve()
+    }
 
     private fun initBaseObserve() {
-        viewModel.error.observe(this) {
-            runError(it)
-        }
-
-        viewModel.showLoad.observe(this) {
+        vm.showLoad.observe(this) {
             if (it) {
                 showLoadDialog()
             } else {
@@ -42,6 +40,8 @@ abstract class BaseMVVMActivity<MV : BaseMVVMViewModel, B : ViewDataBinding> : B
             }
         }
     }
+
+    protected abstract fun initObserve()
 
     override fun onDestroy() {
         binding.unbind()

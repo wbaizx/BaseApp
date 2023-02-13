@@ -20,8 +20,4 @@ class FragmentExampleActivity : BaseActivity() {
             launchActivity(this, ControlFragmentActivity::class.java)
         }
     }
-
-    override fun initData() {
-    }
-
 }

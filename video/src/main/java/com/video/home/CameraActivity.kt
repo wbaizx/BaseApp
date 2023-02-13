@@ -134,8 +134,6 @@ class CameraActivity : BaseActivity(), CameraControlListener, GLSurfaceListener,
         }
     }
 
-    override fun initData() {}
-
     override fun onResume() {
         super.onResume()
         log(TAG, "onResume")

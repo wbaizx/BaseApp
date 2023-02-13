@@ -1,6 +1,6 @@
 package com.base.common.util.http
 
-import com.base.common.getBaseAppContext
+import com.base.common.getBaseApplication
 import com.base.common.isDebug
 import com.base.common.util.log
 import okhttp3.Cache
@@ -86,7 +86,7 @@ abstract class BaseHttp {
             .hostnameVerifier(SSLSocketClient.hostnameVerifier)
 
         if (needCache) {
-            val cacheFile = File(getBaseAppContext().cacheDir, "${api.simpleName}Cache")
+            val cacheFile = File(getBaseApplication().cacheDir, "${api.simpleName}Cache")
             val cache = Cache(cacheFile, CACHEMAXSIZE)
             clientBuilder.addNetworkInterceptor(cacheInterceptor)
                 .cache(cache)

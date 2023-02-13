@@ -41,7 +41,4 @@ class Coordinator2Activity : BaseActivity() {
             }
         })
     }
-
-    override fun initData() {
-    }
 }

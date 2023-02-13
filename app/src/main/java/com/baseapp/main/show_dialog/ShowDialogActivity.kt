@@ -50,7 +50,4 @@ class ShowDialogActivity : BaseActivity() {
             log(TAG, "OnDismiss")
         }
     }
-
-    override fun initData() {
-    }
 }

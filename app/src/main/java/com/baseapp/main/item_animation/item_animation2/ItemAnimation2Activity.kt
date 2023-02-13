@@ -38,7 +38,4 @@ class ItemAnimation2Activity : BaseActivity() {
 
         }
     }
-
-    override fun initData() {
-    }
 }

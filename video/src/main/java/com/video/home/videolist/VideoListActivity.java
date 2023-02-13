@@ -72,10 +72,11 @@ public class VideoListActivity extends BaseActivity {
                 return true;
             }
         });
+
+        initData();
     }
 
-    @Override
-    protected void initData() {
+    private void initData() {
         File file = new File(FileUtilKt.getDiskFilePath("VIDEO"));
         File[] files = file.listFiles();
         if (files != null) {

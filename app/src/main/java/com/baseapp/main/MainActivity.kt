@@ -3,7 +3,6 @@ package com.baseapp.main
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Debug
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -22,7 +21,6 @@ import com.baseapp.main.coordinator.CoordinatorActivity
 import com.baseapp.main.fragment_example.FragmentExampleActivity
 import com.baseapp.main.item_animation.ItemAnimationMainActivity
 import com.baseapp.main.lyrics.LyricsActivity
-import com.baseapp.main.mvp.MVPDemoActivity
 import com.baseapp.main.mvvm.MVVMDemoActivity
 import com.baseapp.main.paging.PagingActivity
 import com.baseapp.main.shape_btn.ShowShapeBtnActivity
@@ -32,7 +30,6 @@ import com.baseapp.main.workmanager.MainWork
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.TimeUnit
@@ -59,9 +56,7 @@ class MainActivity : BaseActivity() {
                 val bitmap = ImageUtil.createBitmapFromView(mainImg)
                 val file = ImageUtil.savePicture(bitmap, "test.jpg")
                 if (ImageUtil.updateGallery(file, bitmap.width, bitmap.height)) {
-                    withContext(Dispatchers.Main) {
-                        showToast(this@MainActivity, "保存成功")
-                    }
+                    showToast("保存成功", this@MainActivity)
                 }
                 //注意如果是 ImageView 直接返回的 bitmap，用完后不要 recycle
 //                bitmap.recycle()
@@ -71,7 +66,6 @@ class MainActivity : BaseActivity() {
         login.setOnClickListener {
             //测试 ARouter 带参数跳转
             launchARouter("/login/login_home")
-                .withBoolean("is_goto_main", true)
                 .withSerializable("serializable_bean", SerializableBean("1", "2", arrayListOf("3", "4")))
                 .withParcelable("parcelable_bean", ParcelableBean("1", "2", arrayListOf("3", "4"), ParcelableBean2("5", "6")))
                 .withObject("object_bean", ObjectBean("1", "2", arrayListOf("3", "4")))
@@ -96,10 +90,6 @@ class MainActivity : BaseActivity() {
 
         showDialog.setOnClickListener {
             launchActivity(this, ShowDialogActivity::class.java)
-        }
-
-        mvpRoom.setOnClickListener {
-            launchActivity(this, MVPDemoActivity::class.java)
         }
 
         mvvmRoom.setOnClickListener {
@@ -141,6 +131,8 @@ class MainActivity : BaseActivity() {
         }
 
         startWork()
+
+        getPermissions()
     }
 
     /**
@@ -164,17 +156,12 @@ class MainActivity : BaseActivity() {
             .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
             .build()
 
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(mainWorkRequest.id).observe(this, Observer {
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(mainWorkRequest.id).observe(this) {
             log("MainWork", "${it.state}")
             log("MainWork", "${it.progress.getInt("int", 0)}")
-        })
+        }
         WorkManager.getInstance(this).enqueue(mainWorkRequest)
     }
-
-    override fun initData() {
-        getPermissions()
-    }
-
 
     /**
      * 添加 AfterPermissionGranted 注解，在所有权限申请成功后会再次调用此方法，手动打开除外

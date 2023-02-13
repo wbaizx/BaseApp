@@ -92,14 +92,6 @@ abstract class BaseFragment : Fragment() {
     }
 
     /**
-     * 某些情况下需要继承此方法做后续操作，比如关闭下拉刷新状态
-     * 注意mvvm下使用sharedViewModel共用viewModel，那么统一交给activity注册的基本监听接收，此方法不会回调
-     */
-    open fun runError(e: Exception) {
-        (activity as? BaseActivity)?.runError(e)
-    }
-
-    /**
      * 对应资源销毁在onDestroy中，有时也要根据情况在onDestroyView或者onDetach中
      */
     override fun onDestroy() {

@@ -20,8 +20,4 @@ class CoordinatorActivity : BaseActivity() {
             launchActivity(this, Coordinator2Activity::class.java)
         }
     }
-
-    override fun initData() {
-    }
-
 }

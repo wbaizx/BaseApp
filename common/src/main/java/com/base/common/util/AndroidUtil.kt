@@ -7,15 +7,25 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import com.base.common.getBaseAppContext
+import com.base.common.getBaseActOrAppContext
+import com.base.common.getBaseApplication
+import com.base.common.util.http.CodeException
+import com.base.common.util.http.NoNetworkException
+import com.google.gson.stream.MalformedJsonException
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.coroutines.CancellationException
 import java.io.File
+import java.lang.ref.WeakReference
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 /**
  * adb logcat -s GL_Thread -f /sdcard/log.txt
@@ -27,7 +37,7 @@ private const val TAG = "AndroidUtil"
 /**
  * 获取屏幕宽度
  */
-fun getScreenWidth(context: Context = getBaseAppContext()): Int {
+fun getScreenWidth(context: Context = getBaseActOrAppContext()): Int {
     return context.resources.displayMetrics.widthPixels
 }
 
@@ -35,7 +45,7 @@ fun getScreenWidth(context: Context = getBaseAppContext()): Int {
  * 获取屏幕显示高度
  * 可能不包含导航栏和刘海屏高度
  */
-fun getScreenShowHeight(context: Context = getBaseAppContext()): Int {
+fun getScreenShowHeight(context: Context = getBaseActOrAppContext()): Int {
     return context.resources.displayMetrics.heightPixels
 }
 
@@ -44,7 +54,7 @@ fun getScreenShowHeight(context: Context = getBaseAppContext()): Int {
  * 包含刘海屏高度
  * 如果有导航栏，不包含导航栏高度
  */
-fun getScreenRealHeight(context: Context = getBaseAppContext()): Int {
+fun getScreenRealHeight(context: Context = getBaseActOrAppContext()): Int {
     val windowManager: WindowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
     var screenHeight = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -71,16 +81,16 @@ fun getScreenRealHeight(context: Context = getBaseAppContext()): Int {
 
 //如果不想要BaseAPP实例（自定义view布局预览会无效），可以换成Resources.getSystem().displayMetrics
 fun sp2px(f: Float) =
-    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, f, getBaseAppContext().resources.displayMetrics)
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, f, getBaseActOrAppContext().resources.displayMetrics)
 
 fun dp2px(f: Float) =
-    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, getBaseAppContext().resources.displayMetrics)
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, getBaseActOrAppContext().resources.displayMetrics)
 
 /**
  * 获取手机网络连接状况
  */
 fun isNetworkAvailable(): Boolean {
-    val connectivityManager = getBaseAppContext().getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+    val connectivityManager = getBaseActOrAppContext().getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
     if (connectivityManager != null) {
         val activeNetwork = connectivityManager.activeNetwork
         if (activeNetwork != null) {
@@ -104,8 +114,8 @@ fun isNetworkAvailable(): Boolean {
  * 获取当前版本号
  */
 fun getVersionCode(): Long {
-    val manager = getBaseAppContext().packageManager
-    val info = manager.getPackageInfo(getBaseAppContext().packageName, 0)
+    val manager = getBaseActOrAppContext().packageManager
+    val info = manager.getPackageInfo(getBaseApplication().packageName, 0)
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
         info.longVersionCode
     } else {
@@ -117,7 +127,7 @@ fun getVersionCode(): Long {
  * 获取apk的版本号
  */
 fun getVersionCodeFromApk(filePath: String): Long {
-    val pm = getBaseAppContext().packageManager
+    val pm = getBaseApplication().packageManager
     val packInfo = pm.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES)
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
         packInfo?.longVersionCode ?: 0
@@ -138,27 +148,49 @@ fun installApk(file: File) {
     val type = "application/vnd.android.package-archive"
     val uri: Uri
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        uri = FileProvider.getUriForFile(getBaseAppContext(), getBaseAppContext().packageName + ".fileProvider", file)
+        uri = FileProvider.getUriForFile(getBaseApplication(), getBaseApplication().packageName + ".fileProvider", file)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     } else {
         uri = Uri.fromFile(file)
     }
     intent.setDataAndType(uri, type)
-    getBaseAppContext().startActivity(intent)
+    getBaseActOrAppContext().startActivity(intent)
 }
 
 /**
  * 跳转拨电话页
  */
-fun call(context: Context, photo: String) {
+fun call(photo: String, context: Context = getBaseActOrAppContext()) {
     val intent = Intent(Intent.ACTION_DIAL)
     val data: Uri = Uri.parse("tel:$photo")
     intent.data = data
     context.startActivity(intent)
 }
 
-fun showToast(context: Context?, msg: String) {
-    val toast = Toast.makeText(context ?: getBaseAppContext(), msg, Toast.LENGTH_SHORT)
-    toast.setGravity(Gravity.CENTER, 0, 0)
-    toast.show()
+fun showError(e: Exception) {
+    when (e) {
+        is CancellationException -> showToast("协程被取消")
+        is SocketTimeoutException -> showToast("连接超时")
+        is UnknownHostException -> showToast("网络错误")
+        is NoNetworkException -> showToast("无网络")
+        is MalformedJsonException -> showToast("json解析错误")
+        is CodeException -> showToast("服务器code码错误 + code=${e.message}")
+        else -> showToast("未知错误")
+    }
+}
+
+fun showToast(msg: String, context: Context? = null) {
+    fun show(context: Context) {
+        val toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
+    }
+
+    if (Looper.myLooper() == Looper.getMainLooper()) {
+        show(context ?: getBaseActOrAppContext())
+
+    } else {
+        val weakContext = WeakReference<Context?>(context)
+        Handler(Looper.getMainLooper()).post { show(weakContext.get() ?: getBaseActOrAppContext()) }
+    }
 }
