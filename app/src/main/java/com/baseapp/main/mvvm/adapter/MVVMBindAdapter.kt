@@ -5,7 +5,7 @@ import com.baseapp.R
 import com.baseapp.databinding.MvvmBindItemBinding
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 
-class MVMMBindAdapter : BaseBindingAdapter<MVVMBindBean, MvvmBindItemBinding>(R.layout.mvvm_bind_item) {
+class MVVMBindAdapter : BaseBindingAdapter<MVVMBindBean, MvvmBindItemBinding>(R.layout.mvvm_bind_item) {
 
     init {
         repeat(20) {

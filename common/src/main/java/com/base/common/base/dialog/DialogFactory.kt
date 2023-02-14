@@ -4,10 +4,12 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.base.common.R
+import com.base.common.extension.setOnSingleClickListener
 import com.base.common.util.getScreenWidth
-import kotlinx.android.synthetic.main.normal_dialog_view.*
 
 object DialogFactory {
     fun createNormalDialog(
@@ -57,19 +59,22 @@ class NormalDialog : BaseFragmentDialog() {
 
 
     override fun initView(view: View) {
-        titleTex.text = title
-        contentTex.text = content
+        view.findViewById<TextView>(R.id.titleTex).text = title
+        view.findViewById<TextView>(R.id.contentTex).text = content
 
-        yes.text = yesName
-        yes.setOnClickListener {
-            dismiss()
-            yesClick.invoke()
+        view.findViewById<Button>(R.id.yes).apply {
+            text = yesName
+            setOnSingleClickListener {
+                dismiss()
+                yesClick.invoke()
+            }
         }
-
-        no.text = noName
-        no.setOnClickListener {
-            dismiss()
-            noClick?.invoke()
+        view.findViewById<Button>(R.id.no).apply {
+            text = noName
+            setOnSingleClickListener {
+                dismiss()
+                noClick?.invoke()
+            }
         }
     }
 }

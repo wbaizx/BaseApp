@@ -1,10 +1,11 @@
 package com.baseapp.main.show_dialog
 
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
-import com.baseapp.R
 import com.base.common.base.dialog.BaseFragmentDialog
-import kotlinx.android.synthetic.main.test_dialog_view.*
+import com.base.common.extension.setOnSingleClickListener
+import com.baseapp.R
 
 class DefaultDialog : BaseFragmentDialog {
 
@@ -22,7 +23,7 @@ class DefaultDialog : BaseFragmentDialog {
     override fun getLayout() = R.layout.test_dialog_view
 
     override fun initView(view: View) {
-        text.text = "默认"
-        basedialog_cancel.setOnClickListener { dismiss() }
+        view.findViewById<TextView>(R.id.text).text = "默认"
+        view.findViewById<TextView>(R.id.basedialog_cancel).setOnSingleClickListener { dismiss() }
     }
 }

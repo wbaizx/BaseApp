@@ -2,12 +2,12 @@ package com.baseapp.main.special_rc.scrollto_rc
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.util.log
 import com.baseapp.R
-import kotlinx.android.synthetic.main.activity_scroll_to_rc.*
+import com.baseapp.databinding.ActivityScrollToRcBinding
 
-class ScrollToRCActivity : BaseActivity() {
+class ScrollToRCActivity : BaseBindContentActivity<ActivityScrollToRcBinding>() {
     private val TAG = "ScrollToRCActivity"
 
     private val manager = LinearLayoutManager(this)
@@ -16,10 +16,12 @@ class ScrollToRCActivity : BaseActivity() {
 
     override fun getContentView() = R.layout.activity_scroll_to_rc
 
+    override fun viewBind(binding: ActivityScrollToRcBinding) {}
+
     override fun initView() {
-        recyclerView.layoutManager = manager
-        recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(decoration)
+        binding.recyclerView.layoutManager = manager
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.addItemDecoration(decoration)
 
         tabLayoutBind()
 
@@ -28,7 +30,7 @@ class ScrollToRCActivity : BaseActivity() {
             data.add("第 $it 个")
         }
         adapter.setList(data)
-        simpleTabLayout.setData(data)
+        binding.simpleTabLayout.setData(data)
     }
 
     private fun tabLayoutBind() {
@@ -36,7 +38,7 @@ class ScrollToRCActivity : BaseActivity() {
         var move = false
         var toPos = -1
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 when (newState) {
@@ -58,7 +60,7 @@ class ScrollToRCActivity : BaseActivity() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (needOverseeScroll) {
-                    simpleTabLayout.setPosition(manager.findFirstVisibleItemPosition())
+                    binding.simpleTabLayout.setPosition(manager.findFirstVisibleItemPosition())
                 } else {
                     if (move && manager.findLastVisibleItemPosition() == toPos) {
                         recyclerView.stopScroll()
@@ -72,24 +74,28 @@ class ScrollToRCActivity : BaseActivity() {
             }
         })
 
-        simpleTabLayout.setListener { pos ->
+        binding.simpleTabLayout.setListener { pos ->
             needOverseeScroll = false
 
             val first = manager.findFirstVisibleItemPosition()
             val last = manager.findLastVisibleItemPosition()
-            if (pos < first) {
-                //当要置顶的项在当前显示的第一个项的前面时
-                recyclerView.smoothScrollToPosition(pos)
-            } else if (pos > last) {
-                //这两变量是用在RecyclerView滚动监听里面的
-                move = true
-                toPos = pos
-                //当要置顶的项在当前显示的最后一项的后面时
-                recyclerView.smoothScrollToPosition(pos)
-            } else {
-                //当要置顶的项已经在屏幕上显示时
-                val top = manager.findViewByPosition(pos)!!.top - decoration.decorationHeight
-                recyclerView.smoothScrollBy(0, top)
+            when {
+                pos < first -> {
+                    //当要置顶的项在当前显示的第一个项的前面时
+                    binding.recyclerView.smoothScrollToPosition(pos)
+                }
+                pos > last -> {
+                    //这两变量是用在RecyclerView滚动监听里面的
+                    move = true
+                    toPos = pos
+                    //当要置顶的项在当前显示的最后一项的后面时
+                    binding.recyclerView.smoothScrollToPosition(pos)
+                }
+                else -> {
+                    //当要置顶的项已经在屏幕上显示时
+                    val top = manager.findViewByPosition(pos)!!.top - decoration.decorationHeight
+                    binding.recyclerView.smoothScrollBy(0, top)
+                }
             }
         }
     }

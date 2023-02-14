@@ -1,19 +1,19 @@
 package com.baseapp.main.mvvm
 
-import androidx.lifecycle.MutableLiveData
-import com.base.common.base.mvvm.BaseMVVMViewModel
+import com.base.common.base.BaseViewModel
 import com.baseapp.util.room.User
+import kotlinx.coroutines.flow.MutableStateFlow
 
-class MVVMDemoViewModel(private val reps: MVVMDemoRepository) : BaseMVVMViewModel() {
+class MVVMDemoViewModel(private val reps: MVVMDemoRepository) : BaseViewModel() {
 
-    val name by lazy { MutableLiveData<String>() }
+    val name by lazy { MutableStateFlow("") }
 
     fun saveData() = runTask {
         reps.insertUsers(User(9, "4", 6))
-        name.postValue("存入成功")
+        name.emit("存入成功")
     }
 
     fun queryData() = runTask(false) {
-        name.postValue("${reps.getAllUsers().size}")
+        name.emit("${reps.getAllUsers().size}")
     }
 }

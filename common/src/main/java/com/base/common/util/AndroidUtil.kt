@@ -167,15 +167,15 @@ fun call(photo: String, context: Context = getBaseActOrAppContext()) {
     context.startActivity(intent)
 }
 
-fun showError(e: Exception) {
+fun showError(e: Exception, context: Context? = null) {
     when (e) {
-        is CancellationException -> showToast("协程被取消")
-        is SocketTimeoutException -> showToast("连接超时")
-        is UnknownHostException -> showToast("网络错误")
-        is NoNetworkException -> showToast("无网络")
-        is MalformedJsonException -> showToast("json解析错误")
-        is CodeException -> showToast("服务器code码错误 + code=${e.message}")
-        else -> showToast("未知错误")
+        is CancellationException -> showToast("协程被取消", context)
+        is SocketTimeoutException -> showToast("连接超时", context)
+        is UnknownHostException -> showToast("网络错误", context)
+        is NoNetworkException -> showToast("无网络", context)
+        is MalformedJsonException -> showToast("json解析错误", context)
+        is CodeException -> showToast("服务器code码错误 + code=${e.message}", context)
+        else -> showToast("未知错误", context)
     }
 }
 

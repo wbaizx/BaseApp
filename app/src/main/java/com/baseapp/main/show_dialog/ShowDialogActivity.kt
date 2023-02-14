@@ -1,13 +1,14 @@
 package com.baseapp.main.show_dialog
 
 import android.os.Bundle
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.util.log
 import com.baseapp.R
-import kotlinx.android.synthetic.main.activity_show_dialog.*
+import com.baseapp.databinding.ActivityShowDialogBinding
 
-class ShowDialogActivity : BaseActivity() {
-    private val TAG = "ShowDialogActivity"
+private const val TAG = "ShowDialogActivity"
+
+class ShowDialogActivity : BaseBindContentActivity<ActivityShowDialogBinding>() {
 
     private val dialogFragment1 = DefaultDialog(this)
     private val dialogFragment2 = BottomDialog(this)
@@ -37,9 +38,11 @@ class ShowDialogActivity : BaseActivity() {
 
     override fun getContentView() = R.layout.activity_show_dialog
 
+    override fun viewBind(binding: ActivityShowDialogBinding) {}
+
     override fun initView() {
-        dialog1.setOnClickListener { dialogFragment1.showDialog() }
-        dialog2.setOnClickListener {
+        binding.dialog1.setOnClickListener { dialogFragment1.showDialog() }
+        binding.dialog2.setOnClickListener {
             dialogFragment2.showDialog()
             tag2 = dialogFragment2.getDialogTag()
             log(TAG, "initView  $tag2")

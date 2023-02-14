@@ -2,7 +2,7 @@ package com.base.common.base.adapter
 
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.base.common.base.BaseFragment
+import com.base.common.base.fragment.BaseFragment
 
 /**
  * ViewPager2+Fragment的基础adapter

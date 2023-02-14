@@ -3,7 +3,7 @@ package com.login.home
 import androidx.lifecycle.Lifecycle
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseActivity
 import com.base.common.util.http.ObjectBean
 import com.base.common.util.http.ParcelableBean
 import com.base.common.util.http.SerializableBean

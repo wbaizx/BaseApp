@@ -5,21 +5,21 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.base.common.base.BaseActivity;
+import com.base.common.base.activity.BaseBindContentActivity;
 import com.base.common.util.FileUtilKt;
 import com.base.common.util.RouterUtilKt;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnItemLongClickListener;
 import com.video.R;
+import com.video.databinding.ActivityVideoListBinding;
 import com.video.home.play.PlayActivity;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class VideoListActivity extends BaseActivity {
+public class VideoListActivity extends BaseBindContentActivity<ActivityVideoListBinding> {
 
     private VideoListAdapter videoListAdapter = new VideoListAdapter();
 
@@ -29,19 +29,22 @@ public class VideoListActivity extends BaseActivity {
     }
 
     @Override
-    protected void initView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(videoListAdapter);
+    protected void viewBind(@NonNull ActivityVideoListBinding binding) {
+    }
 
-        findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+    @Override
+    protected void initView() {
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setAdapter(videoListAdapter);
+
+        binding.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 videoListAdapter.deleteFile();
             }
         });
 
-        findViewById(R.id.allSelect).setOnClickListener(new View.OnClickListener() {
+        binding.allSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 videoListAdapter.selectAll();
@@ -65,8 +68,8 @@ public class VideoListActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
                 videoListAdapter.setSelectMode(true);
-                findViewById(R.id.allSelect).setVisibility(View.VISIBLE);
-                findViewById(R.id.delete).setVisibility(View.VISIBLE);
+                binding.allSelect.setVisibility(View.VISIBLE);
+                binding.delete.setVisibility(View.VISIBLE);
 
                 videoListAdapter.select(position);
                 return true;

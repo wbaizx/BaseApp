@@ -1,5 +1,5 @@
 package com.baseapp.main.paging
 
-import com.base.common.base.mvvm.BaseMVVMRepository
+import com.base.common.base.BaseRepository
 
-class PagingRepository : BaseMVVMRepository()
+class PagingRepository : BaseRepository()

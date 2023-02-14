@@ -2,19 +2,19 @@ package com.baseapp.main.mvvm
 
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import androidx.fragment.app.activityViewModels
-import com.base.common.base.mvvm.BaseMVVMFragment
+import com.base.common.base.fragment.BaseBindModelFragment
 import com.baseapp.R
 import com.baseapp.databinding.FragmentMvvmDemoFBinding
-import com.baseapp.main.mvvm.adapter.MVMMBindAdapter
-import com.baseapp.main.mvvm.adapter.MVMMListAdapter
+import com.baseapp.main.mvvm.adapter.MVVMBindAdapter
+import com.baseapp.main.mvvm.adapter.MVVMListAdapter
 import com.baseapp.main.mvvm.adapter.MVVMBindBean
-import kotlinx.android.synthetic.main.fragment_mvvm_demo_f.*
 
 /**
  * 测试 mvvm 下的 adapter
  */
-class MVVMDemoFragment : BaseMVVMFragment<MVVMDemoViewModel, FragmentMvvmDemoFBinding>() {
+class MVVMDemoFragment : BaseBindModelFragment<MVVMDemoViewModel, FragmentMvvmDemoFBinding>() {
 
     /**
      * viewModel 使用koin注入方式
@@ -26,11 +26,11 @@ class MVVMDemoFragment : BaseMVVMFragment<MVVMDemoViewModel, FragmentMvvmDemoFBi
 
     override fun getContentView() = R.layout.fragment_mvvm_demo_f
 
-    override fun bindModelId(binding: FragmentMvvmDemoFBinding) {
+    override fun viewBind(binding: FragmentMvvmDemoFBinding) {
         binding.vm = vm
     }
 
-    override fun createView() {
+    override fun createView(view: View) {
         init1()
         init2()
     }
@@ -40,26 +40,26 @@ class MVVMDemoFragment : BaseMVVMFragment<MVVMDemoViewModel, FragmentMvvmDemoFBi
 //        refreshLayout1.setRefreshHeader(ClassicsHeader(context))
 //        refreshLayout1.setRefreshFooter(ClassicsFooter(context))
 
-        recyclerView1.adapter = MVMMBindAdapter().apply {
+        binding.recyclerView1.adapter = MVVMBindAdapter().apply {
 
-            setDefaultEmptyView(this@MVVMDemoFragment.context, recyclerView1)
+            setDefaultEmptyView(this@MVVMDemoFragment.context, binding.recyclerView1)
 
-            setRefreshAndLoadMore(refreshLayout1) {
+            setRefreshAndLoadMore(binding.refreshLayout1) {
                 Handler(Looper.getMainLooper()).postDelayed({ addPageData(arrayListOf(MVVMBindBean("5"))) }, 1500)
             }
         }
     }
 
     private fun init2() {
-        val adapter = MVMMListAdapter()
+        val adapter = MVVMListAdapter()
 
-        recyclerView2.adapter = adapter
+        binding.recyclerView2.adapter = adapter
 
         adapter.setDefaultEmptyView(emptyClick = {
             Handler(Looper.getMainLooper()).postDelayed({ adapter.addPageData(arrayListOf(MVVMBindBean("5"))) }, 1500)
         })
 
-        adapter.setRefreshAndLoadMore(refreshLayout2) {
+        adapter.setRefreshAndLoadMore(binding.refreshLayout2) {
             Handler(Looper.getMainLooper()).postDelayed({ adapter.addPageData(null) }, 1500)
         }
     }

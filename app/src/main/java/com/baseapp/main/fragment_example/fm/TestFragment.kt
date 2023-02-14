@@ -3,22 +3,25 @@ package com.baseapp.main.fragment_example.fm
 
 import android.os.Bundle
 import android.view.View
-import com.base.common.base.BaseFragment
+import com.base.common.base.fragment.BaseBindFragment
 import com.base.common.util.log
 import com.baseapp.R
-import kotlinx.android.synthetic.main.fragment_test.*
+import com.baseapp.databinding.FragmentTestBinding
 
 /**
  * 测试Fragment用例
  */
-class TestFragment(private val text: String) : BaseFragment() {
+class TestFragment(private val text: String) : BaseBindFragment<FragmentTestBinding>() {
     private val TAG = "TestFragment"
 
     override fun getContentView() = R.layout.fragment_test
 
-    override fun createView() {
+    override fun viewBind(binding: FragmentTestBinding) {
+    }
+
+    override fun createView(view: View) {
         log(TAG, "createView  $text")
-        testText.text = text
+        binding.testText.text = text
     }
 
     override fun onFirstVisible() {

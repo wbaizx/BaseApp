@@ -4,7 +4,7 @@ import com.base.common.base.adapter.BaseListAdapter
 import com.baseapp.R
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-class MVMMListAdapter : BaseListAdapter<MVVMBindBean, BaseViewHolder>(R.layout.mvvm_list_item) {
+class MVVMListAdapter : BaseListAdapter<MVVMBindBean, BaseViewHolder>(R.layout.mvvm_list_item) {
 
     init {
         repeat(20) {

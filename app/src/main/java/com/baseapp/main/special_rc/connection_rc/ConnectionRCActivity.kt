@@ -1,19 +1,21 @@
 package com.baseapp.main.special_rc.connection_rc
 
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.baseapp.R
-import kotlinx.android.synthetic.main.activity_connection_rc.*
+import com.baseapp.databinding.ActivityConnectionRcBinding
 
-class ConnectionRCActivity : BaseActivity() {
+class ConnectionRCActivity : BaseBindContentActivity<ActivityConnectionRcBinding>() {
 
     override fun getContentView() = R.layout.activity_connection_rc
 
+    override fun viewBind(binding: ActivityConnectionRcBinding) {}
+
     override fun initView() {
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = ConnectionAdapter()
-        recyclerView.adapter = adapter
-        recyclerView.addItemDecoration(ConnectionDecoration(adapter))
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.addItemDecoration(ConnectionDecoration(adapter))
 
     }
 }

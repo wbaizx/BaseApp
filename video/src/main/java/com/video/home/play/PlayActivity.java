@@ -4,28 +4,29 @@ import android.graphics.SurfaceTexture;
 import android.util.Size;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.alibaba.android.arouter.facade.annotation.Autowired;
-import com.base.common.base.BaseActivity;
-import com.video.R;
-import com.video.home.gl.egl.EGLSurfaceView;
-import com.video.home.gl.egl.GLSurfaceListener;
+import com.base.common.base.activity.BaseBindContentActivity;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
+import com.video.R;
+import com.video.databinding.ActivityPlayBinding;
+import com.video.home.gl.egl.GLSurfaceListener;
 
-public class PlayActivity extends BaseActivity implements GLSurfaceListener, PlayListener {
-    private static final String TAG = "PlayActivity";
-
+public class PlayActivity extends BaseBindContentActivity<ActivityPlayBinding> implements GLSurfaceListener, PlayListener {
     @Autowired
     String path;
 
-    private EGLSurfaceView eglSurfaceView;
     private PlayManager playManager;
-
-    private View playSwitch;
 
     @Override
     protected int getContentView() {
         return R.layout.activity_play;
+    }
+
+    @Override
+    protected void viewBind(@NonNull ActivityPlayBinding binding) {
     }
 
     @Override
@@ -35,21 +36,19 @@ public class PlayActivity extends BaseActivity implements GLSurfaceListener, Pla
 
     @Override
     protected void initView() {
-        eglSurfaceView = findViewById(R.id.eglSurfaceView);
-        eglSurfaceView.setGlSurfaceListener(this);
+        binding.eglSurfaceView.setGlSurfaceListener(this);
 
         playManager = new PlayManager(this);
 
-        playSwitch = findViewById(R.id.playSwitch);
-        findViewById(R.id.eglSurfaceView).setOnClickListener(new View.OnClickListener() {
+        binding.eglSurfaceView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (playManager.isReady()) {
                     playManager.play();
-                    playSwitch.setVisibility(View.GONE);
+                    binding.playSwitch.setVisibility(View.GONE);
                 } else {
                     playManager.pause();
-                    playSwitch.setVisibility(View.VISIBLE);
+                    binding.playSwitch.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -63,7 +62,7 @@ public class PlayActivity extends BaseActivity implements GLSurfaceListener, Pla
 
     @Override
     public void confirmPlaySize(Size playSize) {
-        eglSurfaceView.confirmReallySize(playSize);
+        binding.eglSurfaceView.confirmReallySize(playSize);
     }
 
     @Override
@@ -71,7 +70,7 @@ public class PlayActivity extends BaseActivity implements GLSurfaceListener, Pla
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                playSwitch.setVisibility(View.VISIBLE);
+                binding.playSwitch.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -84,7 +83,7 @@ public class PlayActivity extends BaseActivity implements GLSurfaceListener, Pla
 
     @Override
     protected void onPause() {
-        playSwitch.setVisibility(View.VISIBLE);
+        binding.playSwitch.setVisibility(View.VISIBLE);
         playManager.onPause();
         super.onPause();
     }
@@ -92,7 +91,7 @@ public class PlayActivity extends BaseActivity implements GLSurfaceListener, Pla
     @Override
     protected void onDestroy() {
         playManager.onDestroy();
-        eglSurfaceView.onDestroy();
+        binding.eglSurfaceView.onDestroy();
         super.onDestroy();
     }
 }

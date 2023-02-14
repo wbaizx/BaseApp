@@ -2,27 +2,29 @@ package com.baseapp.main.item_animation.item_animation2
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.baseapp.R
-import kotlinx.android.synthetic.main.activity_item_animation2.*
+import com.baseapp.databinding.ActivityItemAnimation2Binding
 
-class ItemAnimation2Activity : BaseActivity() {
+class ItemAnimation2Activity : BaseBindContentActivity<ActivityItemAnimation2Binding>() {
     private var isLine = true
 
     override fun getContentView() = R.layout.activity_item_animation2
 
+    override fun viewBind(binding: ActivityItemAnimation2Binding) {}
+
     override fun initView() {
         val adapter = ItemAnimation2Adapter()
         val layoutManager = GridLayoutManager(this, 1, RecyclerView.HORIZONTAL, false)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = adapter
-        recyclerView.itemAnimator = MyDefaultItemAnimator().apply {
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.itemAnimator = MyDefaultItemAnimator().apply {
             changeDuration = 600
             addDuration = 600
         }
 
 
-        change.setOnClickListener {
+        binding.change.setOnClickListener {
             if (isLine) {
                 adapter.setLine(false)
                 layoutManager.orientation = GridLayoutManager.VERTICAL

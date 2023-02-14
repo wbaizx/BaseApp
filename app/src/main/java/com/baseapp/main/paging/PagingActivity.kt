@@ -2,21 +2,20 @@ package com.baseapp.main.paging
 
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import com.base.common.base.mvvm.BaseMVVMActivity
+import com.base.common.base.activity.BaseBindModelActivity
 import com.base.common.util.log
 import com.baseapp.R
 import com.baseapp.databinding.ActivityPagingDemoBinding
-import kotlinx.android.synthetic.main.activity_paging_demo.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PagingActivity : BaseMVVMActivity<PagingViewModel, ActivityPagingDemoBinding>() {
+class PagingActivity : BaseBindModelActivity<PagingViewModel, ActivityPagingDemoBinding>() {
     override val vm by viewModel<PagingViewModel>()
 
     override fun getContentView() = R.layout.activity_paging_demo
 
-    override fun bindModelId(binding: ActivityPagingDemoBinding) {
+    override fun viewBind(binding: ActivityPagingDemoBinding) {
         binding.vm = vm
     }
 
@@ -68,13 +67,13 @@ class PagingActivity : BaseMVVMActivity<PagingViewModel, ActivityPagingDemoBindi
             }
         }
 
-        recyclerView.adapter = pagingAdapter.withLoadStateHeaderAndFooter(PagingFooterAdapter {
+        binding.recyclerView.adapter = pagingAdapter.withLoadStateHeaderAndFooter(PagingFooterAdapter {
             log("PagingDemo", "retry")
         }, PagingFooterAdapter {
             log("PagingDemo", "retry")
         })
 
-        retry.setOnClickListener {
+        binding.retry.setOnClickListener {
             pagingAdapter.refresh()
 //            pagingAdapter.retry()
         }

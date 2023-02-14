@@ -1,17 +1,17 @@
 package com.baseapp.main.mvvm
 
+import com.base.common.base.activity.BaseBindModelActivity
 import com.base.common.base.adapter.BaseViewPagerAdapter
-import com.base.common.base.mvvm.BaseMVVMActivity
 import com.base.common.extension.setOnSingleClickListener
+import com.base.common.util.lifecycleCollect
 import com.base.common.util.log
 import com.baseapp.R
 import com.baseapp.databinding.ActivityMvvmDemoBinding
-import kotlinx.android.synthetic.main.activity_mvvm_demo.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val TAG = "MVVMDemoActivity"
 
-class MVVMDemoActivity : BaseMVVMActivity<MVVMDemoViewModel, ActivityMvvmDemoBinding>() {
+class MVVMDemoActivity : BaseBindModelActivity<MVVMDemoViewModel, ActivityMvvmDemoBinding>() {
     /**
      * viewModel 使用koin注入方式
      */
@@ -19,22 +19,22 @@ class MVVMDemoActivity : BaseMVVMActivity<MVVMDemoViewModel, ActivityMvvmDemoBin
 
     override fun getContentView() = R.layout.activity_mvvm_demo
 
-    override fun bindModelId(binding: ActivityMvvmDemoBinding) {
+    override fun viewBind(binding: ActivityMvvmDemoBinding) {
         binding.vm = vm
     }
 
     override fun initView() {
         log(TAG, "viewModel ${vm.hashCode()}")
 
-        save.setOnClickListener {
+        binding.save.setOnClickListener {
             vm.saveData()
         }
 
-        query.setOnSingleClickListener {
+        binding.query.setOnSingleClickListener {
             vm.queryData()
         }
 
-        viewPager2.adapter = BaseViewPagerAdapter(
+        binding.viewPager2.adapter = BaseViewPagerAdapter(
             this, arrayListOf(
                 MVVMDemoFragment(),
                 MVVMDemoFragment()
@@ -43,7 +43,7 @@ class MVVMDemoActivity : BaseMVVMActivity<MVVMDemoViewModel, ActivityMvvmDemoBin
     }
 
     override fun initObserve() {
-        vm.name.observe(this) {
+        vm.name.lifecycleCollect(this) {
             log(TAG, "name ${this.hashCode()}")
         }
     }
@@ -52,4 +52,5 @@ class MVVMDemoActivity : BaseMVVMActivity<MVVMDemoViewModel, ActivityMvvmDemoBin
         log(TAG, "onDestroy ${this.hashCode()}")
         super.onDestroy()
     }
+
 }

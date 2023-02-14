@@ -3,57 +3,59 @@ package com.baseapp.main.item_animation.item_animation3
 import android.animation.AnimatorListenerAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.baseapp.R
-import kotlinx.android.synthetic.main.activity_item_animation3.*
+import com.baseapp.databinding.ActivityItemAnimation3Binding
 
-class ItemAnimation3Activity : BaseActivity() {
+class ItemAnimation3Activity : BaseBindContentActivity<ActivityItemAnimation3Binding>() {
     private var isLine = true
     private var duration = 500L
 
     override fun getContentView() = R.layout.activity_item_animation3
 
+    override fun viewBind(binding: ActivityItemAnimation3Binding) {}
+
     override fun initView() {
-        recyclerViewV.post { recyclerViewV.translationX = -layout.width.toFloat() }
+        binding.recyclerViewV.post { binding.recyclerViewV.translationX = -binding.layout.width.toFloat() }
 
-        recyclerViewH.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerViewH.adapter = ItemAnimation3HAdapter()
+        binding.recyclerViewH.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerViewH.adapter = ItemAnimation3HAdapter()
 
-        recyclerViewV.layoutManager = GridLayoutManager(this, 2)
-        recyclerViewV.adapter = ItemAnimation3VAdapter()
+        binding.recyclerViewV.layoutManager = GridLayoutManager(this, 2)
+        binding.recyclerViewV.adapter = ItemAnimation3VAdapter()
 
-        change.setOnClickListener {
+        binding.change.setOnClickListener {
             if (isLine) {
-                for (index in 0 until recyclerViewV.childCount) {
-                    val view = recyclerViewV.getChildAt(index)
+                for (index in 0 until binding.recyclerViewV.childCount) {
+                    val view = binding.recyclerViewV.getChildAt(index)
                     view.pivotX = view.width.toFloat()
                     view.pivotY = view.height * 5f
                     view.rotation = (340..350).random().toFloat()
                     view.animate().setDuration(duration + (400..600).random()).rotation(360f).start()
                 }
 
-                recyclerViewV.animate()
+                binding.recyclerViewV.animate()
                     .setDuration(duration)
                     .translationX(0f)
                     .setListener(object : AnimatorListenerAdapter() {
                     })
                     .start()
 
-                recyclerViewH.animate()
+                binding.recyclerViewH.animate()
                     .setDuration(duration)
-                    .translationX(layout.width.toFloat())
+                    .translationX(binding.layout.width.toFloat())
                     .setListener(object : AnimatorListenerAdapter() {
                     })
                     .start()
             } else {
-                recyclerViewV.animate()
+                binding.recyclerViewV.animate()
                     .setDuration(duration)
-                    .translationX(-layout.width.toFloat())
+                    .translationX(-binding.layout.width.toFloat())
                     .setListener(object : AnimatorListenerAdapter() {
                     })
                     .start()
 
-                recyclerViewH.animate()
+                binding.recyclerViewH.animate()
                     .setDuration(duration)
                     .translationX(0f)
                     .setListener(object : AnimatorListenerAdapter() {

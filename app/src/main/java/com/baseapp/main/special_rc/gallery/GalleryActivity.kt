@@ -1,22 +1,24 @@
 package com.baseapp.main.special_rc.gallery
 
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.util.log
 import com.baseapp.R
-import kotlinx.android.synthetic.main.activity_gallery.*
+import com.baseapp.databinding.ActivityGalleryBinding
 
-class GalleryActivity : BaseActivity() {
+class GalleryActivity : BaseBindContentActivity<ActivityGalleryBinding>() {
     private val TAG = "GalleryActivity"
 
     override fun getContentView() = R.layout.activity_gallery
 
+    override fun viewBind(binding: ActivityGalleryBinding) {}
+
     override fun initView() {
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = GalleryAdapter()
+        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerView.adapter = GalleryAdapter()
 
         GalleryHelper {
             log(TAG, "$it")
-        }.attachToRecyclerView(recyclerView)
+        }.attachToRecyclerView(binding.recyclerView)
     }
 }

@@ -15,7 +15,7 @@ import coil.decode.VideoFrameDecoder
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import com.alibaba.android.arouter.launcher.ARouter
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseActivity
 import com.base.common.util.log
 import java.lang.ref.WeakReference
 import java.util.*

@@ -1,8 +1,9 @@
 package com.baseapp.main.special_rc
 
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.util.launchActivity
 import com.baseapp.R
+import com.baseapp.databinding.ActivitySpecialRcBinding
 import com.baseapp.main.special_rc.circle_rc.CircleRCActivity
 import com.baseapp.main.special_rc.connection_rc.ConnectionRCActivity
 import com.baseapp.main.special_rc.damping_rc.DampingRCActivity
@@ -10,37 +11,38 @@ import com.baseapp.main.special_rc.gallery.GalleryActivity
 import com.baseapp.main.special_rc.indicator.PictureIndicatorActivity
 import com.baseapp.main.special_rc.qq_album.QQAlbumActivity
 import com.baseapp.main.special_rc.scrollto_rc.ScrollToRCActivity
-import kotlinx.android.synthetic.main.activity_special_rc.*
 
-class SpecialRCActivity : BaseActivity() {
+class SpecialRCActivity : BaseBindContentActivity<ActivitySpecialRcBinding>() {
     override fun getContentView() = R.layout.activity_special_rc
 
+    override fun viewBind(binding: ActivitySpecialRcBinding) {}
+
     override fun initView() {
-        dampingRc.setOnClickListener {
+        binding.dampingRc.setOnClickListener {
             launchActivity(this, DampingRCActivity::class.java)
         }
 
-        recyclerViewGallery.setOnClickListener {
+        binding.recyclerViewGallery.setOnClickListener {
             launchActivity(this, GalleryActivity::class.java)
         }
 
-        scrollToRecyclerView.setOnClickListener {
+        binding.scrollToRecyclerView.setOnClickListener {
             launchActivity(this, ScrollToRCActivity::class.java)
         }
 
-        qqAlbum.setOnClickListener {
+        binding.qqAlbum.setOnClickListener {
             launchActivity(this, QQAlbumActivity::class.java)
         }
 
-        connectionRecyclerView.setOnClickListener {
+        binding.connectionRecyclerView.setOnClickListener {
             launchActivity(this, ConnectionRCActivity::class.java)
         }
 
-        overlappingRecyclerView.setOnClickListener {
+        binding.overlappingRecyclerView.setOnClickListener {
             launchActivity(this, CircleRCActivity::class.java)
         }
 
-        pictureIndicator.setOnClickListener {
+        binding.pictureIndicator.setOnClickListener {
             launchActivity(this, PictureIndicatorActivity::class.java)
         }
     }

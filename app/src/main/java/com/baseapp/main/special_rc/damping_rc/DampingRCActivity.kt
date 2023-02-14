@@ -1,21 +1,25 @@
 package com.baseapp.main.special_rc.damping_rc
 
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.util.dp2px
 import com.base.common.util.log
 import com.baseapp.R
+import com.baseapp.databinding.ActivityDampingRcBinding
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_damping_rc.*
 
 /**
  * 需要注意全面屏和刘海屏适配
  */
-class DampingRCActivity : BaseActivity() {
-    private val TAG = "DampingRCActivity"
+
+private const val TAG = "DampingRCActivity"
+
+class DampingRCActivity : BaseBindContentActivity<ActivityDampingRcBinding>() {
 
     private val manager = DampingLinearLayoutManager(this)
 
     override fun getContentView() = R.layout.activity_damping_rc
+
+    override fun viewBind(binding: ActivityDampingRcBinding) {}
 
     override fun setImmersionBar() {
         ImmersionBar.with(this)
@@ -25,8 +29,8 @@ class DampingRCActivity : BaseActivity() {
     }
 
     override fun initView() {
-        recyclerView.layoutManager = manager
-        recyclerView.adapter = DampingRCAdapter()
+        binding.recyclerView.layoutManager = manager
+        binding.recyclerView.adapter = DampingRCAdapter()
 
         manager.barHeight = dp2px(80f)
 
@@ -34,13 +38,13 @@ class DampingRCActivity : BaseActivity() {
             //upOffset 控制脚部偏移
             //downOffset 控制头部偏移
             log(TAG, "Offset  $upOffset --- $downOffset")
-            footer.translationY = -upOffset
-            header.translationY = downOffset
+            binding.footer.translationY = -upOffset
+            binding.header.translationY = downOffset
         }
 
         manager.setPageListener { page ->
-            footer.text = "$page footer"
-            header.text = "$page header"
+            binding.footer.text = "$page footer"
+            binding.header.text = "$page header"
             log(TAG, "Page  $page")
         }
     }

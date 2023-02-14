@@ -1,97 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.base.common.view.btn.ShapeButton
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="ShapeButton"
-        app:allowPressEffect="false"
-        app:endColor="@color/color_9500"
-        app:radius="8dp"
-        app:rippleColor="@color/color_black"
-        app:startColor="@color/color_336" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <com.base.common.view.btn.ShapeButton
-        android:id="@+id/shapeButton"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="20dp"
-        android:shadowColor="@color/color_black"
-        android:shadowRadius="10"
-        android:text="shapeButton"
-        app:allowPressEffect="true"
-        app:allowRepeatedClick="false"
-        app:bgShadowColor="@color/color_4FF_a"
-        app:bgShadowOffsetY="2dp"
-        app:bgShadowRadius="5dp"
-        app:centerColor="@color/color_4FF_a"
-        app:colorAngle="RIGHT_LEFT"
-        app:endColor="@color/color_9500"
-        app:radius="20dp"
-        app:rippleColor="@color/color_black"
-        app:startColor="@color/color_336" />
+        <com.base.common.view.btn.ShapeButton
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="ShapeButton"
+            app:allowPressEffect="false"
+            app:endColor="@color/color_9500"
+            app:radius="8dp"
+            app:rippleColor="@color/color_black"
+            app:startColor="@color/color_336" />
 
-    <com.base.common.view.btn.ShapeButton
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="shapeButton"
-        app:bgShadowOffsetX="-40dp"
-        app:bgShadowOffsetY="8dp"
-        app:bgShadowRadius="15dp"
-        app:centerColor="@color/color_4FF_a"
-        app:colorAngle="RIGHT_LEFT"
-        app:endColor="@color/color_9500"
-        app:radius="20dp"
-        app:rippleColor="@color/color_black"
-        app:startColor="@color/color_336"
-        app:strokeColor="@color/color_black"
-        app:strokeWith="1dp" />
+        <com.base.common.view.btn.ShapeButton
+            android:id="@+id/shapeButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:shadowColor="@color/color_black"
+            android:shadowRadius="10"
+            android:text="shapeButton"
+            app:allowPressEffect="true"
+            app:allowRepeatedClick="false"
+            app:bgShadowColor="@color/color_4FF_a"
+            app:bgShadowOffsetY="2dp"
+            app:bgShadowRadius="5dp"
+            app:centerColor="@color/color_4FF_a"
+            app:colorAngle="RIGHT_LEFT"
+            app:endColor="@color/color_9500"
+            app:radius="20dp"
+            app:rippleColor="@color/color_black"
+            app:startColor="@color/color_336" />
 
-    <com.base.common.view.btn.ShapeDrawableButton
-        android:id="@+id/shapeDrawableButton"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="ShapeDrawableButton"
-        app:disableDrawable="@drawable/ic_launcher_background"
-        app:normalDrawable="@drawable/rounded_corners_shape"
-        app:pressedDrawable="@drawable/ic_launcher_background" />
+        <com.base.common.view.btn.ShapeButton
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="shapeButton"
+            app:bgShadowOffsetX="-40dp"
+            app:bgShadowOffsetY="8dp"
+            app:bgShadowRadius="15dp"
+            app:centerColor="@color/color_4FF_a"
+            app:colorAngle="RIGHT_LEFT"
+            app:endColor="@color/color_9500"
+            app:radius="20dp"
+            app:rippleColor="@color/color_black"
+            app:startColor="@color/color_336"
+            app:strokeColor="@color/color_black"
+            app:strokeWith="1dp" />
 
-    <com.base.common.view.btn.ShapeDrawableButton
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="ShapeDrawableButton" />
+        <com.base.common.view.btn.ShapeDrawableButton
+            android:id="@+id/shapeDrawableButton"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="ShapeDrawableButton"
+            app:disableDrawable="@drawable/ic_launcher_background"
+            app:normalDrawable="@drawable/rounded_corners_shape"
+            app:pressedDrawable="@drawable/ic_launcher_background" />
 
-    <!--
-    android:background="?android:attr/selectableItemBackground"  有边界波纹
-    android:background="?android:attr/selectableItemBackgroundBorderless" 超出边界波纹
-     -->
-    <com.base.common.view.btn.CommonButton
-        android:id="@+id/commonButton"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:text="CommonButton" />
+        <com.base.common.view.btn.ShapeDrawableButton
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="ShapeDrawableButton" />
 
-    <com.base.common.view.btn.CommonButton
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="CommonButton" />
+        <!--
+        android:background="?android:attr/selectableItemBackground"  有边界波纹
+        android:background="?android:attr/selectableItemBackgroundBorderless" 超出边界波纹
+         -->
+        <com.base.common.view.btn.CommonButton
+            android:id="@+id/commonButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:text="CommonButton" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="Button" />
+        <com.base.common.view.btn.CommonButton
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="CommonButton" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:elevation="10dp"
-        android:text="FloatingActionButton" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Button" />
 
-</LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:elevation="10dp"
+            android:text="FloatingActionButton" />
+
+    </LinearLayout>
+</layout>

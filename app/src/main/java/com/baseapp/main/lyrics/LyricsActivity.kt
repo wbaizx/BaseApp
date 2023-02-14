@@ -1,15 +1,18 @@
 package com.baseapp.main.lyrics
 
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.baseapp.R
-import kotlinx.android.synthetic.main.activity_show_lyrics.*
+import com.baseapp.databinding.ActivityShowLyricsBinding
 
-class LyricsActivity : BaseActivity(){
+class LyricsActivity : BaseBindContentActivity<ActivityShowLyricsBinding>() {
 
-    override fun getContentView()= R.layout.activity_show_lyrics
+    override fun getContentView() = R.layout.activity_show_lyrics
+
+    override fun viewBind(binding: ActivityShowLyricsBinding) {
+    }
 
     override fun initView() {
-        readToolTextListView.updateLayout()
-        readToolTextListView.startProgress()
+        binding.readToolTextListView.updateLayout()
+        binding.readToolTextListView.startProgress()
     }
 }

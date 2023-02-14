@@ -1,7 +1,7 @@
 package com.base.common.util.http
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
 data class ObjectBean(val a: String, val b: String?, val c: ArrayList<String>)

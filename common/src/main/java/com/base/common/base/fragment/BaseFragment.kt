@@ -1,19 +1,20 @@
-package com.base.common.base
+package com.base.common.base.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.base.common.base.activity.BaseActivity
 
 /**
- * Fragment基类，通过setMaxLifecycle控制生命周期
+ * Fragment基类，应当通过setMaxLifecycle控制生命周期
  * 屏幕旋转后 会重建 Fragment ，可能导致字段，变量重置，需要注意！
  */
 abstract class BaseFragment : Fragment() {
     private var mView: View? = null
     private var isLoad = false
-    private var isCreateView = false
+    private var callViewCreated = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,20 +23,22 @@ abstract class BaseFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (mView == null) {
-            mView = bindView(inflater, container)
+            mView = loadViewLayout(inflater, container)
         }
         return mView
     }
 
-    protected open fun bindView(inflater: LayoutInflater, container: ViewGroup?): View {
+    protected open fun loadViewLayout(inflater: LayoutInflater, container: ViewGroup?): View {
         return inflater.inflate(getContentView(), container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (!isCreateView) {
-            isCreateView = true
-            createView()
+        if (!callViewCreated) {
+            mView?.let {
+                callViewCreated = true
+                createView(it)
+            }
         }
     }
 
@@ -66,7 +69,7 @@ abstract class BaseFragment : Fragment() {
     /**
      * view可用时调用，可在这里使用控件等
      */
-    protected abstract fun createView()
+    protected abstract fun createView(view: View)
 
     /**
      * Fragment第一次可见时调用，如果不是必须的初始化操作可以放在这里，避免多个fragment同时加载资源
@@ -100,7 +103,5 @@ abstract class BaseFragment : Fragment() {
             (mView?.parent as ViewGroup).removeView(mView)
         }
         mView = null
-        isLoad = false
-        isCreateView = false
     }
 }

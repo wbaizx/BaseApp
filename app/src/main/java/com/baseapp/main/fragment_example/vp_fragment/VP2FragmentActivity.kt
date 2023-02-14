@@ -1,21 +1,24 @@
 package com.baseapp.main.fragment_example.vp_fragment
 
 import androidx.viewpager2.widget.ViewPager2
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.base.adapter.BaseViewPagerAdapter
 import com.base.common.util.log
 import com.baseapp.R
+import com.baseapp.databinding.ActivityVpfragmentBinding
 import com.baseapp.main.fragment_example.fm.TestFragment
-import kotlinx.android.synthetic.main.activity_vpfragment.*
 
-class VP2FragmentActivity : BaseActivity() {
-    private val TAG = "VP2FragmentActivity"
+private const val TAG = "VP2FragmentActivity"
+
+class VP2FragmentActivity : BaseBindContentActivity<ActivityVpfragmentBinding>() {
 
     override fun getContentView() = R.layout.activity_vpfragment
 
+    override fun viewBind(binding: ActivityVpfragmentBinding) {}
+
     override fun initView() {
-        viewPager2.offscreenPageLimit = 1
-        viewPager2.adapter = BaseViewPagerAdapter(
+        binding.viewPager2.offscreenPageLimit = 1
+        binding.viewPager2.adapter = BaseViewPagerAdapter(
             this, arrayListOf(
                 TestFragment("1"),
                 TestFragment("2"),
@@ -27,7 +30,7 @@ class VP2FragmentActivity : BaseActivity() {
             )
         )
 
-        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
                 log(TAG, "$position -- $positionOffset -- $positionOffsetPixels")
@@ -36,7 +39,7 @@ class VP2FragmentActivity : BaseActivity() {
             //用这个
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                simpleTabLayout.setPosition(position)
+                binding.simpleTabLayout.setPosition(position)
                 log(TAG, "onPageSelected $position")
             }
 
@@ -45,10 +48,10 @@ class VP2FragmentActivity : BaseActivity() {
             }
         })
 
-        simpleTabLayout.setListener {
-            viewPager2.setCurrentItem(it, false)
+        binding.simpleTabLayout.setListener {
+            binding.viewPager2.setCurrentItem(it, false)
         }
 
-        simpleTabLayout.setData(arrayListOf("第1个", "第2个", "第3个", "第4个", "第5个", "第6个", "第7个"))
+        binding.simpleTabLayout.setData(arrayListOf("第1个", "第2个", "第3个", "第4个", "第5个", "第6个", "第7个"))
     }
 }

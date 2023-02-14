@@ -1,8 +1,8 @@
-package com.base.common.base.mvvm
+package com.base.common.base
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.base.common.util.NoParMutableStateFlow
 import com.base.common.util.log
 import com.base.common.util.showError
 import kotlinx.coroutines.CoroutineScope
@@ -10,13 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/**
- * 这里高阶函数函数运行必须使用 action() 方式，使用 action.invoke() 会报错
- */
-private const val TAG = "BaseMVVMViewModel"
+private const val TAG = "BaseViewModel"
 
-abstract class BaseMVVMViewModel : ViewModel() {
-    val showLoad by lazy { MutableLiveData<Boolean>() }
+abstract class BaseViewModel : ViewModel() {
+    val showLoad by lazy { NoParMutableStateFlow<Boolean>() }
 
     protected class TaskBuilder {
         var showLoading: Boolean = true
@@ -42,7 +39,7 @@ abstract class BaseMVVMViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 if (showLoading) {
-                    showLoad.postValue(true)
+                    showLoad.emit(true)
                     //测试用
                     delay(1000)
                 }
@@ -60,7 +57,7 @@ abstract class BaseMVVMViewModel : ViewModel() {
             } finally {
                 if (showLoading) {
                     log("BaseMVVMViewModel", "runTaskDialog finally")
-                    showLoad.postValue(false)
+                    showLoad.emit(false)
                 }
             }
         }

@@ -5,21 +5,20 @@ import android.app.ActivityManager
 import android.graphics.SurfaceTexture
 import android.util.Size
 import android.view.Surface
-import android.widget.Button
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.util.launchActivity
 import com.base.common.util.log
+import com.gyf.immersionbar.BarHide
+import com.gyf.immersionbar.ImmersionBar
 import com.video.R
+import com.video.databinding.ActivityCameraBinding
 import com.video.home.camera.CameraControl
 import com.video.home.camera.CameraControlListener
 import com.video.home.gl.egl.GLSurfaceListener
 import com.video.home.record.RecordListener
 import com.video.home.record.RecordManager
 import com.video.home.videolist.VideoListActivity
-import com.gyf.immersionbar.BarHide
-import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_camera.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.locks.ReentrantLock
@@ -28,7 +27,7 @@ private const val CAMERA_PERMISSION_CODE = 666
 private const val TAG = "CameraActivity"
 
 @Route(path = "/video/home", name = "组件化video首页")
-class CameraActivity : BaseActivity(), CameraControlListener, GLSurfaceListener, RecordListener {
+class CameraActivity : BaseBindContentActivity<ActivityCameraBinding>(), CameraControlListener, GLSurfaceListener, RecordListener {
 
     private var hasPermissions = false
     private var isSurfaceCreated = false
@@ -42,7 +41,7 @@ class CameraActivity : BaseActivity(), CameraControlListener, GLSurfaceListener,
     private val filterDialog: FilterDialog by lazy {
         FilterDialog().apply {
             setOnItemClickListener {
-                eglSurfaceView.switchFilterType(it)
+                binding.eglSurfaceView.switchFilterType(it)
             }
             setOnDismissListener {
                 ImmersionBar.with(this@CameraActivity).hideBar(BarHide.FLAG_HIDE_BAR).init()
@@ -51,9 +50,9 @@ class CameraActivity : BaseActivity(), CameraControlListener, GLSurfaceListener,
         }
     }
 
-    override fun getContentView(): Int {
-        return R.layout.activity_camera
-    }
+    override fun getContentView() = R.layout.activity_camera
+
+    override fun viewBind(binding: ActivityCameraBinding) {}
 
     override fun setImmersionBar() {
         ImmersionBar.with(this).hideBar(BarHide.FLAG_HIDE_BAR).init()
@@ -64,33 +63,33 @@ class CameraActivity : BaseActivity(), CameraControlListener, GLSurfaceListener,
 
         mSaveThread.start()
 
-        eglSurfaceView.setGlSurfaceListener(this)
-        eglSurfaceView.setCameraControlListener(this)
+        binding.eglSurfaceView.setGlSurfaceListener(this)
+        binding.eglSurfaceView.setCameraControlListener(this)
 
-        goVideoList.setOnClickListener {
+        binding.goVideoList.setOnClickListener {
             launchActivity(this@CameraActivity, VideoListActivity::class.java)
         }
 
-        switchCamera.setOnClickListener {
+        binding.switchCamera.setOnClickListener {
             cameraControl.switchCamera()
         }
 
-        takePicture.setOnClickListener {
+        binding.takePicture.setOnClickListener {
             cameraControl.takePicture()
-            eglSurfaceView.takePicture()
+            binding.eglSurfaceView.takePicture()
         }
 
-        switchFilter.setOnClickListener {
+        binding.switchFilter.setOnClickListener {
             filterDialog.show()
         }
 
-        record.setOnClickListener {
+        binding.record.setOnClickListener {
             if (recordManager.isRecording) {
                 recordManager.stopRecord()
-                record.text = "录制"
+                binding.record.text = "录制"
             } else if (recordManager.isReady) {
                 recordManager.startRecord()
-                record.text = "停止录制"
+                binding.record.text = "停止录制"
             }
         }
     }
@@ -138,8 +137,7 @@ class CameraActivity : BaseActivity(), CameraControlListener, GLSurfaceListener,
         super.onResume()
         log(TAG, "onResume")
 
-        val record = findViewById<Button>(R.id.record)
-        record.text = "录制"
+        binding.record.text = "录制"
     }
 
     /**
@@ -175,16 +173,16 @@ class CameraActivity : BaseActivity(), CameraControlListener, GLSurfaceListener,
      */
     override fun confirmCameraSize(cameraSize: Size) {
         val reallySize = Size(cameraSize.height, cameraSize.width)
-        eglSurfaceView.confirmReallySize(reallySize)
+        binding.eglSurfaceView.confirmReallySize(reallySize)
         recordManager.confirmReallySize(reallySize)
     }
 
     override fun onEncoderSurfaceCreated(surface: Surface) {
-        eglSurfaceView.onEncoderSurfaceCreated(surface)
+        binding.eglSurfaceView.onEncoderSurfaceCreated(surface)
     }
 
     override fun onEncoderSurfaceDestroy() {
-        eglSurfaceView.onEncoderSurfaceDestroy()
+        binding.eglSurfaceView.onEncoderSurfaceDestroy()
     }
 
     /**
@@ -205,7 +203,7 @@ class CameraActivity : BaseActivity(), CameraControlListener, GLSurfaceListener,
         log(TAG, "onDestroy")
         recordManager.onDestroy()
         cameraControl.onDestroy()
-        eglSurfaceView.onDestroy()
+        binding.eglSurfaceView.onDestroy()
         mSaveThread.interrupt()
         super.onDestroy()
     }

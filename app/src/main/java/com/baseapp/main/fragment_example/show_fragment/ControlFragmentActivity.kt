@@ -1,29 +1,31 @@
 package com.baseapp.main.fragment_example.show_fragment
 
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.baseapp.R
-import kotlinx.android.synthetic.main.activity_control_fragment.*
+import com.baseapp.databinding.ActivityControlFragmentBinding
 
-class ControlFragmentActivity : BaseActivity() {
+class ControlFragmentActivity : BaseBindContentActivity<ActivityControlFragmentBinding>() {
     private lateinit var fragmentControl: FragmentControl
 
     override fun getContentView() = R.layout.activity_control_fragment
 
+    override fun viewBind(binding: ActivityControlFragmentBinding) {}
+
     override fun initView() {
         fragmentControl = FragmentControl(supportFragmentManager, R.id.frameLayout)
 
-        simpleTabLayout.setListener {
+        binding.simpleTabLayout.setListener {
             fragmentControl.show(it)
         }
 
-        reset.setOnClickListener {
+        binding.reset.setOnClickListener {
             fragmentControl.reset()
             fragmentControl = FragmentControl(supportFragmentManager, R.id.frameLayout)
             fragmentControl.show(0)
-            simpleTabLayout.setPosition(0)
+            binding.simpleTabLayout.setPosition(0)
         }
 
-        simpleTabLayout.setData(arrayListOf("第1个", "第2个", "第3个", "第4个", "第5个", "第6个", "第7个"))
+        binding.simpleTabLayout.setData(arrayListOf("第1个", "第2个", "第3个", "第4个", "第5个", "第6个", "第7个"))
         fragmentControl.show(0)
     }
 }

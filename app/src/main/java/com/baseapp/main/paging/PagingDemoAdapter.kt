@@ -3,11 +3,11 @@ package com.baseapp.main.paging
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.baseapp.R
-import kotlinx.android.synthetic.main.paging_item_layout.view.*
 
 class PagingDemoAdapter : PagingDataAdapter<String, PagingDemoAdapter.PagingVH>(PagingDiff()) {
     class PagingVH(view: View) : RecyclerView.ViewHolder(view)
@@ -29,6 +29,6 @@ class PagingDemoAdapter : PagingDataAdapter<String, PagingDemoAdapter.PagingVH>(
 
     override fun onBindViewHolder(holder: PagingVH, position: Int) {
         val item = getItem(position)
-        holder.itemView.paging_text.text = item
+        holder.itemView.findViewById<TextView>(R.id.paging_text).text = item
     }
 }

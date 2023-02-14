@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.work.*
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.base.common.BaseAPP
-import com.base.common.base.BaseActivity
+import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.base.dialog.DialogFactory
 import com.base.common.util.*
 import com.base.common.util.http.ObjectBean
@@ -17,6 +17,7 @@ import com.base.common.util.http.SerializableBean
 import com.base.common.util.imageload.imgUrl
 import com.base.common.util.imageload.loadBlurImg
 import com.baseapp.R
+import com.baseapp.databinding.ActivityMainBinding
 import com.baseapp.main.coordinator.CoordinatorActivity
 import com.baseapp.main.fragment_example.FragmentExampleActivity
 import com.baseapp.main.item_animation.ItemAnimationMainActivity
@@ -27,7 +28,6 @@ import com.baseapp.main.shape_btn.ShowShapeBtnActivity
 import com.baseapp.main.show_dialog.ShowDialogActivity
 import com.baseapp.main.special_rc.SpecialRCActivity
 import com.baseapp.main.workmanager.MainWork
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -36,24 +36,26 @@ import java.util.concurrent.TimeUnit
 
 private const val STORAGE_PERMISSION_CODE = 666
 
+private const val TAG = "MainActivity"
+
 @Route(path = "/main/main_home", name = "功能选择页")
-class MainActivity : BaseActivity() {
-    private val TAG = "MainActivity"
+class MainActivity : BaseBindContentActivity<ActivityMainBinding>() {
 
     override fun getContentView() = R.layout.activity_main
 
-    override fun setImmersionBar() {
-    }
+    override fun viewBind(binding: ActivityMainBinding) {}
+
+    override fun setImmersionBar() {}
 
     override fun initView() {
         //adb pull /sdcard/Android/data/com.baseapp/files/baseapp.trace  可用Profiler查看分析文件
         Debug.startMethodTracing("baseapp")
-        mainImg.loadBlurImg(imgUrl)
+        binding.mainImg.loadBlurImg(imgUrl)
         Debug.stopMethodTracing()
 
-        saveImg.setOnClickListener {
+        binding.saveImg.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                val bitmap = ImageUtil.createBitmapFromView(mainImg)
+                val bitmap = ImageUtil.createBitmapFromView(binding.mainImg)
                 val file = ImageUtil.savePicture(bitmap, "test.jpg")
                 if (ImageUtil.updateGallery(file, bitmap.width, bitmap.height)) {
                     showToast("保存成功", this@MainActivity)
@@ -63,7 +65,7 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        login.setOnClickListener {
+        binding.login.setOnClickListener {
             //测试 ARouter 带参数跳转
             launchARouter("/login/login_home")
                 .withSerializable("serializable_bean", SerializableBean("1", "2", arrayListOf("3", "4")))
@@ -72,54 +74,54 @@ class MainActivity : BaseActivity() {
                 .normalNavigation(this)
         }
 
-        fragmentExample.setOnClickListener {
+        binding.fragmentExample.setOnClickListener {
             launchActivity(this, FragmentExampleActivity::class.java)
         }
 
-        coordinator.setOnClickListener {
+        binding.coordinator.setOnClickListener {
             launchActivity(this, CoordinatorActivity::class.java)
         }
 
-        recyclerViewItemAnimation.setOnClickListener {
+        binding.recyclerViewItemAnimation.setOnClickListener {
             launchActivity(this, ItemAnimationMainActivity::class.java)
         }
 
-        specialRc.setOnClickListener {
+        binding.specialRc.setOnClickListener {
             launchActivity(this, SpecialRCActivity::class.java)
         }
 
-        showDialog.setOnClickListener {
+        binding.showDialog.setOnClickListener {
             launchActivity(this, ShowDialogActivity::class.java)
         }
 
-        mvvmRoom.setOnClickListener {
+        binding.mvvmRoom.setOnClickListener {
             launchActivity(this, MVVMDemoActivity::class.java)
         }
 
-        shapeBtn.setOnClickListener {
+        binding.shapeBtn.setOnClickListener {
             launchActivity(this, ShowShapeBtnActivity::class.java)
         }
 
-        lyricsBtn.setOnClickListener {
+        binding.lyricsBtn.setOnClickListener {
             launchActivity(this, LyricsActivity::class.java)
         }
 
-        camera.setOnClickListener {
+        binding.camera.setOnClickListener {
             launchARouter("/video/home").loginNavigation(this)
         }
 
-        ndk.setOnClickListener {
+        binding.ndk.setOnClickListener {
             launchARouter("/ndk/ndk_home").loginNavigation(this)
         }
 
-        paging3.setOnClickListener {
+        binding.paging3.setOnClickListener {
             launchActivity(this, PagingActivity::class.java)
         }
 
-        test.setOnClickListener {
+        binding.test.setOnClickListener {
         }
 
-        exit.setOnClickListener {
+        binding.exit.setOnClickListener {
             DialogFactory.createNormalDialog(
                 this,
                 "警告",
