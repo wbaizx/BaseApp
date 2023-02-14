@@ -18,33 +18,52 @@ private const val TAG = "BaseMVVMViewModel"
 abstract class BaseMVVMViewModel : ViewModel() {
     val showLoad by lazy { MutableLiveData<Boolean>() }
 
-    inline fun runTask(
-        isShowDialog: Boolean = true,
-        crossinline action: suspend CoroutineScope.() -> Unit,
-        noinline error: ((Exception) -> Unit)? = null
-    ) = viewModelScope.launch(Dispatchers.IO) {
-        try {
-            if (isShowDialog) {
-                showLoad.postValue(true)
-                //测试用
-                delay(1000)
-            }
+    protected class TaskBuilder {
+        var showLoading: Boolean = true
+        var catch: ((Exception) -> Unit)? = null
 
-            action()
+        fun showLoading(showLoading: Boolean): TaskBuilder {
+            this.showLoading = showLoading
+            return this
+        }
 
-        } catch (e: Exception) {
-            if (error != null) {
-                error(e)
-            } else {
-                showError(e)
-            }
-        } finally {
-            if (isShowDialog) {
-                log("BaseMVVMViewModel", "runTaskDialog finally")
-                showLoad.postValue(false)
-            }
+        fun catch(catch: ((Exception) -> Unit)? = null): TaskBuilder {
+            this.catch = catch
+            return this
         }
     }
+
+    protected fun runTask(showLoading: Boolean = true) = TaskBuilder().showLoading(showLoading)
+
+    protected inline fun runTask(showLoading: Boolean = true, crossinline action: suspend CoroutineScope.() -> Unit) =
+        TaskBuilder().showLoading(showLoading).action(action)
+
+    protected inline fun TaskBuilder.action(crossinline action: suspend CoroutineScope.() -> Unit) =
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                if (showLoading) {
+                    showLoad.postValue(true)
+                    //测试用
+                    delay(1000)
+                }
+
+                action()
+
+            } catch (e: Exception) {
+                if (catch != null) {
+                    catch?.invoke(e)
+
+                } else {
+                    showError(e)
+                }
+
+            } finally {
+                if (showLoading) {
+                    log("BaseMVVMViewModel", "runTaskDialog finally")
+                    showLoad.postValue(false)
+                }
+            }
+        }
 
     override fun onCleared() {
         log(TAG, "onCleared")

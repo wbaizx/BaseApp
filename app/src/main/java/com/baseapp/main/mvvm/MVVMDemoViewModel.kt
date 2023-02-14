@@ -8,14 +8,12 @@ class MVVMDemoViewModel(private val reps: MVVMDemoRepository) : BaseMVVMViewMode
 
     val name by lazy { MutableLiveData<String>() }
 
-    fun saveData() = runTask(action = {
+    fun saveData() = runTask {
         reps.insertUsers(User(9, "4", 6))
         name.postValue("存入成功")
-    })
+    }
 
-
-    fun queryData() = runTask(isShowDialog = false, action = {
+    fun queryData() = runTask(false) {
         name.postValue("${reps.getAllUsers().size}")
-    })
-
+    }
 }

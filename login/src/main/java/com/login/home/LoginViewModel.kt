@@ -2,6 +2,7 @@ package com.login.home
 
 import androidx.lifecycle.MutableLiveData
 import com.base.common.base.mvvm.BaseMVVMViewModel
+import com.base.common.util.showToast
 import com.login.home.bean.LoginBean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -11,11 +12,12 @@ class LoginViewModel(private val reps: LoginRepository) : BaseMVVMViewModel() {
     val successBean by lazy { MutableLiveData<LoginBean>() }
     val successResponse by lazy { MutableLiveData<Pair<ResponseBody, ResponseBody>>() }
 
-    fun loginBean() = runTask(action = {
-        successBean.postValue(reps.loginBean())
-    })
+    fun loginBean() = runTask()
+        .showLoading(false)
+        .catch { showToast("error 拦截") }
+        .action { successBean.postValue(reps.loginBean()) }
 
-    fun loginResponseBody() = runTask(action = {
+    fun loginResponseBody() = runTask {
         val async1 = async(Dispatchers.IO) {
             reps.loginResponseBody()
         }
@@ -25,5 +27,5 @@ class LoginViewModel(private val reps: LoginRepository) : BaseMVVMViewModel() {
 
         //2元组 Pair, 3元组 Triple
         successResponse.postValue(Pair(async1.await(), async2.await()))
-    })
+    }
 }
