@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class MVVMDemoViewModel(private val reps: MVVMDemoRepository) : BaseViewModel() {
 
-    val name by lazy { MutableStateFlow("") }
+    val name = MutableStateFlow("")
 
     fun saveData() = runTask {
         reps.insertUsers(User(9, "4", 6))

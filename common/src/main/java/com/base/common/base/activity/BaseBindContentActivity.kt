@@ -25,12 +25,12 @@ abstract class BaseBindContentActivity<B : ViewDataBinding> : BaseBindActivity<B
         baseBinding.baseRootLayout.addView(binding.root)
 
         baseBinding.errorLayoutStub.setOnInflateListener { _, inflated ->
-            val bind = BaseStubErrorLayoutBinding.bind(inflated)
-            bind.lifecycleOwner = this
-            bind.errorBtn.setOnSingleClickListener {
-                errorContentClick()
+            errorBinding = DataBindingUtil.bind<BaseStubErrorLayoutBinding?>(inflated)?.apply {
+                lifecycleOwner = this@BaseBindContentActivity
+                errorBtn.setOnSingleClickListener {
+                    errorContentClick()
+                }
             }
-            errorBinding = bind
         }
 
         viewBind(binding)
@@ -59,7 +59,7 @@ abstract class BaseBindContentActivity<B : ViewDataBinding> : BaseBindActivity<B
             baseBinding.errorLayoutStub.viewStub?.inflate()
         }
 
-        errorBinding?.let { it.errorMsg.text = msg }
+        errorBinding?.apply { errorMsg.text = msg }
     }
 
     /**

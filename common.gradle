@@ -44,7 +44,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -57,7 +57,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
 
     //kotlin
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
 
     //协程
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
@@ -68,7 +68,7 @@ dependencies {
 //    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
 
     //WorkManager
-    implementation "androidx.work:work-runtime-ktx:2.8.0-rc01"
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.10'
 
@@ -82,10 +82,11 @@ dependencies {
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
 
     //图片加载框架
-    implementation "io.coil-kt:coil:2.2.2"
-    implementation "io.coil-kt:coil-gif:2.2.2"
-    implementation "io.coil-kt:coil-svg:2.2.2"
-    implementation "io.coil-kt:coil-video:2.2.2"
+    def coil_version = "2.2.2"
+    implementation "io.coil-kt:coil:$coil_version"
+    implementation "io.coil-kt:coil-gif:$coil_version"
+    implementation "io.coil-kt:coil-svg:$coil_version"
+    implementation "io.coil-kt:coil-video:$coil_version"
 
     //圆形imageView，主要用于带边框，否则应用图片加载框架裁剪圆图
     implementation 'de.hdodenhof:circleimageview:3.1.0'
@@ -106,9 +107,10 @@ dependencies {
     //路由跳转(每个需要的Module中需分别添加处理器)
     kapt 'com.alibaba:arouter-compiler:1.5.2'
 
+    def room_version = "2.4.3"
     //room(公共Module中添加基础依赖)
-    implementation "androidx.room:room-runtime:2.5.0"
-    implementation "androidx.room:room-ktx:2.5.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
     //room(每个需要的Module中需分别添加处理器)
-    kapt "androidx.room:room-compiler:2.5.0"
+    kapt "androidx.room:room-compiler:$room_version"
 }
