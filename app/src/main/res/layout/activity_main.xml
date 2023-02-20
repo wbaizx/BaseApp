@@ -145,10 +145,10 @@
                     android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/test"
+                    android:id="@+id/media"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:text="demo测试用"
+                    android:text="媒体相关"
                     android:textAllCaps="false" />
 
             </LinearLayout>

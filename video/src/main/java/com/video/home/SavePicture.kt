@@ -18,8 +18,6 @@ class SavePicture : Thread() {
         private const val TAG = "SavePicture"
     }
 
-    private val mMainHandler = Handler(Looper.getMainLooper())
-
     private val queue = ArrayBlockingQueue<Picture>(5)
 
     fun putData(picture: Picture) {

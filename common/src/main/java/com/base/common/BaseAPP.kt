@@ -17,6 +17,10 @@ import coil.memory.MemoryCache
 import com.alibaba.android.arouter.launcher.ARouter
 import com.base.common.base.activity.BaseActivity
 import com.base.common.util.log
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -28,10 +32,15 @@ import java.util.*
  * 初始化三方 sdk 还可以可以使用 App Startup 方案
  */
 
-private const val TAG = "BaseAPP-Application"
+private const val TAG = "Base_Application"
 
 fun isDebug() = BaseAPP.isDebug
-fun getCurrAct() = BaseAPP.currAct?.get() as? BaseActivity
+fun getCurrAct(): BaseActivity? {
+    val baseAct = BaseAPP.currAct?.get() as? BaseActivity ?: return null
+    if (baseAct.isDestroyed || baseAct.isFinishing) return null
+    return baseAct
+}
+
 fun getBaseApplication() = BaseAPP.baseAppContext
 fun getBaseActOrAppContext(): Context = getCurrAct() ?: getBaseApplication()
 
@@ -49,55 +58,55 @@ abstract class BaseAPP : Application(), ImageLoaderFactory {
             baseAppContext.applicationInfo != null && baseAppContext.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
         }
 
-        private val allActivities = Collections.synchronizedList(arrayListOf<Activity>())
+        private val allActivities = LinkedList<Activity>()
 
         private val activityLifecycleCallbacks = object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                 allActivities.add(activity)
-                log(TAG, "onActivityCreated ${activity.javaClass.simpleName} ${allActivities.size}")
+                log(TAG, "onActivityCreated $activity size ${allActivities.size}")
             }
 
             override fun onActivityStarted(activity: Activity) {
-                log(TAG, "onActivityStarted ${activity.javaClass.simpleName} ${allActivities.size}")
+                log(TAG, "onActivityStarted $activity size ${allActivities.size}")
             }
 
             override fun onActivityResumed(activity: Activity) {
                 currAct = WeakReference<Activity>(activity)
-                log(TAG, "onActivityResumed ${activity.javaClass.simpleName} ${allActivities.size}")
+                log(TAG, "onActivityResumed $activity size ${allActivities.size}")
             }
 
             override fun onActivityPaused(activity: Activity) {
-                log(TAG, "onActivityPaused ${activity.javaClass.simpleName} ${allActivities.size}")
+                log(TAG, "onActivityPaused $activity size ${allActivities.size}")
             }
 
             override fun onActivityStopped(activity: Activity) {
-                log(TAG, "onActivityStopped ${activity.javaClass.simpleName} ${allActivities.size}")
+                log(TAG, "onActivityStopped $activity size ${allActivities.size}")
             }
 
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-                log(TAG, "onActivitySaveInstanceState ${activity.javaClass.simpleName} ${allActivities.size}")
+                log(TAG, "onActivitySaveInstanceState $activity size ${allActivities.size}")
             }
 
             override fun onActivityDestroyed(activity: Activity) {
                 //调用exitApp后这里还是会执行
                 allActivities.remove(activity)
-                log(TAG, "onActivityDestroyed ${activity.javaClass.simpleName} ${allActivities.size}")
+                log(TAG, "onActivityDestroyed $activity size ${allActivities.size}")
             }
         }
 
+        @DelicateCoroutinesApi
         fun exitApp() {
-            log(TAG, "exitApp ${allActivities.size}")
-
-            //Collections.synchronizedList转换同步锁原理就是对其本身加锁，但不包含遍历
-            //所以遍历需加同步锁，对象就是自身
-            synchronized(allActivities) {
+            GlobalScope.launch(Dispatchers.Main) {
+                log(TAG, "exitApp size ${allActivities.size}")
                 allActivities.forEach {
-                    it.finish()
+                    if (!it.isDestroyed && !it.isFinishing) {
+                        it.finish()
+                        log(TAG, "exitApp finish $it")
+                    }
                 }
                 allActivities.clear()
+                log(TAG, "exitApp X size ${allActivities.size}")
             }
-
-            log(TAG, "exitApp ${allActivities.size}")
         }
     }
 

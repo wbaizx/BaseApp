@@ -11,15 +11,15 @@ import com.base.common.getBaseApplication
 import java.io.*
 
 object ImageUtil {
-    private val TAG = "ImageUtil"
+    private const val TAG = "ImageUtil"
 
-    private val MIME_TYPE_PNG = "image/png"
-    private val MIME_TYPE_JPEG = "image/jpeg"
-    private val MIME_TYPE_BMP = "image/bmp"
-    private val MIME_TYPE_GIF = "image/gif"
-    private val MIME_TYPE_WEBP = "image/webp"
+    private const val MIME_TYPE_PNG = "image/png"
+    private const val MIME_TYPE_JPEG = "image/jpeg"
+    private const val MIME_TYPE_BMP = "image/bmp"
+    private const val MIME_TYPE_GIF = "image/gif"
+    private const val MIME_TYPE_WEBP = "image/webp"
 
-    private val MIME_TYPE_MP4 = "video/mp4"
+    private const val MIME_TYPE_MP4 = "video/mp4"
 
     /**
      * 将view转换成bitmap
@@ -63,6 +63,7 @@ object ImageUtil {
         values.put(MediaStore.Images.Media.MIME_TYPE, MIME_TYPE_JPEG)
         values.put(MediaStore.Images.Media.WIDTH, width)
         values.put(MediaStore.Images.Media.HEIGHT, height)
+        values.put(MediaStore.Images.Media.ORIENTATION, 0)
         values.put(MediaStore.Images.Media.DESCRIPTION, "description")
         val uri = getBaseApplication().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
 

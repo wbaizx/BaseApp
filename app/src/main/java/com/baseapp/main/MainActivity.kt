@@ -22,6 +22,7 @@ import com.baseapp.main.coordinator.CoordinatorActivity
 import com.baseapp.main.fragment_example.FragmentExampleActivity
 import com.baseapp.main.item_animation.ItemAnimationMainActivity
 import com.baseapp.main.lyrics.LyricsActivity
+import com.baseapp.main.mediastore.MediaActivity
 import com.baseapp.main.mvvm.MVVMDemoActivity
 import com.baseapp.main.paging.PagingActivity
 import com.baseapp.main.shape_btn.ShowShapeBtnActivity
@@ -118,7 +119,8 @@ class MainActivity : BaseBindContentActivity<ActivityMainBinding>() {
             launchActivity(this, PagingActivity::class.java)
         }
 
-        binding.test.setOnClickListener {
+        binding.media.setOnClickListener {
+            launchActivity(this, MediaActivity::class.java)
         }
 
         binding.exit.setOnClickListener {
