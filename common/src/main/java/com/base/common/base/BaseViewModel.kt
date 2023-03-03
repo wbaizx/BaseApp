@@ -2,7 +2,7 @@ package com.base.common.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.base.common.util.NoParMutableStateFlow
+import com.base.common.util.createMutableStateFlow
 import com.base.common.util.log
 import com.base.common.util.showError
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "BaseViewModel"
 
 abstract class BaseViewModel : ViewModel() {
-    val showLoad by lazy { NoParMutableStateFlow<Boolean>() }
+    val showLoad by lazy { createMutableStateFlow<Boolean>() }
 
     protected class TaskBuilder {
         var showLoading: Boolean = true

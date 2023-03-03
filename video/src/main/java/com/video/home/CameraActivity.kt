@@ -7,6 +7,7 @@ import android.util.Size
 import android.view.Surface
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.base.common.base.activity.BaseBindContentActivity
+import com.base.common.base.activity.PermissionResult
 import com.base.common.util.launchActivity
 import com.base.common.util.log
 import com.gyf.immersionbar.BarHide
@@ -19,11 +20,8 @@ import com.video.home.gl.egl.GLSurfaceListener
 import com.video.home.record.RecordListener
 import com.video.home.record.RecordManager
 import com.video.home.videolist.VideoListActivity
-import pub.devrel.easypermissions.AfterPermissionGranted
-import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.locks.ReentrantLock
 
-private const val CAMERA_PERMISSION_CODE = 666
 private const val TAG = "CameraActivity"
 
 @Route(path = "/video/home", name = "组件化video首页")
@@ -59,7 +57,19 @@ class CameraActivity : BaseBindContentActivity<ActivityCameraBinding>(), CameraC
     }
 
     override fun initView() {
-        getPermissions()
+        permissionRequest(object : PermissionResult {
+            override fun onGranted() {
+                begin()
+            }
+
+            override fun onDenied() {
+                finish()
+            }
+
+            override fun onPermanentlyDenied() {
+                finish()
+            }
+        }, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
 
         mSaveThread.start()
 
@@ -91,30 +101,6 @@ class CameraActivity : BaseBindContentActivity<ActivityCameraBinding>(), CameraC
                 recordManager.startRecord()
                 binding.record.text = "停止录制"
             }
-        }
-    }
-
-    @AfterPermissionGranted(CAMERA_PERMISSION_CODE)
-    private fun getPermissions() {
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)) {
-            begin()
-        } else {
-            EasyPermissions.requestPermissions(
-                this, "为了正常使用，需要获取以下权限",
-                CAMERA_PERMISSION_CODE, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO
-            )
-        }
-    }
-
-    override fun deniedPermission(requestCode: Int, perms: MutableList<String>) {
-        finish()
-    }
-
-    override fun resultCheckPermissions() {
-        if (!EasyPermissions.hasPermissions(this, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)) {
-            finish()
-        } else {
-            begin()
         }
     }
 

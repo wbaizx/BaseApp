@@ -1,84 +1,101 @@
 package com.base.common.base.activity
 
-import android.content.Intent
+import android.app.Activity
+import android.content.pm.PackageManager
+import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import com.base.common.util.log
-import pub.devrel.easypermissions.AppSettingsDialog
-import pub.devrel.easypermissions.EasyPermissions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  *  PermissionActivity 基类
  */
 private const val TAG = "PermissionActivity"
 
-abstract class PermissionActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
-    /**
-     * 权限允许后回调
-     */
-    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        log(TAG, "onPermissionsGranted $requestCode")
+fun Activity.safePermissionRequest(result: PermissionResult, vararg perms: String) {
+    if (this is PermissionActivity) {
+        this.permissionRequest(result, *perms)
+    }
+}
+
+interface PermissionResult {
+    fun onShowRequestPermissionRationale() {}
+    fun onGranted()
+    fun onDenied() {}
+    fun onPermanentlyDenied() {}
+}
+
+private data class PermissionRequestBean(val result: PermissionResult, val requestPerms: List<String>)
+
+abstract class PermissionActivity : AppCompatActivity() {
+
+    private val permissionCalls by lazy { LinkedList<PermissionRequestBean>() }
+    private lateinit var permissionLaunch: ActivityResultLauncher<Array<String>>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        permissionLaunch = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions: Map<String, Boolean> ->
+            log(TAG, "onPermissionsResult $permissions")
+            matchResults(permissions)
+        }
+        super.onCreate(savedInstanceState)
     }
 
-    /**
-     * 权限拒绝后回调
-     */
-    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        log(TAG, "onPermissionsDenied $requestCode")
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            //如果用户选择了拒绝并不在提示，默认指引到手动打开
-            log(TAG, "Denied and not prompted")
-            AppSettingsDialog.Builder(this)
-                .setTitle("跳转到手动打开")
-                .setRationale("跳转到手动打开")
-                .build().show()
-        } else {
-            deniedPermission(requestCode, perms)
+    private fun hasPermission(vararg perms: String) =
+        perms.all { ActivityCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED }
+
+    private fun isShowRequestPermissionRationale(perms: List<String>) =
+        perms.any { ActivityCompat.shouldShowRequestPermissionRationale(this, it) }
+
+    fun permissionRequest(result: PermissionResult, vararg perms: String) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            val requestPerms = perms.filter { !hasPermission(it) }
+            if (requestPerms.isNullOrEmpty()) {
+                result.onGranted()
+                return@launch
+            }
+
+            if (isShowRequestPermissionRationale(requestPerms)) {
+                result.onShowRequestPermissionRationale()
+            }
+
+            permissionCalls.add(PermissionRequestBean(result, requestPerms))
+            permissionLaunch.launch(requestPerms.toTypedArray())
         }
     }
 
-    /**
-     * 权限拒绝并且拒绝手动打开
-     */
-    protected open fun deniedPermission(requestCode: Int, perms: MutableList<String>) {
-        log(TAG, "deniedPermission $requestCode")
-    }
+    private fun matchResults(resultMap: Map<String, Boolean>) {
+        permissionCalls.iteratorForEach { requestBean ->
+            if (requestBean.requestPerms.size == resultMap.size &&
+                requestBean.requestPerms.all { resultMap[it] != null }
+            ) {
+                when {
+                    resultMap.all { it.value } -> {
+                        requestBean.result.onGranted()
+                    }
+                    isShowRequestPermissionRationale(resultMap.keys.toList()) -> {
+                        requestBean.result.onDenied()
+                    }
+                    else -> {
+                        requestBean.result.onPermanentlyDenied()
+                    }
+                }
 
-    /**
-     * 权限拒绝过一次后的提示框被拒绝
-     */
-    override fun onRationaleDenied(requestCode: Int) {
-        log(TAG, "onRationaleDenied $requestCode")
-    }
-
-    /**
-     * 权限拒绝过一次后的提示框被允许
-     */
-    override fun onRationaleAccepted(requestCode: Int) {
-        log(TAG, "onRationaleAccepted $requestCode")
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        log(TAG, "onRequestPermissionsResult $requestCode")
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
-
-    /**
-     * 跳转系统打开权限页面返回，或者关闭跳转系统打开权限的指引弹窗被关闭后回调
-     * 此时不会再次调用AfterPermissionGranted注解方法，所以这里要再次检查权限
-     */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
-            resultCheckPermissions()
+                remove()
+            }
         }
     }
 
-    /**
-     * 跳转系统打开权限页面返回，或者跳转系统打开权限的指引弹窗被关闭后回调
-     * 此时不会再次调用AfterPermissionGranted注解方法，所以这里要再次检查权限
-     */
-    protected open fun resultCheckPermissions() {
-
+    private inline fun <T> MutableList<T>.iteratorForEach(action: MutableIterator<T>.(T) -> Unit) {
+        iterator().run {
+            while (hasNext()) {
+                action(next())
+            }
+        }
     }
 }

@@ -1,12 +1,12 @@
 package com.baseapp.main.mvvm
 
 import com.base.common.base.BaseViewModel
+import com.base.common.util.createMutableStateFlow
 import com.baseapp.util.room.User
-import kotlinx.coroutines.flow.MutableStateFlow
 
 class MVVMDemoViewModel(private val reps: MVVMDemoRepository) : BaseViewModel() {
 
-    val name = MutableStateFlow("")
+    val name = createMutableStateFlow("")
 
     fun saveData() = runTask {
         reps.insertUsers(User(9, "4", 6))

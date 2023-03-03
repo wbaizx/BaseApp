@@ -8,6 +8,7 @@ import androidx.work.*
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.base.common.BaseAPP
 import com.base.common.base.activity.BaseBindContentActivity
+import com.base.common.base.activity.PermissionResult
 import com.base.common.base.dialog.DialogFactory
 import com.base.common.util.*
 import com.base.common.util.http.ObjectBean
@@ -31,11 +32,7 @@ import com.baseapp.main.special_rc.SpecialRCActivity
 import com.baseapp.main.workmanager.MainWork
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import pub.devrel.easypermissions.AfterPermissionGranted
-import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.TimeUnit
-
-private const val STORAGE_PERMISSION_CODE = 666
 
 private const val TAG = "MainActivity"
 
@@ -136,7 +133,22 @@ class MainActivity : BaseBindContentActivity<ActivityMainBinding>() {
 
         startWork()
 
-        getPermissions()
+        permissionRequest(object : PermissionResult {
+            override fun onShowRequestPermissionRationale() {
+            }
+
+            override fun onGranted() {
+                log(TAG, "hasPermissions")
+            }
+
+            override fun onDenied() {
+                finish()
+            }
+
+            override fun onPermanentlyDenied() {
+                finish()
+            }
+        }, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
 
     /**
@@ -165,38 +177,6 @@ class MainActivity : BaseBindContentActivity<ActivityMainBinding>() {
             log("MainWork", "${it.progress.getInt("int", 0)}")
         }
         WorkManager.getInstance(this).enqueue(mainWorkRequest)
-    }
-
-    /**
-     * 添加 AfterPermissionGranted 注解，在所有权限申请成功后会再次调用此方法，手动打开除外
-     */
-    @AfterPermissionGranted(STORAGE_PERMISSION_CODE)
-    private fun getPermissions() {
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            log(TAG, "hasPermissions")
-        } else {
-            EasyPermissions.requestPermissions(
-                this, "为了正常使用，需要获取以下权限",
-                STORAGE_PERMISSION_CODE, Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-        }
-    }
-
-    /**
-     * 权限拒绝后回调
-     */
-    override fun deniedPermission(requestCode: Int, perms: MutableList<String>) {
-        finish()
-    }
-
-    /**
-     * 跳转系统打开权限页面返回，或者跳转系统打开权限的指引弹窗被关闭后回调
-     * 此时不会再次调用AfterPermissionGranted注解方法，所以这里要再次检查权限
-     */
-    override fun resultCheckPermissions() {
-        if (!EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            finish()
-        }
     }
 
 //    override fun onBackPressed() {

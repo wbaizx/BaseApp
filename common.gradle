@@ -76,9 +76,6 @@ dependencies {
     implementation  'io.github.scwang90:refresh-layout-kernel:2.0.5'      //核心必须依赖
     implementation  'io.github.scwang90:refresh-header-classics:2.0.5'    //经典刷新头
 
-    //权限
-    implementation 'pub.devrel:easypermissions:3.0.0'
-
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
 
     //图片加载框架
