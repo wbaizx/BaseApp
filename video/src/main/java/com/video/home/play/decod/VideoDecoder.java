@@ -82,7 +82,7 @@ public class VideoDecoder {
                 if (format != null) {
                     MediaCodecList mediaCodecList = new MediaCodecList(MediaCodecList.ALL_CODECS);
                     String name = mediaCodecList.findDecoderForFormat(format);
-                    LogUtilKt.log(TAG, "createCodec " + name);
+                    LogUtilKt.debugLog(TAG, "createCodec " + name);
                     try {
                         mMediaCodec = MediaCodec.createByCodecName(name);
                     } catch (IOException e) {
@@ -94,7 +94,7 @@ public class VideoDecoder {
                     start();
                     status = STATUS_READY;
 
-                    LogUtilKt.log(TAG, "VideoDecoder init X");
+                    LogUtilKt.debugLog(TAG, "VideoDecoder init X");
                 }
             }
         });
@@ -103,7 +103,7 @@ public class VideoDecoder {
     private MediaCodec.Callback callback = new MediaCodec.Callback() {
         @Override
         public void onInputBufferAvailable(@NonNull MediaCodec codec, int index) {
-            LogUtilKt.log(TAG, "onInputBufferAvailable");
+            LogUtilKt.debugLog(TAG, "onInputBufferAvailable");
             ByteBuffer inputBuffer = mMediaCodec.getInputBuffer(index);
             int size = 0;
             if (inputBuffer != null) {
@@ -122,8 +122,8 @@ public class VideoDecoder {
         public void onOutputBufferAvailable(@NonNull MediaCodec codec, int index, @NonNull MediaCodec.BufferInfo info) {
             try {
                 look.lock();
-                LogUtilKt.log(TAG, "onOutputBufferAvailable time " + info.presentationTimeUs);
-                LogUtilKt.log(TAG, "onOutputBufferAvailable flags " + info.flags);
+                LogUtilKt.debugLog(TAG, "onOutputBufferAvailable time " + info.presentationTimeUs);
+                LogUtilKt.debugLog(TAG, "onOutputBufferAvailable flags " + info.flags);
 
                 checkPlayStatus();
 
@@ -140,7 +140,7 @@ public class VideoDecoder {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
-                LogUtilKt.log(TAG, "finally");
+                LogUtilKt.debugLog(TAG, "finally");
 
                 needCoverPicture = false;
 
@@ -155,13 +155,13 @@ public class VideoDecoder {
 
         @Override
         public void onOutputFormatChanged(@NonNull MediaCodec codec, @NonNull MediaFormat format) {
-            LogUtilKt.log(TAG, "onOutputFormatChanged");
+            LogUtilKt.debugLog(TAG, "onOutputFormatChanged");
         }
     };
 
     private void checkPlayStatus() throws InterruptedException {
         if (status != STATUS_START && !needCoverPicture) {
-            LogUtilKt.log(TAG, "checkPlayStatus await " + status);
+            LogUtilKt.debugLog(TAG, "checkPlayStatus await " + status);
             condition.await();
         }
     }
@@ -181,8 +181,8 @@ public class VideoDecoder {
             long ft = presentationTimeUs - frameTime;//帧间隔
             long st = System.nanoTime() / 1000 - systemTime;//系统时间间隔
 
-            LogUtilKt.log(TAG, "avSyncTime await time " + (ft - st) + " -- " + status);
-            LogUtilKt.log(TAG, "avSyncTime await ft " + ft + " --st " + st);
+            LogUtilKt.debugLog(TAG, "avSyncTime await time " + (ft - st) + " -- " + status);
+            LogUtilKt.debugLog(TAG, "avSyncTime await ft " + ft + " --st " + st);
 
             if (ft > st) {
                 condition.await(ft - st, TimeUnit.MICROSECONDS);
@@ -196,7 +196,7 @@ public class VideoDecoder {
     public void onResume() {
         look.lock();
 
-        LogUtilKt.log(TAG, "onResume");
+        LogUtilKt.debugLog(TAG, "onResume");
         needCoverPicture = true;
 
         if (status == STATUS_READY) {
@@ -231,7 +231,7 @@ public class VideoDecoder {
         mMediaCodec.setCallback(callback, videoDecoderHandler);
         mMediaCodec.configure(format, new Surface(surfaceTexture), null, 0);
         mMediaCodec.start();
-        LogUtilKt.log(TAG, "start");
+        LogUtilKt.debugLog(TAG, "start");
     }
 
     private void playEnd() {
@@ -239,7 +239,7 @@ public class VideoDecoder {
         mMediaCodec.stop();
         status = STATUS_STOP;
 
-        LogUtilKt.log(TAG, "stop");
+        LogUtilKt.debugLog(TAG, "stop");
     }
 
     /**
@@ -274,7 +274,7 @@ public class VideoDecoder {
         mMediaCodec = null;
         status = STATUS_RELEASE;
 
-        LogUtilKt.log(TAG, "release");
+        LogUtilKt.debugLog(TAG, "release");
 
         condition.signal();
         look.unlock();

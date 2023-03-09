@@ -2,7 +2,7 @@ package com.base.common.base.adapter
 
 import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 
 abstract class BaseBindingAdapter<M, B : ViewDataBinding>(@LayoutRes private val layoutResId: Int) :
@@ -10,7 +10,7 @@ abstract class BaseBindingAdapter<M, B : ViewDataBinding>(@LayoutRes private val
     private val TAG = "BaseBindingAdapter"
 
     init {
-        log(TAG, "init")
+        debugLog(TAG, "init")
     }
 
     override fun configure(holder: BaseDataBindingHolder<B>, item: M) {
@@ -19,7 +19,7 @@ abstract class BaseBindingAdapter<M, B : ViewDataBinding>(@LayoutRes private val
             bindModelId(binding, item)
             binding.executePendingBindings()
         } else {
-            log(TAG, "binding = null")
+            debugLog(TAG, "binding = null")
         }
     }
 

@@ -1,7 +1,7 @@
 package com.baseapp.main.shape_btn
 
 import com.base.common.base.activity.BaseBindContentActivity
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityShowShapebtnBinding
 
@@ -16,20 +16,20 @@ class ShowShapeBtnActivity : BaseBindContentActivity<ActivityShowShapebtnBinding
 
     override fun initView() {
         binding.shapeButton.setOnClickListener {
-            log(TAG, "shapeButton OnClick")
+            debugLog(TAG, "shapeButton OnClick")
         }
 
         binding.shapeDrawableButton.setOnClickListener {
-            log(TAG, "shapeDrawableButton OnClick")
+            debugLog(TAG, "shapeDrawableButton OnClick")
         }
 
         binding.commonButton.setOnClickListener {
-            log(TAG, "commonButton OnClick")
+            debugLog(TAG, "commonButton OnClick")
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        log(TAG, "onDestroy")
+        debugLog(TAG, "onDestroy")
     }
 }

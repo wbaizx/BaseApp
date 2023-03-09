@@ -5,7 +5,7 @@ import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.base.common.base.activity.BaseBindContentActivity
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityCoordinator1Binding
 import com.google.android.material.appbar.AppBarLayout
@@ -59,15 +59,15 @@ class Coordinator1Activity : BaseBindContentActivity<ActivityCoordinator1Binding
             binding.toolbar.alpha = off / appBar.totalScrollRange
             binding.testArea.y = appBar.totalScrollRange.toFloat() + binding.toolbar.paddingTop
             binding.testArea.translationX = -off
-            log(TAG, "addOnOffsetChangedListener $off  -  ${appBar.totalScrollRange}")
+            debugLog(TAG, "addOnOffsetChangedListener $off  -  ${appBar.totalScrollRange}")
         })
 
         binding.toolbarImg.setOnClickListener {
-            log(TAG, "toolbarImg click")
+            debugLog(TAG, "toolbarImg click")
         }
 
         binding.testArea.setOnClickListener {
-            log(TAG, "testArea click")
+            debugLog(TAG, "testArea click")
         }
     }
 }

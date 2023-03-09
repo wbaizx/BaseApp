@@ -48,7 +48,7 @@ public class FBORenderer extends BaseRenderer {
 
     @Override
     public void onSurfaceCreated() {
-        LogUtilKt.log(TAG, "onSurfaceCreated");
+        LogUtilKt.debugLog(TAG, "onSurfaceCreated");
 
         filter.init();
 
@@ -59,7 +59,7 @@ public class FBORenderer extends BaseRenderer {
             renderer.onSurfaceCreated();
         }
 
-        LogUtilKt.log(TAG, "onSurfaceCreated X");
+        LogUtilKt.debugLog(TAG, "onSurfaceCreated X");
     }
 
     @Override
@@ -79,7 +79,7 @@ public class FBORenderer extends BaseRenderer {
         if (fboArray[0] == 0) {
             throw new RuntimeException("创建fbo失败");
         }
-        LogUtilKt.log(TAG, "createFBO X");
+        LogUtilKt.debugLog(TAG, "createFBO X");
     }
 
     private void updateFBO() {
@@ -101,7 +101,7 @@ public class FBORenderer extends BaseRenderer {
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, GLES30.GL_NONE);
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, GLES30.GL_NONE);
 
-        LogUtilKt.log(TAG, "updateFBO X");
+        LogUtilKt.debugLog(TAG, "updateFBO X");
     }
 
     @Override
@@ -154,7 +154,7 @@ public class FBORenderer extends BaseRenderer {
         for (BaseRenderer renderer : rendererList) {
             renderer.onSurfaceDestroy();
         }
-        LogUtilKt.log(TAG, "onSurfaceDestroy X");
+        LogUtilKt.debugLog(TAG, "onSurfaceDestroy X");
     }
 
     @Override
@@ -166,12 +166,12 @@ public class FBORenderer extends BaseRenderer {
         for (BaseRenderer renderer : rendererList) {
             renderer.onDestroy();
         }
-        LogUtilKt.log(TAG, "onDestroy X");
+        LogUtilKt.debugLog(TAG, "onDestroy X");
     }
 
     @Override
     public Bitmap takePicture() {
-        LogUtilKt.log(TAG, "takePicture glReadPixels");
+        LogUtilKt.debugLog(TAG, "takePicture glReadPixels");
 
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, fboArray[0]);
         ByteBuffer buf = ByteBuffer.allocate(reallyWidth * reallyHeight * GLHelper.BYTES_PER_FLOAT);
@@ -184,13 +184,13 @@ public class FBORenderer extends BaseRenderer {
         buf.clear();
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, GLES30.GL_NONE);
 
-        LogUtilKt.log(TAG, "takePicture glReadPixels X");
+        LogUtilKt.debugLog(TAG, "takePicture glReadPixels X");
 
         return btm;
     }
 
     public void switchFilterType(FilterType type) {
-        LogUtilKt.log(TAG, "switchFilterType " + type.getName());
+        LogUtilKt.debugLog(TAG, "switchFilterType " + type.getName());
         if (!filter.getId().equals(type.getId())) {
             filter.release();
             filter = FilterType.getFilter(type);

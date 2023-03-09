@@ -40,7 +40,7 @@ abstract public class BaseRenderer {
     }
 
     public void onSurfaceChanged(int viewWidth, int viewHeight) {
-        LogUtilKt.log(TAG, "onSurfaceChanged " + viewWidth + "--" + viewHeight);
+        LogUtilKt.debugLog(TAG, "onSurfaceChanged " + viewWidth + "--" + viewHeight);
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
     }
@@ -49,7 +49,7 @@ abstract public class BaseRenderer {
      * 获取实际数据宽高，相机每次打开或状态变更都需要回调
      */
     public void confirmReallySize(Size reallySize) {
-        LogUtilKt.log(TAG, "confirmReallySize");
+        LogUtilKt.debugLog(TAG, "confirmReallySize");
         this.reallyHeight = reallySize.getHeight();
         this.reallyWidth  = reallySize.getWidth();
     }
@@ -93,7 +93,7 @@ abstract public class BaseRenderer {
                 viewScale / cameraScale :
                 cameraScale / viewScale;
 
-        LogUtilKt.log(TAG, "calculationMatrix aspectRatio " + aspectRatio);
+        LogUtilKt.debugLog(TAG, "calculationMatrix aspectRatio " + aspectRatio);
         if (viewScale > cameraScale) {
             //视图的宽高比更大，同高下视图更宽，映射出来应该缩放宽度
             //高度已经全屏，只能使用正交投影

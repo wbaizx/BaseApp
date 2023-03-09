@@ -4,7 +4,7 @@ package com.baseapp.main.fragment_example.fm
 import android.os.Bundle
 import android.view.View
 import com.base.common.base.fragment.BaseBindFragment
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.FragmentTestBinding
 
@@ -20,44 +20,44 @@ class TestFragment(private val text: String) : BaseBindFragment<FragmentTestBind
     }
 
     override fun createView(view: View) {
-        log(TAG, "createView  $text")
+        debugLog(TAG, "createView  $text")
         binding.testText.text = text
     }
 
     override fun onFirstVisible() {
-        log(TAG, "onFirstVisible  $text")
+        debugLog(TAG, "onFirstVisible  $text")
     }
 
     override fun onVisible() {
-        log(TAG, "onVisible  $text")
+        debugLog(TAG, "onVisible  $text")
     }
 
     override fun onHide() {
-        log(TAG, "onHide  $text")
+        debugLog(TAG, "onHide  $text")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        log(TAG, "onCreate  $text")
+        debugLog(TAG, "onCreate  $text")
     }
 
     override fun onDestroy() {
-        log(TAG, "onDestroy  $text")
+        debugLog(TAG, "onDestroy  $text")
         super.onDestroy()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        log(TAG, "onDestroyView  $text")
+        debugLog(TAG, "onDestroyView  $text")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        log(TAG, "onViewCreated  $text")
+        debugLog(TAG, "onViewCreated  $text")
     }
 
     override fun onStop() {
         super.onStop()
-        log(TAG, "onStop  $text")
+        debugLog(TAG, "onStop  $text")
     }
 }

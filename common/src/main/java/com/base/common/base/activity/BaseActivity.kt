@@ -7,7 +7,7 @@ import android.os.Bundle
 import com.alibaba.android.arouter.launcher.ARouter
 import com.base.common.R
 import com.base.common.base.LoadDialog
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.gyf.immersionbar.ImmersionBar
 
 /**
@@ -74,14 +74,14 @@ abstract class BaseActivity : PermissionActivity() {
 
     fun showLoadDialog() {
         if (!loadDialog.isShow) {
-            log(TAG, "showLoadDialog")
+            debugLog(TAG, "showLoadDialog")
             loadDialog.showDialog()
         }
     }
 
     fun hideLoadDialog() {
         if (loadDialog.isShow) {
-            log(TAG, "hideLoadDialog")
+            debugLog(TAG, "hideLoadDialog")
             loadDialog.dismiss()
         }
     }

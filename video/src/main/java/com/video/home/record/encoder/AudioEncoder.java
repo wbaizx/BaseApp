@@ -65,9 +65,9 @@ public class AudioEncoder extends Thread {
     private void startBackground() {
         if (!isAlive() && !isInterrupted()) {
             start();
-            LogUtilKt.log(TAG, "threadState isAlive " + isAlive());
-            LogUtilKt.log(TAG, "threadState isInterrupted " + isInterrupted());
-            LogUtilKt.log(TAG, "threadState state " + getState().name());
+            LogUtilKt.debugLog(TAG, "threadState isAlive " + isAlive());
+            LogUtilKt.debugLog(TAG, "threadState isInterrupted " + isInterrupted());
+            LogUtilKt.debugLog(TAG, "threadState state " + getState().name());
         }
     }
 
@@ -89,7 +89,7 @@ public class AudioEncoder extends Thread {
                 AUDIO_SAMPLE_RATE,
                 AudioFormat.CHANNEL_IN_STEREO,
                 AudioFormat.ENCODING_PCM_16BIT);
-        LogUtilKt.log(TAG, "bufferSizeInBytes " + bufferSizeInBytes);
+        LogUtilKt.debugLog(TAG, "bufferSizeInBytes " + bufferSizeInBytes);
 
         audioRecord = new AudioRecord(
                 MediaRecorder.AudioSource.MIC,
@@ -108,19 +108,19 @@ public class AudioEncoder extends Thread {
                     audioRecord.stop();
                     mMediaCodec.stop();
                     mMediaCodec.release();
-                    LogUtilKt.log(TAG, "audioRecord stop");
+                    LogUtilKt.debugLog(TAG, "audioRecord stop");
                 }
 
                 if (status == STATUS_START && audioRecord.getRecordingState() == AudioRecord.RECORDSTATE_STOPPED) {
                     createCodec();
                     audioRecord.startRecording();
-                    LogUtilKt.log(TAG, "audioRecord startRecording");
+                    LogUtilKt.debugLog(TAG, "audioRecord startRecording");
                 }
 
                 if (status == STATUS_START && audioRecord.getRecordingState() == AudioRecord.RECORDSTATE_RECORDING) {
                     recordLength = audioRecord.read(bytes, 0, bufferSizeInBytes);
 
-                    LogUtilKt.log(TAG, "recordLength " + recordLength);
+                    LogUtilKt.debugLog(TAG, "recordLength " + recordLength);
                     if (AudioRecord.ERROR_DEAD_OBJECT != recordLength
                             && AudioRecord.ERROR_INVALID_OPERATION != recordLength
                             && AudioRecord.ERROR_BAD_VALUE != recordLength
@@ -132,17 +132,17 @@ public class AudioEncoder extends Thread {
                     continue;
                 }
 
-                LogUtilKt.log(TAG, "await");
+                LogUtilKt.debugLog(TAG, "await");
                 condition.await();
             }
         } catch (InterruptedException e) {
-            LogUtilKt.log(TAG, "InterruptedException");
+            LogUtilKt.debugLog(TAG, "InterruptedException");
         } finally {
             look.unlock();
             audioRecord.release();
         }
 
-        LogUtilKt.log(TAG, "AudioEncoder  close");
+        LogUtilKt.debugLog(TAG, "AudioEncoder  close");
     }
 
     private void createCodec() {
@@ -150,7 +150,7 @@ public class AudioEncoder extends Thread {
 
         MediaCodecList mediaCodecList = new MediaCodecList(MediaCodecList.ALL_CODECS);
         String name = mediaCodecList.findEncoderForFormat(mediaFormat);
-        LogUtilKt.log(TAG, "createCodec " + name);
+        LogUtilKt.debugLog(TAG, "createCodec " + name);
         try {
             mMediaCodec = MediaCodec.createByCodecName(name);
         } catch (IOException e) {
@@ -186,7 +186,7 @@ public class AudioEncoder extends Thread {
 
                 if (outputBuffer != null) {
                     if (MediaCodec.BUFFER_FLAG_CODEC_CONFIG == info.flags) {
-                        LogUtilKt.log(TAG, "codec config //sps,pps,csd...");
+                        LogUtilKt.debugLog(TAG, "codec config //sps,pps,csd...");
                     } else {
                         byte[] adtsBytes = new byte[info.size + 7];
                         addADTStoPacket(adtsBytes, adtsBytes.length);
@@ -200,7 +200,7 @@ public class AudioEncoder extends Thread {
                 mMediaCodec.releaseOutputBuffer(outputBufferId, false);
 
             } else if (outputBufferId == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
-                LogUtilKt.log(TAG, "onOutputFormatChanged");
+                LogUtilKt.debugLog(TAG, "onOutputFormatChanged");
                 muxerManager.addAudioTrack(mMediaCodec.getOutputFormat());
             } else {
                 break;

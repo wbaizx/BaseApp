@@ -89,7 +89,7 @@ public class AudioDecoder {
 
                     MediaCodecList mediaCodecList = new MediaCodecList(MediaCodecList.ALL_CODECS);
                     String name = mediaCodecList.findDecoderForFormat(format);
-                    LogUtilKt.log(TAG, "createCodec " + name);
+                    LogUtilKt.debugLog(TAG, "createCodec " + name);
                     try {
                         mMediaCodec = MediaCodec.createByCodecName(name);
                     } catch (IOException e) {
@@ -99,7 +99,7 @@ public class AudioDecoder {
                     start();
                     status = STATUS_READY;
 
-                    LogUtilKt.log(TAG, "AudioDecoder init X");
+                    LogUtilKt.debugLog(TAG, "AudioDecoder init X");
                 }
             }
         });
@@ -108,7 +108,7 @@ public class AudioDecoder {
     private MediaCodec.Callback callback = new MediaCodec.Callback() {
         @Override
         public void onInputBufferAvailable(@NonNull MediaCodec codec, int index) {
-            LogUtilKt.log(TAG, "onInputBufferAvailable");
+            LogUtilKt.debugLog(TAG, "onInputBufferAvailable");
             ByteBuffer inputBuffer = mMediaCodec.getInputBuffer(index);
             int size = 0;
             if (inputBuffer != null) {
@@ -127,8 +127,8 @@ public class AudioDecoder {
         public void onOutputBufferAvailable(@NonNull MediaCodec codec, int index, @NonNull MediaCodec.BufferInfo info) {
             try {
                 look.lock();
-                LogUtilKt.log(TAG, "onOutputBufferAvailable time " + info.presentationTimeUs);
-                LogUtilKt.log(TAG, "onOutputBufferAvailable flags " + info.flags);
+                LogUtilKt.debugLog(TAG, "onOutputBufferAvailable time " + info.presentationTimeUs);
+                LogUtilKt.debugLog(TAG, "onOutputBufferAvailable flags " + info.flags);
 
                 checkPlayStatus();
 
@@ -144,7 +144,7 @@ public class AudioDecoder {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
-                LogUtilKt.log(TAG, "finally");
+                LogUtilKt.debugLog(TAG, "finally");
 
                 look.unlock();
             }
@@ -157,13 +157,13 @@ public class AudioDecoder {
 
         @Override
         public void onOutputFormatChanged(@NonNull MediaCodec codec, @NonNull MediaFormat format) {
-            LogUtilKt.log(TAG, "onOutputFormatChanged");
+            LogUtilKt.debugLog(TAG, "onOutputFormatChanged");
         }
     };
 
     private void checkPlayStatus() throws InterruptedException {
         if (status != STATUS_START) {
-            LogUtilKt.log(TAG, "checkPlayStatus await " + status);
+            LogUtilKt.debugLog(TAG, "checkPlayStatus await " + status);
             condition.await();
         }
     }
@@ -183,8 +183,8 @@ public class AudioDecoder {
             long ft = presentationTimeUs - frameTime;//帧间隔
             long st = System.nanoTime() / 1000 - systemTime;//系统时间间隔
 
-            LogUtilKt.log(TAG, "avSyncTime await time " + (ft - st) + " -- " + status);
-            LogUtilKt.log(TAG, "avSyncTime await ft " + ft + " --st " + st);
+            LogUtilKt.debugLog(TAG, "avSyncTime await time " + (ft - st) + " -- " + status);
+            LogUtilKt.debugLog(TAG, "avSyncTime await ft " + ft + " --st " + st);
 
             if (ft > st) {
                 condition.await(ft - st, TimeUnit.MICROSECONDS);
@@ -211,7 +211,7 @@ public class AudioDecoder {
         mMediaCodec.setCallback(callback, audioDecoderHandler);
         mMediaCodec.configure(format, null, null, 0);
         mMediaCodec.start();
-        LogUtilKt.log(TAG, "start");
+        LogUtilKt.debugLog(TAG, "start");
     }
 
     private void playEnd() {
@@ -221,7 +221,7 @@ public class AudioDecoder {
         status = STATUS_STOP;
 
         playListener.playEnd();
-        LogUtilKt.log(TAG, "stop");
+        LogUtilKt.debugLog(TAG, "stop");
     }
 
     public void pause() {
@@ -248,7 +248,7 @@ public class AudioDecoder {
 
         status = STATUS_RELEASE;
 
-        LogUtilKt.log(TAG, "release");
+        LogUtilKt.debugLog(TAG, "release");
 
         condition.signal();
         look.unlock();

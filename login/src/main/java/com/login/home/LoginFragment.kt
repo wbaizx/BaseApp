@@ -22,12 +22,12 @@ class LoginFragment : BaseBindModelFragment<LoginViewModel, FragmentLoginBinding
 
     override fun initObserve() {
         vm.successBean.lifecycleCollect(this) {
-            log(TAG, "loginSuccessBean -- ${it.data.id}")
+            debugLog(TAG, "loginSuccessBean -- ${it.data.id}")
             loginSuccess()
         }
 
         vm.successResponse.lifecycleCollect(this) { (r1, r2) ->
-            log(TAG, "loginSuccessResponseBody -- ${r1.string()} -- ${r2.string()}")
+            debugLog(TAG, "loginSuccessResponseBody -- ${r1.string()} -- ${r2.string()}")
             loginSuccess()
         }
     }
@@ -38,7 +38,7 @@ class LoginFragment : BaseBindModelFragment<LoginViewModel, FragmentLoginBinding
     }
 
     override fun onFirstVisible() {
-        log(TAG, "onFirstVisible")
+        debugLog(TAG, "onFirstVisible")
 
         binding.loginImg.loadImg(imgUrl)
 
@@ -49,11 +49,11 @@ class LoginFragment : BaseBindModelFragment<LoginViewModel, FragmentLoginBinding
     }
 
     override fun onVisible() {
-        log(TAG, "onVisible")
+        debugLog(TAG, "onVisible")
     }
 
     override fun onHide() {
-        log(TAG, "onHide")
+        debugLog(TAG, "onHide")
     }
 
     private fun loginSuccess() {

@@ -34,7 +34,7 @@ public class GLHelper {
                 content.append(line);
                 content.append("\n");
             }
-            LogUtilKt.log(TAG, content.toString());
+            LogUtilKt.debugLog(TAG, content.toString());
             return content.toString();
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,7 +84,7 @@ public class GLHelper {
             throw new RuntimeException("链接失败 " + GLES30.glGetProgramInfoLog(program));
         }
 
-        LogUtilKt.log(TAG, "编译链接成功");
+        LogUtilKt.debugLog(TAG, "编译链接成功");
         return program;
     }
 
@@ -119,7 +119,7 @@ public class GLHelper {
         GLES30.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_CLAMP_TO_EDGE);
         GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES30.GL_NONE);
 
-        LogUtilKt.log(TAG, "创建外部纹理成功 " + texture[0]);
+        LogUtilKt.debugLog(TAG, "创建外部纹理成功 " + texture[0]);
     }
 
     public static void createFBOTexture(int[] fboTexture) {
@@ -134,7 +134,7 @@ public class GLHelper {
         GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, GLES30.GL_NONE);
 
-        LogUtilKt.log(TAG, "创建fbo挂载纹理 " + fboTexture[0]);
+        LogUtilKt.debugLog(TAG, "创建fbo挂载纹理 " + fboTexture[0]);
     }
 
     /**
@@ -166,7 +166,7 @@ public class GLHelper {
 
         bitmap.recycle();
 
-        LogUtilKt.log(TAG, "创建LUT滤镜纹理成功 " + texture[0]);
+        LogUtilKt.debugLog(TAG, "创建LUT滤镜纹理成功 " + texture[0]);
     }
 
     /**
@@ -189,7 +189,7 @@ public class GLHelper {
 
         watermarkBitmap.recycle();
 
-        LogUtilKt.log(TAG, "创建水印纹理 " + watermarkTexture[0]);
+        LogUtilKt.debugLog(TAG, "创建水印纹理 " + watermarkTexture[0]);
     }
 
     public static void glGetError(String msg) {

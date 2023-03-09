@@ -43,6 +43,6 @@ public class ListNode {
             sb.append(" - ");
             l = l.next;
         }
-        LogUtilKt.log(msg, sb.toString());
+        LogUtilKt.debugLog(msg, sb.toString());
     }
 }

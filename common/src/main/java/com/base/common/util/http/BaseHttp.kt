@@ -2,7 +2,7 @@ package com.base.common.util.http
 
 import com.base.common.getBaseApplication
 import com.base.common.isDebug
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -37,11 +37,11 @@ abstract class BaseHttp {
             .header("token", "token")
             .header("test", URLEncoder.encode("中文编码", "UTF-8"))
             .build()
-        log(TAG, "baseInterceptor  request")
+        debugLog(TAG, "baseInterceptor  request")
 
         val proceed = chain.proceed(finalRequest)
-        log(TAG, "baseInterceptor  response")
-        log(TAG, "baseInterceptor  ${proceed.header("Date", "111")}")
+        debugLog(TAG, "baseInterceptor  response")
+        debugLog(TAG, "baseInterceptor  ${proceed.header("Date", "111")}")
 
         proceed
     }
@@ -50,12 +50,12 @@ abstract class BaseHttp {
      * 拦截器，设置缓存时间
      */
     private val cacheInterceptor = Interceptor { chain ->
-        log(TAG, "cacheInterceptor  request")
+        debugLog(TAG, "cacheInterceptor  request")
         val response = chain.proceed(chain.request())
         val finalResponse = response.newBuilder().removeHeader("pragma")
             .header("Cache-Control", "max-age=$CACHETIME").build()
 
-        log(TAG, "cacheInterceptor  response")
+        debugLog(TAG, "cacheInterceptor  response")
 
         finalResponse
     }
@@ -71,7 +71,7 @@ abstract class BaseHttp {
      * 带各种拦截器的普通Retrofit，主要用于普通网络请求
      */
     protected fun <T> getApi(api: Class<T>, baseUrl: String = this.baseUrl, needCache: Boolean = false): T {
-        log(TAG, "getApi $baseUrl")
+        debugLog(TAG, "getApi $baseUrl")
 
         val clientBuilder = OkHttpClient.Builder()
         clientBuilder.readTimeout(TIMEOUT.toLong(), TimeUnit.SECONDS)

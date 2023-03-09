@@ -23,18 +23,18 @@ public abstract class BaseFilter {
     public abstract void useFilter();
 
     public void release() {
-        LogUtilKt.log(TAG, "release");
+        LogUtilKt.debugLog(TAG, "release");
         onSurfaceDestroy();
         onDestroy();
     }
 
     public void onSurfaceDestroy() {
-        LogUtilKt.log(TAG, "onSurfaceDestroy");
+        LogUtilKt.debugLog(TAG, "onSurfaceDestroy");
         GLES30.glDeleteProgram(program);
     }
 
     public void onDestroy() {
-        LogUtilKt.log(TAG, "onDestroy");
+        LogUtilKt.debugLog(TAG, "onDestroy");
     }
 
     public String getId() {

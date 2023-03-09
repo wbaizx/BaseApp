@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.WorkerParameters
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import kotlinx.coroutines.delay
 
 class MainWork(context: Context, workerParams: WorkerParameters) : CoroutineWorker(context, workerParams) {
@@ -13,7 +13,7 @@ class MainWork(context: Context, workerParams: WorkerParameters) : CoroutineWork
         setProgress(Data.Builder().putInt("int", 10).build())
         delay(3000)
         setProgress(Data.Builder().putInt("int", 80).build())
-        log("MainWork", "doWork")
+        debugLog("MainWork", "doWork")
         delay(100)
         return Result.success()
     }

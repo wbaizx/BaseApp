@@ -3,7 +3,7 @@ package com.base.common.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.base.common.util.createMutableStateFlow
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.base.common.util.showError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,14 +56,14 @@ abstract class BaseViewModel : ViewModel() {
 
             } finally {
                 if (showLoading) {
-                    log("BaseMVVMViewModel", "runTaskDialog finally")
+                    debugLog("BaseMVVMViewModel", "runTaskDialog finally")
                     showLoad.emit(false)
                 }
             }
         }
 
     override fun onCleared() {
-        log(TAG, "onCleared")
+        debugLog(TAG, "onCleared")
         super.onCleared()
     }
 }

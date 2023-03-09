@@ -22,7 +22,7 @@ fun getDiskFilePath(name: String): String {
         if (externalFilesDir != null) {
             //外部文件存储，能看
             path = externalFilesDir.absolutePath
-            log(TAG, "externalFilesDir - $path")
+            debugLog(TAG, "externalFilesDir - $path")
             return path
         }
     }
@@ -30,7 +30,7 @@ fun getDiskFilePath(name: String): String {
     //内部文件存储，不能看
     path = getBaseApplication().filesDir.absolutePath + File.separator + name
     checkExists(File(path))
-    log(TAG, "filesDir - $path")
+    debugLog(TAG, "filesDir - $path")
     return path
 }
 

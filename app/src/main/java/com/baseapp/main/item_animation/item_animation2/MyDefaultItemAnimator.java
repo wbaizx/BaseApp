@@ -185,7 +185,7 @@ public class MyDefaultItemAnimator extends SimpleItemAnimator {
 
     @Override
     public boolean animateRemove(final RecyclerView.ViewHolder holder) {
-        LogUtilKt.log(TAG, "animateRemove");
+        LogUtilKt.debugLog(TAG, "animateRemove");
         resetAnimation(holder);
         mPendingRemovals.add(holder);
         return true;
@@ -215,7 +215,7 @@ public class MyDefaultItemAnimator extends SimpleItemAnimator {
 
     @Override
     public boolean animateAdd(final RecyclerView.ViewHolder holder) {
-        LogUtilKt.log(TAG, "animateAdd " + holder.getAdapterPosition());
+        LogUtilKt.debugLog(TAG, "animateAdd " + holder.getAdapterPosition());
         resetAnimation(holder);
         if (holder.getAdapterPosition() % 2 == 0) {
             holder.itemView.setTranslationX(-800);
@@ -262,7 +262,7 @@ public class MyDefaultItemAnimator extends SimpleItemAnimator {
     @Override
     public boolean animateMove(final RecyclerView.ViewHolder holder, int fromX, int fromY,
                                int toX, int toY) {
-        LogUtilKt.log(TAG, "animateMove");
+        LogUtilKt.debugLog(TAG, "animateMove");
         final View view = holder.itemView;
         fromX += (int) holder.itemView.getTranslationX();
         fromY += (int) holder.itemView.getTranslationY();
@@ -327,7 +327,7 @@ public class MyDefaultItemAnimator extends SimpleItemAnimator {
     @Override
     public boolean animateChange(RecyclerView.ViewHolder oldHolder, RecyclerView.ViewHolder newHolder,
                                  int fromX, int fromY, int toX, int toY) {
-        LogUtilKt.log(TAG, "animateChange");
+        LogUtilKt.debugLog(TAG, "animateChange");
         if (oldHolder == newHolder) {
             // Don't know how to run change animations when the same view holder is re-used.
             // run a move animation to handle position changes.
@@ -351,7 +351,7 @@ public class MyDefaultItemAnimator extends SimpleItemAnimator {
     }
 
     void animateChangeImpl(final ChangeInfo changeInfo) {
-        LogUtilKt.log(TAG, "animateChangeImpl");
+        LogUtilKt.debugLog(TAG, "animateChangeImpl");
         final RecyclerView.ViewHolder holder = changeInfo.oldHolder;
         final View view = holder == null ? null : holder.itemView;
         final RecyclerView.ViewHolder newHolder = changeInfo.newHolder;

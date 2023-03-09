@@ -7,7 +7,7 @@ import com.base.common.base.activity.BaseActivity
 import com.base.common.util.http.ObjectBean
 import com.base.common.util.http.ParcelableBean
 import com.base.common.util.http.SerializableBean
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.login.R
 
 private const val TAG = "LoginActivity"
@@ -29,9 +29,9 @@ class LoginActivity : BaseActivity() {
     override fun getContentView() = R.layout.activity_login
 
     override fun initView() {
-        log(TAG, "auto wired $sb")
-        log(TAG, "auto wired $pb")
-        log(TAG, "auto wired $ob")
+        debugLog(TAG, "auto wired $sb")
+        debugLog(TAG, "auto wired $pb")
+        debugLog(TAG, "auto wired $ob")
 
         val loginFragment = LoginFragment()
         supportFragmentManager.beginTransaction()

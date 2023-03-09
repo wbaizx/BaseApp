@@ -2,7 +2,7 @@ package com.baseapp.main.show_dialog
 
 import android.os.Bundle
 import com.base.common.base.activity.BaseBindContentActivity
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityShowDialogBinding
 
@@ -29,9 +29,9 @@ class ShowDialogActivity : BaseBindContentActivity<ActivityShowDialogBinding>() 
         //屏幕旋转的Fragment字段控制
         if (savedInstanceState != null) {
             val dialog = supportFragmentManager.findFragmentByTag(tag2) as? BottomDialog
-            log(TAG, "savedInstanceState  $dialog")
+            debugLog(TAG, "savedInstanceState  $dialog")
             dialog?.setOnDismissListener {
-                log(TAG, "OnDismiss")
+                debugLog(TAG, "OnDismiss")
             }
         }
     }
@@ -45,12 +45,12 @@ class ShowDialogActivity : BaseBindContentActivity<ActivityShowDialogBinding>() 
         binding.dialog2.setOnClickListener {
             dialogFragment2.showDialog()
             tag2 = dialogFragment2.getDialogTag()
-            log(TAG, "initView  $tag2")
+            debugLog(TAG, "initView  $tag2")
         }
 
 
         dialogFragment2.setOnDismissListener {
-            log(TAG, "OnDismiss")
+            debugLog(TAG, "OnDismiss")
         }
     }
 }

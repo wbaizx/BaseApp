@@ -3,7 +3,7 @@ package com.baseapp.main.coordinator.coordinator2
 import androidx.constraintlayout.motion.widget.MotionLayout
 import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.base.adapter.BaseListAdapter
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityCoordinator2Binding
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -29,19 +29,19 @@ class Coordinator2Activity : BaseBindContentActivity<ActivityCoordinator2Binding
 
         binding.MotionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
             override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-                log(TAG, "onTransitionStarted")
+                debugLog(TAG, "onTransitionStarted")
             }
 
             override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
-                log(TAG, "onTransitionChange  $p3")
+                debugLog(TAG, "onTransitionChange  $p3")
             }
 
             override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-                log(TAG, "onTransitionCompleted")
+                debugLog(TAG, "onTransitionCompleted")
             }
 
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
-                log(TAG, "onTransitionTrigger")
+                debugLog(TAG, "onTransitionTrigger")
             }
         })
     }

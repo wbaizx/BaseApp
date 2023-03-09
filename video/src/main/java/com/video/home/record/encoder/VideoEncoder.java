@@ -43,7 +43,7 @@ public class VideoEncoder {
     private MediaCodec.Callback callback = new MediaCodec.Callback() {
         @Override
         public void onInputBufferAvailable(@NonNull MediaCodec codec, int index) {
-            LogUtilKt.log(TAG, "onInputBufferAvailable");
+            LogUtilKt.debugLog(TAG, "onInputBufferAvailable");
         }
 
         @Override
@@ -51,10 +51,10 @@ public class VideoEncoder {
             ByteBuffer outputBuffer = mMediaCodec.getOutputBuffer(index);
 
             if (MediaCodec.BUFFER_FLAG_CODEC_CONFIG == info.flags) {
-                LogUtilKt.log(TAG, "codec config //sps,pps,csd...");
+                LogUtilKt.debugLog(TAG, "codec config //sps,pps,csd...");
 
             } else if (MediaCodec.BUFFER_FLAG_KEY_FRAME == info.flags) {
-                LogUtilKt.log(TAG, "key frame");
+                LogUtilKt.debugLog(TAG, "key frame");
                 muxerManager.writeVideoSampleData(outputBuffer, info);
 
             } else {
@@ -64,7 +64,7 @@ public class VideoEncoder {
             mMediaCodec.releaseOutputBuffer(index, false);
 
             if (MediaCodec.BUFFER_FLAG_END_OF_STREAM == info.flags) {
-                LogUtilKt.log(TAG, "end stream");
+                LogUtilKt.debugLog(TAG, "end stream");
                 release();
             }
         }
@@ -76,7 +76,7 @@ public class VideoEncoder {
 
         @Override
         public void onOutputFormatChanged(@NonNull MediaCodec codec, @NonNull MediaFormat format) {
-            LogUtilKt.log(TAG, "onOutputFormatChanged");
+            LogUtilKt.debugLog(TAG, "onOutputFormatChanged");
             muxerManager.addVideoTrack(format);
         }
     };
@@ -112,13 +112,13 @@ public class VideoEncoder {
             public void run() {
                 if (status == STATUS_READY) {
                     status = STATUS_START;
-                    LogUtilKt.log(TAG, "startRecord");
+                    LogUtilKt.debugLog(TAG, "startRecord");
 
                     mMediaFormat = MediaFormat.createVideoFormat(MimeType.H264, reallySize.getWidth(), reallySize.getHeight());
 
                     MediaCodecList mediaCodecList = new MediaCodecList(MediaCodecList.ALL_CODECS);
                     String name = mediaCodecList.findEncoderForFormat(mMediaFormat);
-                    LogUtilKt.log(TAG, "createCodec " + name);
+                    LogUtilKt.debugLog(TAG, "createCodec " + name);
                     try {
                         mMediaCodec = MediaCodec.createByCodecName(name);
                     } catch (IOException e) {
@@ -143,13 +143,13 @@ public class VideoEncoder {
     }
 
     public void stopRecord() {
-        LogUtilKt.log(TAG, "stopRecord  status " + status);
+        LogUtilKt.debugLog(TAG, "stopRecord  status " + status);
         if (videoEncoderHandler != null) {
             videoEncoderHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     if (status == STATUS_START) {
-                        LogUtilKt.log(TAG, "stopRecord");
+                        LogUtilKt.debugLog(TAG, "stopRecord");
                         status = STATUS_SNAP;
 
                         mMediaCodec.signalEndOfInputStream();
@@ -167,7 +167,7 @@ public class VideoEncoder {
         surface.release();
         mMediaCodec.release();
         status = STATUS_READY;
-        LogUtilKt.log(TAG, "release");
+        LogUtilKt.debugLog(TAG, "release");
     }
 
     public void onDestroy() {

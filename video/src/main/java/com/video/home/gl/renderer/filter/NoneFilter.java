@@ -12,7 +12,7 @@ public class NoneFilter extends BaseFilter{
 
     @Override
     public void init() {
-        LogUtilKt.log(TAG, "init");
+        LogUtilKt.debugLog(TAG, "init");
         program = GLHelper.compileAndLink("fbo/fbo_v_shader.glsl", "fbo/fbo_f_none.glsl");
     }
 

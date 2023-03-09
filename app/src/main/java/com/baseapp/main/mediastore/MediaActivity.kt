@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.lifecycle.lifecycleScope
 import com.base.common.base.activity.BaseActivity
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class MediaActivity : BaseActivity() {
         override fun onChange(selfChange: Boolean, uris: MutableCollection<Uri>, flags: Int) {
             super.onChange(selfChange, uris, flags)
             uris.forEach {
-                log(TAG, "onChange $selfChange $it $flags")
+                debugLog(TAG, "onChange $selfChange $it $flags")
 //                ContentResolver.NOTIFY_INSERT
 //                ContentResolver.NOTIFY_UPDATE
 //                ContentResolver.NOTIFY_DELETE
@@ -101,7 +101,7 @@ class MediaActivity : BaseActivity() {
                     val orientation = it.getInt(columnOrientation)
                     val uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
 
-                    log(TAG, "mime = $mime bucket = $bucket orientation = $orientation width = $width height = $height size = $size data = $data uri = $uri")
+                    debugLog(TAG, "mime = $mime bucket = $bucket orientation = $orientation width = $width height = $height size = $size data = $data uri = $uri")
                 }
             }
         }

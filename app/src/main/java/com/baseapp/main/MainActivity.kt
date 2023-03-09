@@ -138,7 +138,7 @@ class MainActivity : BaseBindContentActivity<ActivityMainBinding>() {
             }
 
             override fun onGranted() {
-                log(TAG, "hasPermissions")
+                debugLog(TAG, "hasPermissions")
             }
 
             override fun onDenied() {
@@ -156,7 +156,7 @@ class MainActivity : BaseBindContentActivity<ActivityMainBinding>() {
      */
     @SuppressLint("IdleBatteryChargingConstraints")
     private fun startWork() {
-        log("MainWork", "startWork")
+        debugLog("MainWork", "startWork")
         // 创建约束条件
         val constraints = Constraints.Builder()
 //            .setRequiresBatteryNotLow(true)                 // 电量不低
@@ -173,8 +173,8 @@ class MainActivity : BaseBindContentActivity<ActivityMainBinding>() {
             .build()
 
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(mainWorkRequest.id).observe(this) {
-            log("MainWork", "${it.state}")
-            log("MainWork", "${it.progress.getInt("int", 0)}")
+            debugLog("MainWork", "${it.state}")
+            debugLog("MainWork", "${it.progress.getInt("int", 0)}")
         }
         WorkManager.getInstance(this).enqueue(mainWorkRequest)
     }

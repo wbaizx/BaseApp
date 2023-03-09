@@ -2,7 +2,7 @@ package com.baseapp.main.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import kotlinx.coroutines.delay
 
 class PagingDemoSource(val reps: PagingRepository) : PagingSource<Int, String>() {
@@ -10,7 +10,7 @@ class PagingDemoSource(val reps: PagingRepository) : PagingSource<Int, String>()
         val page = params.key ?: 0
         val pageSize = params.loadSize
 
-        log("PagingDemo", "load start")
+        debugLog("PagingDemo", "load start")
 
         try {
             if (page == 3) {
@@ -27,7 +27,7 @@ class PagingDemoSource(val reps: PagingRepository) : PagingSource<Int, String>()
             val prevKey = page - 1
             val nextKey = page + 1
 
-            log("PagingDemo", "page $page pageSize $pageSize prevKey $prevKey nextKey $nextKey")
+            debugLog("PagingDemo", "page $page pageSize $pageSize prevKey $prevKey nextKey $nextKey")
             return LoadResult.Page(data, prevKey, nextKey)
 
         } catch (e: Exception) {
@@ -40,7 +40,7 @@ class PagingDemoSource(val reps: PagingRepository) : PagingSource<Int, String>()
             val anchorPage = state.closestPageToPosition(it)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
-        log("PagingDemo", "getRefreshKey $page")
+        debugLog("PagingDemo", "getRefreshKey $page")
         return page
     }
 }

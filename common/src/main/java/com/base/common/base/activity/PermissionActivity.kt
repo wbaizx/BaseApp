@@ -8,7 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -40,7 +40,7 @@ abstract class PermissionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         permissionLaunch = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions: Map<String, Boolean> ->
-            log(TAG, "onPermissionsResult $permissions")
+            debugLog(TAG, "onPermissionsResult $permissions")
             matchResults(permissions)
         }
         super.onCreate(savedInstanceState)

@@ -20,7 +20,7 @@ public class LutFilter extends BaseFilter {
     public void init() {
         GLHelper.createLUTFilterTexture(getLut(), filterTexture);
         program = GLHelper.compileAndLink("fbo/fbo_v_shader.glsl", "fbo/fbo_f_lut.glsl");
-        LogUtilKt.log(TAG, "init");
+        LogUtilKt.debugLog(TAG, "init");
     }
 
     @Override
@@ -35,7 +35,7 @@ public class LutFilter extends BaseFilter {
 
     @Override
     public void onSurfaceDestroy() {
-        LogUtilKt.log(TAG, "onSurfaceDestroy filterTexture");
+        LogUtilKt.debugLog(TAG, "onSurfaceDestroy filterTexture");
         GLES30.glDeleteTextures(filterTexture.length, filterTexture, 0);
         super.onSurfaceDestroy();
     }

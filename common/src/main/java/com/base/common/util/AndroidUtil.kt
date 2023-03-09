@@ -97,11 +97,11 @@ fun isNetworkAvailable(): Boolean {
             val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
             if (networkCapabilities != null) {
                 if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                    log(TAG, "is wifi")
+                    debugLog(TAG, "is wifi")
                     return true
                 }
                 if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                    log(TAG, "is mobile network")
+                    debugLog(TAG, "is mobile network")
                     return true
                 }
             }

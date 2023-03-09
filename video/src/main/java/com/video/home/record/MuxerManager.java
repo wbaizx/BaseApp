@@ -48,7 +48,7 @@ public class MuxerManager {
                 mediaMuxer = new MediaMuxer(thisPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
                 status = STATUS_INIT;
                 initSuccess = true;
-                LogUtilKt.log(TAG, "init");
+                LogUtilKt.debugLog(TAG, "init");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -61,7 +61,7 @@ public class MuxerManager {
     public void addVideoTrack(MediaFormat videoFormat) {
         synchronized (this) {
             if (status == STATUS_INIT) {
-                LogUtilKt.log(TAG, "addVideoTrack");
+                LogUtilKt.debugLog(TAG, "addVideoTrack");
                 videoTrackIndex = mediaMuxer.addTrack(videoFormat);
                 if (audioTrackIndex != -1) {
                     start();
@@ -73,7 +73,7 @@ public class MuxerManager {
     public void addAudioTrack(MediaFormat audioFormat) {
         synchronized (this) {
             if (status == STATUS_INIT) {
-                LogUtilKt.log(TAG, "addAudioTrack");
+                LogUtilKt.debugLog(TAG, "addAudioTrack");
                 audioTrackIndex = mediaMuxer.addTrack(audioFormat);
                 if (videoTrackIndex != -1) {
                     start();
@@ -87,26 +87,26 @@ public class MuxerManager {
         status = STATUS_START;
 
         conditionVariable.open();
-        LogUtilKt.log(TAG, "start");
+        LogUtilKt.debugLog(TAG, "start");
     }
 
     public void writeVideoSampleData(ByteBuffer buffer, MediaCodec.BufferInfo info) {
-        LogUtilKt.log(TAG, "writeVideo");
+        LogUtilKt.debugLog(TAG, "writeVideo");
         if (status == STATUS_START || status == STATUS_INIT) {
             conditionVariable.block();
 
-            LogUtilKt.log(TAG, "writeVideoSampleData " + info.presentationTimeUs);
-            LogUtilKt.log(TAG, "writeVideoSampleData " + info.flags);
+            LogUtilKt.debugLog(TAG, "writeVideoSampleData " + info.presentationTimeUs);
+            LogUtilKt.debugLog(TAG, "writeVideoSampleData " + info.flags);
             mediaMuxer.writeSampleData(videoTrackIndex, buffer, info);
         }
     }
 
     public void writeAudioSampleData(ByteBuffer buffer, MediaCodec.BufferInfo info) {
-        LogUtilKt.log(TAG, "writeAudio");
+        LogUtilKt.debugLog(TAG, "writeAudio");
         if (status == STATUS_START || status == STATUS_INIT) {
             conditionVariable.block();
 
-            LogUtilKt.log(TAG, "writeAudioSampleData " + info.presentationTimeUs);
+            LogUtilKt.debugLog(TAG, "writeAudioSampleData " + info.presentationTimeUs);
             mediaMuxer.writeSampleData(audioTrackIndex, buffer, info);
         }
     }
@@ -117,7 +117,7 @@ public class MuxerManager {
             try {
                 mediaMuxer.stop();
                 mediaMuxer.release();
-                LogUtilKt.log(TAG, "stop");
+                LogUtilKt.debugLog(TAG, "stop");
 
                 AndroidUtilKt.showToast("录制成功 " + thisPath, null);
 

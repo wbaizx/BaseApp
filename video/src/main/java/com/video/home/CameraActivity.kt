@@ -9,7 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.base.activity.PermissionResult
 import com.base.common.util.launchActivity
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import com.video.R
@@ -109,7 +109,7 @@ class CameraActivity : BaseBindContentActivity<ActivityCameraBinding>(), CameraC
         if (am != null && am.deviceConfigurationInfo.reqGlEsVersion >= 0x30000) {
             look.lock()
 
-            log(TAG, "begin")
+            debugLog(TAG, "begin")
             hasPermissions = true
             openCamera()
 
@@ -121,7 +121,7 @@ class CameraActivity : BaseBindContentActivity<ActivityCameraBinding>(), CameraC
 
     override fun onResume() {
         super.onResume()
-        log(TAG, "onResume")
+        debugLog(TAG, "onResume")
 
         binding.record.text = "录制"
     }
@@ -136,7 +136,7 @@ class CameraActivity : BaseBindContentActivity<ActivityCameraBinding>(), CameraC
 
         look.lock()
 
-        log(TAG, "onSurfaceCreated")
+        debugLog(TAG, "onSurfaceCreated")
         isSurfaceCreated = true
         openCamera()
 
@@ -144,9 +144,9 @@ class CameraActivity : BaseBindContentActivity<ActivityCameraBinding>(), CameraC
     }
 
     private fun openCamera() {
-        log(TAG, "try openCamera $hasPermissions-$isSurfaceCreated")
+        debugLog(TAG, "try openCamera $hasPermissions-$isSurfaceCreated")
         if (hasPermissions && isSurfaceCreated) {
-            log(TAG, "openCamera")
+            debugLog(TAG, "openCamera")
             cameraControl.openCamera()
         }
     }
@@ -181,12 +181,12 @@ class CameraActivity : BaseBindContentActivity<ActivityCameraBinding>(), CameraC
     override fun onPause() {
         super.onPause()
 
-        log(TAG, "onPause")
+        debugLog(TAG, "onPause")
         recordManager.onPause()
     }
 
     override fun onDestroy() {
-        log(TAG, "onDestroy")
+        debugLog(TAG, "onDestroy")
         recordManager.onDestroy()
         cameraControl.onDestroy()
         binding.eglSurfaceView.onDestroy()

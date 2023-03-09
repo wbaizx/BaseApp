@@ -21,7 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.work.await
 import com.base.common.util.getScreenRealHeight
 import com.base.common.util.getScreenWidth
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.video.home.SavePicture
 import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
@@ -86,7 +86,7 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
         activity?.run {
             val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
             cameraProviderFuture.addListener({
-                log(TAG, "openCamera 2")
+                debugLog(TAG, "openCamera 2")
                 cameraProvider = cameraProviderFuture.get()
 
                 cameraSelector = when {
@@ -114,16 +114,16 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
     private fun bindCameraUseCases(activity: FragmentActivity) {
         val cameraProvider = cameraProvider ?: throw IllegalStateException("Camera initialization failed.")
 
-        log(TAG, "lifecycleScope")
+        debugLog(TAG, "lifecycleScope")
         activity.lifecycleScope.launch {
             val extensionsManager = ExtensionsManager.getInstanceAsync(activity, cameraProvider).await()
-            log(TAG, "BOKEH ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.BOKEH)}")
-            log(TAG, "NIGHT ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.NIGHT)}")
-            log(TAG, "FACE_RETOUCH ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.FACE_RETOUCH)}")
-            log(TAG, "AUTO ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.AUTO)}")
-            log(TAG, "HDR ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.HDR)}")
+            debugLog(TAG, "BOKEH ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.BOKEH)}")
+            debugLog(TAG, "NIGHT ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.NIGHT)}")
+            debugLog(TAG, "FACE_RETOUCH ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.FACE_RETOUCH)}")
+            debugLog(TAG, "AUTO ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.AUTO)}")
+            debugLog(TAG, "HDR ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.HDR)}")
         }
-        log(TAG, "lifecycleScope x")
+        debugLog(TAG, "lifecycleScope x")
 
         val rotation = activity.windowManager.defaultDisplay.rotation
 
@@ -148,7 +148,7 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
             .build()
         imageAnalyzer.setAnalyzer(cameraExecutor) {
 //            ImageFormat.YUV_420_888
-            log(TAG, "analyze format ${it.format} rotation ${it.imageInfo.rotationDegrees} cropRect ${it.cropRect}")
+            debugLog(TAG, "analyze format ${it.format} rotation ${it.imageInfo.rotationDegrees} cropRect ${it.cropRect}")
             it.close()
         }
 
@@ -161,18 +161,18 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
                 preview.setSurfaceProvider { request ->
                     checkSize(activity)
 
-                    log(TAG, "request.resolution ${request.resolution}")
+                    debugLog(TAG, "request.resolution ${request.resolution}")
                     //这里确定最终的分辨率， request.resolution是cameraX选择的最合适的预览分辨率
                     //这个分辨率决定 预览、surface模式拍照、录制的分辨率
                     //你也可以不用这个分辨率，从checkSize方法中遍历一个你想要的分辨率设置进去，不会影响录制尺寸，但可能影响拍照尺寸
                     resetPreviewSize(Size(getScreenRealHeight(activity), getScreenWidth()))
 
                     request.provideSurface(surface, cameraExecutor) {
-                        log(TAG, "provideSurface")
+                        debugLog(TAG, "provideSurface")
                     }
 
                     request.setTransformationInfoListener(cameraExecutor) { transformationInfo ->
-                        log(TAG, "cropRect ${transformationInfo.cropRect}")
+                        debugLog(TAG, "cropRect ${transformationInfo.cropRect}")
                     }
                 }
 
@@ -183,7 +183,7 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
     }
 
     private fun resetPreviewSize(size: Size) {
-        log(TAG, "resetPreviewSize size $size - ratio ${size.width.toFloat() / size.height}")
+        debugLog(TAG, "resetPreviewSize size $size - ratio ${size.width.toFloat() / size.height}")
         surfaceTexture?.setDefaultBufferSize(size.width, size.height)
         previewSize = size
     }
@@ -193,28 +193,28 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
             run {
                 when (cameraState.type) {
                     CameraState.Type.PENDING_OPEN -> {
-                        log(TAG, "PENDING_OPEN")
+                        debugLog(TAG, "PENDING_OPEN")
                     }
                     CameraState.Type.OPENING -> {
-                        log(TAG, "OPENING")
+                        debugLog(TAG, "OPENING")
                     }
                     CameraState.Type.OPEN -> {
-                        log(TAG, "OPEN")
+                        debugLog(TAG, "OPEN")
                         //相机打开后将预览确定的大小传递出去（此时还没有回调真正的预览数据）
                         cameraControlListener?.confirmCameraSize(previewSize)
                     }
                     CameraState.Type.CLOSING -> {
-                        log(TAG, "CLOSING")
+                        debugLog(TAG, "CLOSING")
                     }
                     CameraState.Type.CLOSED -> {
-                        log(TAG, "CLOSED")
+                        debugLog(TAG, "CLOSED")
                     }
                 }
             }
 
             cameraState.error?.let { error ->
 //                CameraState.ERROR_STREAM_CONFIG
-                log(TAG, "cameraState error ${error.code}")
+                debugLog(TAG, "cameraState error ${error.code}")
             }
         }
     }
@@ -230,8 +230,8 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
                 if ((cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA && integer == CameraCharacteristics.LENS_FACING_BACK) ||
                     (cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA && integer == CameraCharacteristics.LENS_FACING_FRONT)
                 ) {
-                    log(TAG, "SENSOR_ORIENTATION ${characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)}")
-                    log(TAG, "闪光灯支持 ${characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE)}")
+                    debugLog(TAG, "SENSOR_ORIENTATION ${characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)}")
+                    debugLog(TAG, "闪光灯支持 ${characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE)}")
 
                     val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                         ?: throw RuntimeException("Cannot get available preview/video sizes")
@@ -243,7 +243,7 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
 //                    SurfaceTexture：常用来显示预览画面。
                     val outputSizes = map.getOutputSizes(MediaCodec::class.java)
                     outputSizes.forEach { size ->
-                        log(TAG, "outputSizes $size - ratio ${size.width.toFloat() / size.height}")
+                        debugLog(TAG, "outputSizes $size - ratio ${size.width.toFloat() / size.height}")
                     }
 
                     return@forEach
@@ -259,7 +259,7 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
         imageCapture?.takePicture(cameraExecutor, object : ImageCapture.OnImageCapturedCallback() {
             @SuppressLint("RestrictedApi")
             override fun onCaptureSuccess(image: ImageProxy) {
-                log(TAG, "onCaptureSuccess format ${image.format} rotation ${image.imageInfo.rotationDegrees} cropRect ${image.cropRect}")
+                debugLog(TAG, "onCaptureSuccess format ${image.format} rotation ${image.imageInfo.rotationDegrees} cropRect ${image.cropRect}")
 
                 if (image.format == ImageFormat.JPEG) {
                     val byteBuffer = image.planes[0].buffer
@@ -280,7 +280,7 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
                 }
 
                 image.close()
-                log(TAG, "onCaptureSuccess X")
+                debugLog(TAG, "onCaptureSuccess X")
             }
         })
     }
@@ -289,6 +289,6 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
         cameraExecutor.shutdown()
         activity = null
         cameraControlListener = null
-        log(TAG, "destroy X")
+        debugLog(TAG, "destroy X")
     }
 }

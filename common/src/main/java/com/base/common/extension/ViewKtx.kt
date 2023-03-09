@@ -7,8 +7,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import com.base.common.util.log
-import com.chad.library.adapter.base.BaseQuickAdapter
+import com.base.common.util.debugLog
 
 private var lastTime = 0L
 private const val lock = "lock"
@@ -34,7 +33,7 @@ inline fun View.setOnSingleClickListener(crossinline event: (View) -> Unit) {
             lastTime = System.currentTimeMillis()
             event(it)
         } else {
-            log("avoidRepeated", "performClick false")
+            debugLog("avoidRepeated", "performClick false")
         }
     }
 }

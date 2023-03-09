@@ -46,12 +46,12 @@ public class JavaTest {
         //NDK
         long time = System.nanoTime();
         String a1 = NDKHelper.replaceSpaceC(a0);
-        LogUtilKt.log("replaceSpace", (System.nanoTime() - time) + " -- " + a1);
+        LogUtilKt.debugLog("replaceSpace", (System.nanoTime() - time) + " -- " + a1);
 
         //java内置
         time = System.nanoTime();
         String a2 = a0.replace(" ", "%2");
-        LogUtilKt.log("replaceSpace", (System.nanoTime() - time) + " -- " + a2);
+        LogUtilKt.debugLog("replaceSpace", (System.nanoTime() - time) + " -- " + a2);
 
         //手动
         time = System.nanoTime();
@@ -64,16 +64,16 @@ public class JavaTest {
                 sb.append(aChar);
             }
         }
-        LogUtilKt.log("replaceSpace", (System.nanoTime() - time) + " -- " + sb.toString());
+        LogUtilKt.debugLog("replaceSpace", (System.nanoTime() - time) + " -- " + sb.toString());
     }
 
     private void reverseOrder() {
         int[] a = {1, 2, 3, 4, 5};
-        LogUtilKt.log("reverseOrder", Arrays.toString(a));
+        LogUtilKt.debugLog("reverseOrder", Arrays.toString(a));
         //NDK
         long time = System.nanoTime();
         NDKHelper.reverseOrderC(a);
-        LogUtilKt.log("reverseOrder", (System.nanoTime() - time) + " -- " + Arrays.toString(a));
+        LogUtilKt.debugLog("reverseOrder", (System.nanoTime() - time) + " -- " + Arrays.toString(a));
 
         //手动
         a = new int[]{1, 2, 3, 4, 5};
@@ -85,7 +85,7 @@ public class JavaTest {
             a[i] = a[j];
             a[j] = t;
         }
-        LogUtilKt.log("reverseOrder", (System.nanoTime() - time) + " -- " + Arrays.toString(a));
+        LogUtilKt.debugLog("reverseOrder", (System.nanoTime() - time) + " -- " + Arrays.toString(a));
     }
 
     private void linkedReverse() {
@@ -128,7 +128,7 @@ public class JavaTest {
             size = Math.max(size, linkedList.size());
         }
 
-        LogUtilKt.log("findNoRepetitionString", (System.nanoTime() - time) + " -- " + size);
+        LogUtilKt.debugLog("findNoRepetitionString", (System.nanoTime() - time) + " -- " + size);
 
         //方法2  num实际记录的是不重复长度
         time = System.nanoTime();
@@ -143,7 +143,7 @@ public class JavaTest {
             if (v != null) num = Math.min(i - v, num);
             size = Math.max(size, num);
         }
-        LogUtilKt.log("findNoRepetitionString", (System.nanoTime() - time) + " -- " + size);
+        LogUtilKt.debugLog("findNoRepetitionString", (System.nanoTime() - time) + " -- " + size);
 
         //方法3 num实际记录的是子串左起点下标
         time = System.nanoTime();
@@ -156,7 +156,7 @@ public class JavaTest {
             size = Math.max(size, i - num); // 更新结果
         }
 
-        LogUtilKt.log("findNoRepetitionString", (System.nanoTime() - time) + " -- " + size);
+        LogUtilKt.debugLog("findNoRepetitionString", (System.nanoTime() - time) + " -- " + size);
     }
 
     private void quickSort() {
@@ -165,7 +165,7 @@ public class JavaTest {
         long time = System.nanoTime();
         beginSort1(a, 0, a.length - 1);
 //        beginSort2(a, 0, a.length - 1);
-        LogUtilKt.log("quickSort", (System.nanoTime() - time) + " -- " + Arrays.toString(a));
+        LogUtilKt.debugLog("quickSort", (System.nanoTime() - time) + " -- " + Arrays.toString(a));
     }
 
     private int[] getArray() {
@@ -279,7 +279,7 @@ public class JavaTest {
             gap /= 2;
         }
 
-        LogUtilKt.log("hillSort", (System.nanoTime() - time) + " -- " + Arrays.toString(a));
+        LogUtilKt.debugLog("hillSort", (System.nanoTime() - time) + " -- " + Arrays.toString(a));
     }
 
     private void fib(int n) {
@@ -299,7 +299,7 @@ public class JavaTest {
                 n1 = num;
             }
         }
-        LogUtilKt.log("fib", num);
+        LogUtilKt.debugLog("fib", num);
     }
 
     private ListNode rotateRight(ListNode head, int k) {

@@ -4,7 +4,7 @@ import com.base.common.base.activity.BaseBindModelActivity
 import com.base.common.base.adapter.BaseViewPagerAdapter
 import com.base.common.extension.setOnSingleClickListener
 import com.base.common.util.lifecycleCollect
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityMvvmDemoBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,7 +24,7 @@ class MVVMDemoActivity : BaseBindModelActivity<MVVMDemoViewModel, ActivityMvvmDe
     }
 
     override fun initView() {
-        log(TAG, "viewModel ${vm.hashCode()}")
+        debugLog(TAG, "viewModel ${vm.hashCode()}")
 
         binding.save.setOnClickListener {
             vm.saveData()
@@ -44,12 +44,12 @@ class MVVMDemoActivity : BaseBindModelActivity<MVVMDemoViewModel, ActivityMvvmDe
 
     override fun initObserve() {
         vm.name.lifecycleCollect(this) {
-            log(TAG, "name ${this.hashCode()}")
+            debugLog(TAG, "name ${this.hashCode()}")
         }
     }
 
     override fun onDestroy() {
-        log(TAG, "onDestroy ${this.hashCode()}")
+        debugLog(TAG, "onDestroy ${this.hashCode()}")
         super.onDestroy()
     }
 

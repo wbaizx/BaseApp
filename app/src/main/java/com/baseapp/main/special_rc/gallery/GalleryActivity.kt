@@ -2,7 +2,7 @@ package com.baseapp.main.special_rc.gallery
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.base.common.base.activity.BaseBindContentActivity
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityGalleryBinding
 
@@ -18,7 +18,7 @@ class GalleryActivity : BaseBindContentActivity<ActivityGalleryBinding>() {
         binding.recyclerView.adapter = GalleryAdapter()
 
         GalleryHelper {
-            log(TAG, "$it")
+            debugLog(TAG, "$it")
         }.attachToRecyclerView(binding.recyclerView)
     }
 }

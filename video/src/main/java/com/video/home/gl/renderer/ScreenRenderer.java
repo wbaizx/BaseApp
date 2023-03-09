@@ -38,7 +38,7 @@ public class ScreenRenderer extends BaseRenderer {
 
     @Override
     public void onSurfaceCreated() {
-        LogUtilKt.log(TAG, "onSurfaceCreated");
+        LogUtilKt.debugLog(TAG, "onSurfaceCreated");
         GLES30.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         program = GLHelper.compileAndLink("screen/screen_v_shader.glsl", "screen/screen_f_shader.glsl");
@@ -46,7 +46,7 @@ public class ScreenRenderer extends BaseRenderer {
         createVBO();
         createVAO();
 
-        LogUtilKt.log(TAG, "onSurfaceCreated X");
+        LogUtilKt.debugLog(TAG, "onSurfaceCreated X");
     }
 
     private void createVBO() {
@@ -64,7 +64,7 @@ public class ScreenRenderer extends BaseRenderer {
 
         GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, GLES30.GL_NONE);
 
-        LogUtilKt.log(TAG, "createVBO X");
+        LogUtilKt.debugLog(TAG, "createVBO X");
     }
 
     private void createVAO() {
@@ -86,7 +86,7 @@ public class ScreenRenderer extends BaseRenderer {
         //解绑VAO
         GLES30.glBindVertexArray(GLES30.GL_NONE);
 
-        LogUtilKt.log(TAG, "createVAO X");
+        LogUtilKt.debugLog(TAG, "createVAO X");
     }
 
     @Override
@@ -118,7 +118,7 @@ public class ScreenRenderer extends BaseRenderer {
         GLES30.glDeleteBuffers(2, vboArray, 0);
         GLES30.glDeleteVertexArrays(1, vaoArray, 0);
 
-        LogUtilKt.log(TAG, "onSurfaceDestroy X");
+        LogUtilKt.debugLog(TAG, "onSurfaceDestroy X");
     }
 
     @Override
@@ -126,6 +126,6 @@ public class ScreenRenderer extends BaseRenderer {
         vertexBuffer.clear();
         textureCoordBuffer.clear();
 
-        LogUtilKt.log(TAG, "onDestroy X");
+        LogUtilKt.debugLog(TAG, "onDestroy X");
     }
 }

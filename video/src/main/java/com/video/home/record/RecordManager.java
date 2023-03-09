@@ -33,7 +33,7 @@ public class RecordManager {
 
     public void confirmReallySize(Size reallySize) {
         this.reallySize = reallySize;
-        LogUtilKt.log(TAG, "confirmCameraSize " + reallySize.getWidth() + "  " + reallySize.getHeight());
+        LogUtilKt.debugLog(TAG, "confirmCameraSize " + reallySize.getWidth() + "  " + reallySize.getHeight());
     }
 
     public void startRecord() {

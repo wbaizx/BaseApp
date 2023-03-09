@@ -3,7 +3,7 @@ package com.baseapp.main.paging
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.base.common.base.activity.BaseBindModelActivity
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityPagingDemoBinding
 import kotlinx.coroutines.flow.collectLatest
@@ -24,7 +24,7 @@ class PagingActivity : BaseBindModelActivity<PagingViewModel, ActivityPagingDemo
 
         lifecycleScope.launch {
             vm.flow.collectLatest {
-                log("PagingDemo", "submitData")
+                debugLog("PagingDemo", "submitData")
                 pagingAdapter.submitData(it)
             }
         }
@@ -33,44 +33,44 @@ class PagingActivity : BaseBindModelActivity<PagingViewModel, ActivityPagingDemo
             pagingAdapter.loadStateFlow.collectLatest { loadStates ->
                 when (loadStates.refresh) {
                     is LoadState.Loading -> {
-                        log("PagingDemo", "Flow refresh Loading")
+                        debugLog("PagingDemo", "Flow refresh Loading")
                     }
                     is LoadState.Error -> {
-                        log("PagingDemo", "Flow refresh Error")
+                        debugLog("PagingDemo", "Flow refresh Error")
                     }
                     else -> {
-                        log("PagingDemo", "Flow refresh NotLoading")
+                        debugLog("PagingDemo", "Flow refresh NotLoading")
                     }
                 }
                 when (loadStates.append) {
                     is LoadState.Loading -> {
-                        log("PagingDemo", "Flow append Loading")
+                        debugLog("PagingDemo", "Flow append Loading")
                     }
                     is LoadState.Error -> {
-                        log("PagingDemo", "Flow append Error")
+                        debugLog("PagingDemo", "Flow append Error")
                     }
                     else -> {
-                        log("PagingDemo", "Flow append  NotLoading")
+                        debugLog("PagingDemo", "Flow append  NotLoading")
                     }
                 }
                 when (loadStates.prepend) {
                     is LoadState.Loading -> {
-                        log("PagingDemo", "Flow prepend Loading")
+                        debugLog("PagingDemo", "Flow prepend Loading")
                     }
                     is LoadState.Error -> {
-                        log("PagingDemo", "Flow prepend Error")
+                        debugLog("PagingDemo", "Flow prepend Error")
                     }
                     else -> {
-                        log("PagingDemo", "Flow prepend  NotLoading")
+                        debugLog("PagingDemo", "Flow prepend  NotLoading")
                     }
                 }
             }
         }
 
         binding.recyclerView.adapter = pagingAdapter.withLoadStateHeaderAndFooter(PagingFooterAdapter {
-            log("PagingDemo", "retry")
+            debugLog("PagingDemo", "retry")
         }, PagingFooterAdapter {
-            log("PagingDemo", "retry")
+            debugLog("PagingDemo", "retry")
         })
 
         binding.retry.setOnClickListener {

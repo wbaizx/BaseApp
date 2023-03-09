@@ -3,7 +3,7 @@ package com.baseapp.main.special_rc.scrollto_rc
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.common.base.activity.BaseBindContentActivity
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityScrollToRcBinding
 
@@ -54,7 +54,7 @@ class ScrollToRCActivity : BaseBindContentActivity<ActivityScrollToRcBinding>() 
                         }
                     }
                 }
-                log(TAG, "onScrollStateChanged $newState")
+                debugLog(TAG, "onScrollStateChanged $newState")
             }
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

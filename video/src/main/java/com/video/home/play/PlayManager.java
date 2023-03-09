@@ -30,7 +30,7 @@ public class PlayManager {
         audioDecoder.setPlayListener(playListener);
         audioDecoder.init(path);
 
-        LogUtilKt.log(TAG, "init X");
+        LogUtilKt.debugLog(TAG, "init X");
     }
 
     public void play() {

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.base.common.R
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -32,7 +32,7 @@ abstract class BaseListAdapter<M, BH : BaseViewHolder>(@LayoutRes private val la
     private lateinit var rcView: RecyclerView
 
     init {
-        log(TAG, "init")
+        debugLog(TAG, "init")
     }
 
     /**
@@ -63,13 +63,13 @@ abstract class BaseListAdapter<M, BH : BaseViewHolder>(@LayoutRes private val la
         view.setOnClickListener {
             //空布局点击重新加载也应该重置分页下标
             resetPage()
-            log(TAG, "emptyClick $page")
+            debugLog(TAG, "emptyClick $page")
             //事件响应
             emptyClick?.invoke(page)
         }
 
         setEmptyView(view)
-        log(TAG, "set default emptyView")
+        debugLog(TAG, "set default emptyView")
     }
 
     /**
@@ -81,12 +81,12 @@ abstract class BaseListAdapter<M, BH : BaseViewHolder>(@LayoutRes private val la
 
         refreshLayout.setOnRefreshListener {
             resetPage()
-            log(TAG, "Refresh $page")
+            debugLog(TAG, "Refresh $page")
             request.invoke(page)
         }
         refreshLayout.setOnLoadMoreListener {
             page++
-            log(TAG, "LoadMore $page")
+            debugLog(TAG, "LoadMore $page")
             request.invoke(page)
         }
     }
@@ -104,13 +104,13 @@ abstract class BaseListAdapter<M, BH : BaseViewHolder>(@LayoutRes private val la
                 //刷新的数据为空，此时应该禁止上拉加载
                 refreshLayout?.setEnableLoadMore(false)
 
-                log(TAG, "addPageData Refresh Null")
+                debugLog(TAG, "addPageData Refresh Null")
             } else {
                 refreshLayout?.setEnableLoadMore(true)
                 //不为空添加数据
                 data.addAll(list)
 
-                log(TAG, "addPageData Refresh")
+                debugLog(TAG, "addPageData Refresh")
             }
 
             refreshLayout?.finishRefresh(true)
@@ -120,14 +120,14 @@ abstract class BaseListAdapter<M, BH : BaseViewHolder>(@LayoutRes private val la
                 //加载更多的数据为空，此时应该标记没有数据了
                 refreshLayout?.finishLoadMoreWithNoMoreData()
 
-                log(TAG, "addPageData LoadMore Null")
+                debugLog(TAG, "addPageData LoadMore Null")
             } else {
                 //不为空添加数据
                 data.addAll(list)
 
                 refreshLayout?.finishLoadMore(true)
 
-                log(TAG, "addPageData LoadMore")
+                debugLog(TAG, "addPageData LoadMore")
             }
         }
 
@@ -138,7 +138,7 @@ abstract class BaseListAdapter<M, BH : BaseViewHolder>(@LayoutRes private val la
      * 主动重置分页下标
      */
     fun resetPage() {
-        log(TAG, "resetPage")
+        debugLog(TAG, "resetPage")
         page = pageDefaultIndex
     }
 

@@ -2,7 +2,7 @@ package com.baseapp.main.special_rc.damping_rc
 
 import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.util.dp2px
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityDampingRcBinding
 import com.gyf.immersionbar.ImmersionBar
@@ -37,7 +37,7 @@ class DampingRCActivity : BaseBindContentActivity<ActivityDampingRcBinding>() {
         manager.setOffsetListener { upOffset, downOffset ->
             //upOffset 控制脚部偏移
             //downOffset 控制头部偏移
-            log(TAG, "Offset  $upOffset --- $downOffset")
+            debugLog(TAG, "Offset  $upOffset --- $downOffset")
             binding.footer.translationY = -upOffset
             binding.header.translationY = downOffset
         }
@@ -45,7 +45,7 @@ class DampingRCActivity : BaseBindContentActivity<ActivityDampingRcBinding>() {
         manager.setPageListener { page ->
             binding.footer.text = "$page footer"
             binding.header.text = "$page header"
-            log(TAG, "Page  $page")
+            debugLog(TAG, "Page  $page")
         }
     }
 }

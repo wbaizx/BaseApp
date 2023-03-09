@@ -58,7 +58,7 @@ fun String.timeS2L(format: String): Long {
 fun getNextDay(time: Long): Long {
     //打印日期Log
     fun dateLog(calendar: Calendar) {
-        log(
+        debugLog(
             "getNextDay", "${calendar.get(Calendar.YEAR)}年" +
                     "${calendar.get(Calendar.MONTH) + 1}月" +
                     "${calendar.get(Calendar.DAY_OF_MONTH)}日" +

@@ -86,7 +86,7 @@ public class GLThread extends Thread {
         super.run();
         setName(getName() + "-GLThread");
         guardedRun();
-        LogUtilKt.log(TAG, getName() + " close");
+        LogUtilKt.debugLog(TAG, getName() + " close");
     }
 
     public void surfaceCreated(Surface surface) {
@@ -97,7 +97,7 @@ public class GLThread extends Thread {
         this.isSurfaceDestroyed = false;
         this.surface = surface;
 
-        LogUtilKt.log(TAG, "surfaceCreated");
+        LogUtilKt.debugLog(TAG, "surfaceCreated");
 
         condition.signal();
         look.unlock();
@@ -110,7 +110,7 @@ public class GLThread extends Thread {
         this.isFirstSurfaceChanged = true;
         this.viewWidth = width;
         this.viewHeight = height;
-        LogUtilKt.log(TAG, "surfaceChanged  " + width + " -- " + height);
+        LogUtilKt.debugLog(TAG, "surfaceChanged  " + width + " -- " + height);
 
         condition.signal();
         look.unlock();
@@ -122,7 +122,7 @@ public class GLThread extends Thread {
         this.isSurfaceDestroyed = true;
         this.isSurfaceCreated = false;
         this.isSurfaceChanged = false;
-        LogUtilKt.log(TAG, "surfaceDestroyed");
+        LogUtilKt.debugLog(TAG, "surfaceDestroyed");
 
         condition.signal();
         look.unlock();
@@ -135,7 +135,7 @@ public class GLThread extends Thread {
         this.isSurfaceDestroyed = true;
         this.isSurfaceCreated = false;
         this.isSurfaceChanged = false;
-        LogUtilKt.log(TAG, "onDestroy");
+        LogUtilKt.debugLog(TAG, "onDestroy");
 
         condition.signal();
         look.unlock();
@@ -145,7 +145,7 @@ public class GLThread extends Thread {
         try {
             look.lock();
             while (true) {
-                LogUtilKt.log(TAG, "guardedRun");
+                LogUtilKt.debugLog(TAG, "guardedRun");
 
                 while (!queue.isEmpty()) {
                     queue.poll().run();
@@ -163,7 +163,7 @@ public class GLThread extends Thread {
                         if (screenEglSurface == EGL14.EGL_NO_SURFACE) {
                             throw new RuntimeException("create screenEglSurface fail");
                         }
-                        LogUtilKt.log(TAG, "create screenEglSurface X");
+                        LogUtilKt.debugLog(TAG, "create screenEglSurface X");
                     }
 
                     if (isSurfaceChanged) {
@@ -175,7 +175,7 @@ public class GLThread extends Thread {
                             if (fboEglSurface == EGL14.EGL_NO_SURFACE) {
                                 throw new RuntimeException("create fboEglSurface fail");
                             }
-                            LogUtilKt.log(TAG, "create fboEglSurface X");
+                            LogUtilKt.debugLog(TAG, "create fboEglSurface X");
                         }
 
                         /*
@@ -191,7 +191,7 @@ public class GLThread extends Thread {
                             surfaceTexture.setOnFrameAvailableListener(new SurfaceTexture.OnFrameAvailableListener() {
                                 @Override
                                 public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-                                    LogUtilKt.log(TAG, "onFrameAvailable");
+                                    LogUtilKt.debugLog(TAG, "onFrameAvailable");
                                     requestRender();
                                 }
                             });
@@ -222,7 +222,7 @@ public class GLThread extends Thread {
                         }
 
                         if (hasData) {
-                            LogUtilKt.log(TAG, "hasData");
+                            LogUtilKt.debugLog(TAG, "hasData");
                             surfaceTexture.updateTexImage();
                             surfaceTexture.getTransformMatrix(surfaceMatrix);
                             fboRenderer.onDrawFrame(surfaceMatrix);
@@ -265,7 +265,7 @@ public class GLThread extends Thread {
                                 if (codecEglSurface == EGL14.EGL_NO_SURFACE) {
                                     throw new RuntimeException("create codecEglSurface fail");
                                 }
-                                LogUtilKt.log(TAG, "create codecEglSurface X");
+                                LogUtilKt.debugLog(TAG, "create codecEglSurface X");
                             }
 
                             if (!EGL14.eglMakeCurrent(eglDisplay, codecEglSurface, codecEglSurface, eglContext)) {
@@ -280,7 +280,7 @@ public class GLThread extends Thread {
                                 codecRenderer.onSurfaceChanged(0, 0);
                                 //编码器分辨率需要使用实际宽高
                                 codecRenderer.confirmReallySize(reallySize);
-                                LogUtilKt.log(TAG, "init codecRenderer");
+                                LogUtilKt.debugLog(TAG, "init codecRenderer");
                             }
 
                             if (hasData && codecRenderer != null) {
@@ -300,7 +300,7 @@ public class GLThread extends Thread {
                     if (fboEglSurface != null || screenEglSurface != null) {
                         fboRenderer.onSurfaceDestroy();
                         screenRenderer.onSurfaceDestroy();
-                        LogUtilKt.log(TAG, "destroyedSurface");
+                        LogUtilKt.debugLog(TAG, "destroyedSurface");
 
                         EGL14.eglDestroySurface(eglDisplay, fboEglSurface);
                         EGL14.eglDestroySurface(eglDisplay, screenEglSurface);
@@ -318,9 +318,9 @@ public class GLThread extends Thread {
                             surfaceTexture.release();
                         }
                         surfaceTexture = null;
-                        LogUtilKt.log(TAG, "delete camera texture X");
+                        LogUtilKt.debugLog(TAG, "delete camera texture X");
                     }
-                    LogUtilKt.log(TAG, "onDestroy");
+                    LogUtilKt.debugLog(TAG, "onDestroy");
                     fboRenderer.onDestroy();
                     screenRenderer.onDestroy();
 
@@ -333,11 +333,11 @@ public class GLThread extends Thread {
                     return;
                 }
 
-                LogUtilKt.log(TAG, "await");
+                LogUtilKt.debugLog(TAG, "await");
                 condition.await();
             }
         } catch (InterruptedException e) {
-            LogUtilKt.log(TAG, "guardedRun  Exception");
+            LogUtilKt.debugLog(TAG, "guardedRun  Exception");
         } finally {
             look.unlock();
         }
@@ -394,7 +394,7 @@ public class GLThread extends Thread {
             throw new RuntimeException("eglCreateContext fail");
         }
 
-        LogUtilKt.log(TAG, "eglCreateContext X");
+        LogUtilKt.debugLog(TAG, "eglCreateContext X");
     }
 
     /**
@@ -407,7 +407,7 @@ public class GLThread extends Thread {
 
         isConfirmReallySize = true;
         this.reallySize = reallySize;
-        LogUtilKt.log(TAG, "confirmCameraSize");
+        LogUtilKt.debugLog(TAG, "confirmCameraSize");
 
         condition.signal();
         look.unlock();
@@ -417,7 +417,7 @@ public class GLThread extends Thread {
         look.lock();
 
         hasData = true;
-        LogUtilKt.log(TAG, "requestRender");
+        LogUtilKt.debugLog(TAG, "requestRender");
 
         condition.signal();
         look.unlock();
@@ -429,7 +429,7 @@ public class GLThread extends Thread {
      * @param surface
      */
     public void onEncoderSurfaceCreated(Surface surface) {
-        LogUtilKt.log(TAG, "onEncoderSurfaceCreated");
+        LogUtilKt.debugLog(TAG, "onEncoderSurfaceCreated");
         codecSurface = surface;
     }
 
@@ -452,7 +452,7 @@ public class GLThread extends Thread {
             codecEglSurface = null;
             codecRenderer = null;
 
-            LogUtilKt.log(TAG, "onEncoderSurfaceDestroy");
+            LogUtilKt.debugLog(TAG, "onEncoderSurfaceDestroy");
         }
     }
 
@@ -465,7 +465,7 @@ public class GLThread extends Thread {
         look.lock();
 
         queue.offer(event);
-        LogUtilKt.log(TAG, "queueEvent");
+        LogUtilKt.debugLog(TAG, "queueEvent");
 
         condition.signal();
         look.unlock();

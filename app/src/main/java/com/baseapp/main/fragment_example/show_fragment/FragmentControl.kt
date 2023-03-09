@@ -2,7 +2,7 @@ package com.baseapp.main.fragment_example.show_fragment
 
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.main.fragment_example.fm.TestFragment
 
 /**
@@ -30,21 +30,21 @@ class FragmentControl(private val supportFragmentManager: FragmentManager, priva
                 if (fragmentList[currentPosition].isAdded) {
                     beginTransaction.hide(fragmentList[currentPosition])
                     beginTransaction.setMaxLifecycle(fragmentList[currentPosition], Lifecycle.State.STARTED)
-                    log(TAG, "hide  ${fragmentList[currentPosition]}")
+                    debugLog(TAG, "hide  ${fragmentList[currentPosition]}")
                 }
             }
             if (fragmentList[position].isAdded) {
                 beginTransaction.show(fragmentList[position])
-                log(TAG, "show")
+                debugLog(TAG, "show")
             } else {
                 beginTransaction.add(fragmentLayout, fragmentList[position])
-                log(TAG, "add")
+                debugLog(TAG, "add")
             }
             beginTransaction.setMaxLifecycle(fragmentList[position], Lifecycle.State.RESUMED)
             beginTransaction.commit()
 
             currentPosition = position
-            log(TAG, "currentPosition $currentPosition")
+            debugLog(TAG, "currentPosition $currentPosition")
         }
     }
 
@@ -53,7 +53,7 @@ class FragmentControl(private val supportFragmentManager: FragmentManager, priva
         fragmentList.forEach {
             if (it.isAdded) {
                 beginTransaction.remove(it)
-                log(TAG, "remove")
+                debugLog(TAG, "remove")
             }
         }
         beginTransaction.commit()

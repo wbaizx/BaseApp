@@ -16,7 +16,7 @@ import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import com.alibaba.android.arouter.launcher.ARouter
 import com.base.common.base.activity.BaseActivity
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -63,49 +63,49 @@ abstract class BaseAPP : Application(), ImageLoaderFactory {
         private val activityLifecycleCallbacks = object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                 allActivities.add(activity)
-                log(TAG, "onActivityCreated $activity size ${allActivities.size}")
+                debugLog(TAG, "onActivityCreated $activity size ${allActivities.size}")
             }
 
             override fun onActivityStarted(activity: Activity) {
-                log(TAG, "onActivityStarted $activity size ${allActivities.size}")
+                debugLog(TAG, "onActivityStarted $activity size ${allActivities.size}")
             }
 
             override fun onActivityResumed(activity: Activity) {
                 currAct = WeakReference<Activity>(activity)
-                log(TAG, "onActivityResumed $activity size ${allActivities.size}")
+                debugLog(TAG, "onActivityResumed $activity size ${allActivities.size}")
             }
 
             override fun onActivityPaused(activity: Activity) {
-                log(TAG, "onActivityPaused $activity size ${allActivities.size}")
+                debugLog(TAG, "onActivityPaused $activity size ${allActivities.size}")
             }
 
             override fun onActivityStopped(activity: Activity) {
-                log(TAG, "onActivityStopped $activity size ${allActivities.size}")
+                debugLog(TAG, "onActivityStopped $activity size ${allActivities.size}")
             }
 
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-                log(TAG, "onActivitySaveInstanceState $activity size ${allActivities.size}")
+                debugLog(TAG, "onActivitySaveInstanceState $activity size ${allActivities.size}")
             }
 
             override fun onActivityDestroyed(activity: Activity) {
                 //调用exitApp后这里还是会执行
                 allActivities.remove(activity)
-                log(TAG, "onActivityDestroyed $activity size ${allActivities.size}")
+                debugLog(TAG, "onActivityDestroyed $activity size ${allActivities.size}")
             }
         }
 
         @DelicateCoroutinesApi
         fun exitApp() {
             GlobalScope.launch(Dispatchers.Main) {
-                log(TAG, "exitApp size ${allActivities.size}")
+                debugLog(TAG, "exitApp size ${allActivities.size}")
                 allActivities.forEach {
                     if (!it.isDestroyed && !it.isFinishing) {
                         it.finish()
-                        log(TAG, "exitApp finish $it")
+                        debugLog(TAG, "exitApp finish $it")
                     }
                 }
                 allActivities.clear()
-                log(TAG, "exitApp X size ${allActivities.size}")
+                debugLog(TAG, "exitApp X size ${allActivities.size}")
             }
         }
     }
@@ -161,7 +161,7 @@ abstract class BaseAPP : Application(), ImageLoaderFactory {
             }
             .build()
 
-        log(TAG, "newImageLoader ${imageLoader.hashCode()}")
+        debugLog(TAG, "newImageLoader ${imageLoader.hashCode()}")
 
         return imageLoader
     }

@@ -3,7 +3,7 @@ package com.baseapp.main.fragment_example.vp_fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.base.adapter.BaseViewPagerAdapter
-import com.base.common.util.log
+import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityVpfragmentBinding
 import com.baseapp.main.fragment_example.fm.TestFragment
@@ -33,14 +33,14 @@ class VP2FragmentActivity : BaseBindContentActivity<ActivityVpfragmentBinding>()
         binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                log(TAG, "$position -- $positionOffset -- $positionOffsetPixels")
+                debugLog(TAG, "$position -- $positionOffset -- $positionOffsetPixels")
             }
 
             //用这个
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 binding.simpleTabLayout.setPosition(position)
-                log(TAG, "onPageSelected $position")
+                debugLog(TAG, "onPageSelected $position")
             }
 
             override fun onPageScrollStateChanged(state: Int) {
