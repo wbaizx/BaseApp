@@ -1,6 +1,10 @@
 package com.base.common.util
 
+import android.os.Build
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 
 /**
@@ -31,7 +35,8 @@ fun Long.timeL2S(format: String): String {
     try {
         val simpleDateFormat = SimpleDateFormat(format, Locale.getDefault())
         return simpleDateFormat.format(date)
-    } catch (e: Exception) {
+
+    } catch (_: Exception) {
     }
     return "-"
 }
@@ -47,7 +52,7 @@ fun String.timeS2L(format: String): Long {
         if (timeLong != null) {
             return timeLong
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
     }
     return 0
 }
@@ -102,5 +107,45 @@ fun Long.getWeekCn(): String {
         Calendar.FRIDAY -> "星期五"
         Calendar.SATURDAY -> "星期六"
         else -> "星期*"
+    }
+}
+
+/**
+ * 此方法仿照 DateUtils.isToday(time)
+ *
+ * 新版时间日期相关api
+ * LocalDate
+ * LocalTime
+ * LocalDateTime
+ * Instant
+ *
+ * DateTimeFormatte（格式化）
+ */
+fun isToday(time: Long): Boolean {
+    val twoMillis = System.currentTimeMillis()
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val zoneId = ZoneId.systemDefault()
+        val oneInstant = Instant.ofEpochMilli(time)
+
+        val oneLocalDateTime = LocalDateTime.ofInstant(oneInstant, zoneId)
+        val twoInstant = Instant.ofEpochMilli(twoMillis)
+
+        val twoLocalDateTime = LocalDateTime.ofInstant(twoInstant, zoneId)
+
+        return oneLocalDateTime.year == twoLocalDateTime.year
+                && oneLocalDateTime.monthValue == twoLocalDateTime.monthValue
+                && oneLocalDateTime.dayOfMonth == twoLocalDateTime.dayOfMonth
+
+    } else {
+        val cal1 = Calendar.getInstance()
+        cal1.timeInMillis = time
+
+        val cal2 = Calendar.getInstance()
+        cal2.timeInMillis = twoMillis
+
+        return cal1[Calendar.ERA] == cal2[Calendar.ERA]
+                && cal1[Calendar.YEAR] == cal2[Calendar.YEAR]
+                && cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR]
     }
 }

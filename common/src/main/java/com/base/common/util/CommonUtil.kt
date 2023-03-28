@@ -3,6 +3,7 @@ package com.base.common.util
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -28,11 +29,11 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 /**
- * adb logcat -s GL_Thread -f /sdcard/log.txt
+ * adb logcat -s commonUtil_tag -f /sdcard/log.txt
  * 输入GL_Thread的Log日志到sd卡中，需要数据线连接电脑
  */
 
-private const val TAG = "AndroidUtil"
+private const val TAG = "commonUtil_tag"
 
 /**
  * 获取屏幕宽度
@@ -79,12 +80,13 @@ fun getScreenRealHeight(context: Context = getBaseActOrAppContext()): Int {
     return screenHeight
 }
 
-//如果不想要BaseAPP实例（自定义view布局预览会无效），可以换成Resources.getSystem().displayMetrics
 fun sp2px(f: Float) =
-    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, f, getBaseActOrAppContext().resources.displayMetrics)
+//    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, f, getBaseActOrAppContext().resources.displayMetrics)
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, f, Resources.getSystem().displayMetrics)
 
 fun dp2px(f: Float) =
-    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, getBaseActOrAppContext().resources.displayMetrics)
+//    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, getBaseActOrAppContext().resources.displayMetrics)
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, Resources.getSystem().displayMetrics)
 
 /**
  * 获取手机网络连接状况

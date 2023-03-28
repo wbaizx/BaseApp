@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.base.common.util.debugLog
+import com.base.common.util.iteratorForEach
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -87,14 +88,6 @@ abstract class PermissionActivity : AppCompatActivity() {
                 }
 
                 remove()
-            }
-        }
-    }
-
-    private inline fun <T> MutableList<T>.iteratorForEach(action: MutableIterator<T>.(T) -> Unit) {
-        iterator().run {
-            while (hasNext()) {
-                action(next())
             }
         }
     }

@@ -16,7 +16,7 @@ fun launchARouter(path: String): Postcard = ARouter.getInstance().build(path)
  * 使用路由模式判断登录跳转
  */
 fun Postcard.loginNavigation(context: Context, navCallback: NavCallback? = null) {
-    val isLogin = SharedPreferencesUtil.getBoolean(SharedPreferencesUtil.LOGIN, false)
+    val isLogin = getSp().getBoolean(SharedPreferencesUtil.LOGIN, false)
 
     if (isLogin) {
         normalNavigation(context, navCallback)
@@ -36,7 +36,7 @@ fun Postcard.normalNavigation(context: Context, navCallback: NavCallback? = null
  * 使用普通模式判断登录跳转
  */
 fun launchActivityForLogin(context: Context, javaClass: Class<out Activity>) {
-    val isLogin = SharedPreferencesUtil.getBoolean(SharedPreferencesUtil.LOGIN, false)
+    val isLogin = getSp().getBoolean(SharedPreferencesUtil.LOGIN, false)
     if (isLogin) {
         launchActivity(context, javaClass)
     } else {
@@ -55,7 +55,7 @@ fun launchActivity(context: Context, javaClass: Class<out Activity>) {
  * 使用普通模式判断登录跳转
  */
 fun launchActivityForLogin(context: Context, intent: Intent) {
-    val isLogin = SharedPreferencesUtil.getBoolean(SharedPreferencesUtil.LOGIN, false)
+    val isLogin = getSp().getBoolean(SharedPreferencesUtil.LOGIN, false)
     if (isLogin) {
         launchActivity(context, intent)
     } else {

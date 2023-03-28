@@ -63,6 +63,7 @@ abstract class BaseAPP : Application(), ImageLoaderFactory {
         private val activityLifecycleCallbacks = object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                 allActivities.add(activity)
+                currAct = WeakReference<Activity>(activity)
                 debugLog(TAG, "onActivityCreated $activity size ${allActivities.size}")
             }
 
@@ -71,7 +72,6 @@ abstract class BaseAPP : Application(), ImageLoaderFactory {
             }
 
             override fun onActivityResumed(activity: Activity) {
-                currAct = WeakReference<Activity>(activity)
                 debugLog(TAG, "onActivityResumed $activity size ${allActivities.size}")
             }
 

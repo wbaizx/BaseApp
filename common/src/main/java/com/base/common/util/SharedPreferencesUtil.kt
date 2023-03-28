@@ -5,32 +5,20 @@ import android.content.SharedPreferences
 import com.base.common.getBaseApplication
 
 object SharedPreferencesUtil {
-    class KeyValue<T : Comparable<T>>(val key: String)
+    const val LOGIN = "LOGIN"
+}
 
-    val LOGIN = KeyValue<Boolean>("is_login")
+private val spMap by lazy { HashMap<String, SharedPreferences>() }
 
-    private val sharedPreferences: SharedPreferences by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-        getBaseApplication().getSharedPreferences("BASE", Context.MODE_PRIVATE)
+fun getSp(key: String = "BASE"): SharedPreferences {
+    var sp = spMap[key]
+    if (sp == null) {
+        sp = getBaseApplication().getSharedPreferences(key, Context.MODE_PRIVATE)
+        spMap[key] = sp
     }
+    return sp!!
+}
 
-    private val edit by lazy { sharedPreferences.edit() }
-
-    fun <T : Comparable<T>> putData(key: KeyValue<T>, data: T) {
-        when (data) {
-            is String -> edit.putString(key.key, data)
-            is Int -> edit.putInt(key.key, data)
-            is Boolean -> edit.putBoolean(key.key, data)
-            is Float -> edit.putFloat(key.key, data)
-            is Long -> edit.putLong(key.key, data)
-        }
-        edit.apply()
-    }
-
-    fun getBoolean(key: KeyValue<Boolean>, defData: Boolean) = sharedPreferences.getBoolean(key.key, defData)
-
-    fun getString(key: KeyValue<String>, defData: String) = sharedPreferences.getString(key.key, defData)
-
-    fun getInt(key: KeyValue<Int>, defData: Int) = sharedPreferences.getInt(key.key, defData)
-
-    fun getFloat(key: KeyValue<Float>, defData: Float) = sharedPreferences.getFloat(key.key, defData)
+inline fun SharedPreferences.applyEdit(action: SharedPreferences.Editor.() -> Unit) {
+    edit().apply { action() }.apply()
 }

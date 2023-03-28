@@ -57,7 +57,7 @@ class LoginFragment : BaseBindModelFragment<LoginViewModel, FragmentLoginBinding
     }
 
     private fun loginSuccess() {
-        SharedPreferencesUtil.putData(SharedPreferencesUtil.LOGIN, true)
+        getSp().applyEdit { putBoolean(SharedPreferencesUtil.LOGIN, true) }
 
         launchARouter("/main/main_home").normalNavigation(requireContext(), navCallback = object : NavCallback() {
             override fun onArrival(postcard: Postcard?) {

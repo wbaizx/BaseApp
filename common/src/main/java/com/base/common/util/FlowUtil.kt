@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 inline fun <T> Flow<T>.lifecycleCollect(
     owner: LifecycleOwner,
     dispatcher: CoroutineDispatcher = Dispatchers.Main,
-    crossinline call: (T) -> Unit
+    crossinline call: suspend (T) -> Unit
 ) {
     owner.lifecycleScope.launch(dispatcher) {
         owner.repeatOnLifecycle(Lifecycle.State.STARTED) {
