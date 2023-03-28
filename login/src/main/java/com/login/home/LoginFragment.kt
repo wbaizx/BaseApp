@@ -4,6 +4,7 @@ import android.view.View
 import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.facade.callback.NavCallback
 import com.base.common.base.fragment.BaseBindModelFragment
+import com.base.common.helper.lifecycleCollect
 import com.base.common.util.*
 import com.base.common.util.imageload.imgUrl
 import com.base.common.util.imageload.loadImg

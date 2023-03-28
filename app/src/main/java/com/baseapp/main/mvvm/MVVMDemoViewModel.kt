@@ -1,7 +1,7 @@
 package com.baseapp.main.mvvm
 
 import com.base.common.base.BaseViewModel
-import com.base.common.util.createMutableStateFlow
+import com.base.common.helper.createMutableStateFlow
 import com.baseapp.util.room.User
 
 class MVVMDemoViewModel(private val reps: MVVMDemoRepository) : BaseViewModel() {

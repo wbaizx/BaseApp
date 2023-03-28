@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.base.common.R
-import com.base.common.extension.setOnSingleClickListener
+import com.base.common.helper.setOnSingleClickListener
 import com.base.common.util.getScreenWidth
 
 object DialogFactory {

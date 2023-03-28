@@ -2,8 +2,8 @@ package com.baseapp.main.mvvm
 
 import com.base.common.base.activity.BaseBindModelActivity
 import com.base.common.base.adapter.BaseViewPagerAdapter
-import com.base.common.extension.setOnSingleClickListener
-import com.base.common.util.lifecycleCollect
+import com.base.common.helper.setOnSingleClickListener
+import com.base.common.helper.lifecycleCollect
 import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityMvvmDemoBinding

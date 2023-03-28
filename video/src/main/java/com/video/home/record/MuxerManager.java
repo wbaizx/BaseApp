@@ -6,7 +6,7 @@ import android.media.MediaMuxer;
 import android.os.ConditionVariable;
 import android.text.TextUtils;
 
-import com.base.common.util.CommonUtilKt;
+import com.base.common.util.AndroidUtilKt;
 import com.base.common.util.FileUtilKt;
 import com.base.common.util.LogUtilKt;
 
@@ -119,7 +119,7 @@ public class MuxerManager {
                 mediaMuxer.release();
                 LogUtilKt.debugLog(TAG, "stop");
 
-                CommonUtilKt.showToast("录制成功 " + thisPath, null);
+                AndroidUtilKt.showToast("录制成功 " + thisPath, null);
 
             } catch (Exception e) {
                 if (!TextUtils.isEmpty(thisPath)) {
@@ -127,7 +127,7 @@ public class MuxerManager {
                     file.delete();
                 }
 
-                CommonUtilKt.showToast("录制失败", null);
+                AndroidUtilKt.showToast("录制失败", null);
 
             } finally {
                 status = STATUS_READY;

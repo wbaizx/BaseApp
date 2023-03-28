@@ -1,4 +1,4 @@
-package com.base.common.extension
+package com.base.common.helper
 
 import android.app.Activity
 import android.content.Context

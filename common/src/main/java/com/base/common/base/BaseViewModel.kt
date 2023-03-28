@@ -2,7 +2,7 @@ package com.base.common.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.base.common.util.createMutableStateFlow
+import com.base.common.helper.createMutableStateFlow
 import com.base.common.util.debugLog
 import com.base.common.util.showError
 import kotlinx.coroutines.CoroutineScope

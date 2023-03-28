@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.base.common.base.dialog.BaseFragmentDialog
-import com.base.common.extension.setOnSingleClickListener
+import com.base.common.helper.setOnSingleClickListener
 import com.baseapp.R
 
 class DefaultDialog : BaseFragmentDialog {

@@ -6,7 +6,7 @@ import androidx.databinding.ViewDataBinding
 import com.base.common.R
 import com.base.common.databinding.ActivityBaseLayoutBinding
 import com.base.common.databinding.BaseStubErrorLayoutBinding
-import com.base.common.extension.setOnSingleClickListener
+import com.base.common.helper.setOnSingleClickListener
 
 /**
  *  BaseContentActivity 基类

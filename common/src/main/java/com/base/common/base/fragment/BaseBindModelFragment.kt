@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import com.base.common.base.BaseViewModel
 import com.base.common.base.activity.BaseBindModelActivity
-import com.base.common.util.lifecycleCollect
+import com.base.common.helper.lifecycleCollect
 
 abstract class BaseBindModelFragment<VM : BaseViewModel, B : ViewDataBinding> : BaseBindFragment<B>() {
     abstract val vm: VM

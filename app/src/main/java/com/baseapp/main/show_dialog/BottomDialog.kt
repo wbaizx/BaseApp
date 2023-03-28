@@ -7,7 +7,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.base.common.base.dialog.BaseFragmentDialog
-import com.base.common.extension.setOnSingleClickListener
+import com.base.common.helper.setOnSingleClickListener
 import com.baseapp.R
 
 class BottomDialog : BaseFragmentDialog {

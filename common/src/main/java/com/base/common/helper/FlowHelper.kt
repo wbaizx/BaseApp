@@ -1,4 +1,4 @@
-package com.base.common.util
+package com.base.common.helper
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
