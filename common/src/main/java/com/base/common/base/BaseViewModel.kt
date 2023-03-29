@@ -3,67 +3,64 @@ package com.base.common.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.base.common.helper.createMutableStateFlow
+import com.base.common.helper.safeLaunch
+import com.base.common.helper.withThreadPoolContext
 import com.base.common.util.debugLog
 import com.base.common.util.showError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-private const val TAG = "BaseViewModel"
+const val BASE_VIEW_MODEL_TAG = "BASE_VIEW_MODEL_TAG"
 
 abstract class BaseViewModel : ViewModel() {
     val showLoad by lazy { createMutableStateFlow<Boolean>() }
 
-    protected class TaskBuilder {
-        var showLoading: Boolean = true
-        var catch: ((Exception) -> Unit)? = null
+    protected inline fun runTask(
+        showLoading: Boolean = true,
+        noinline catch: ((Throwable) -> Unit)? = null,
+        crossinline block: suspend CoroutineScope.() -> Unit
+    ) =
+        viewModelScope.safeLaunch(Dispatchers.IO, catch = {
+            if (catch != null) {
+                catch(it)
 
-        fun showLoading(showLoading: Boolean): TaskBuilder {
-            this.showLoading = showLoading
-            return this
-        }
+            } else {
+                showError(it)
+            }
 
-        fun catch(catch: ((Exception) -> Unit)? = null): TaskBuilder {
-            this.catch = catch
-            return this
-        }
-    }
-
-    protected fun runTask(showLoading: Boolean = true) = TaskBuilder().showLoading(showLoading)
-
-    protected inline fun runTask(showLoading: Boolean = true, crossinline action: suspend CoroutineScope.() -> Unit) =
-        TaskBuilder().showLoading(showLoading).action(action)
-
-    protected inline fun TaskBuilder.action(crossinline action: suspend CoroutineScope.() -> Unit) =
-        viewModelScope.launch(Dispatchers.IO) {
+        }) {
             try {
                 if (showLoading) {
                     showLoad.emit(true)
-                    //测试用
-                    delay(1000)
                 }
 
-                action()
-
-            } catch (e: Exception) {
-                if (catch != null) {
-                    catch?.invoke(e)
-
-                } else {
-                    showError(e)
+                //测试
+                withContext(Dispatchers.Default) {
+                    debugLog(BASE_VIEW_MODEL_TAG, "test withContext")
+                    delay(500)
                 }
+
+                //测试
+                withThreadPoolContext {
+                    Thread.sleep(500)
+                    debugLog(BASE_VIEW_MODEL_TAG, "test withThreadPoolContext")
+                }
+
+                block()
 
             } finally {
                 if (showLoading) {
-                    debugLog("BaseMVVMViewModel", "runTaskDialog finally")
+                    debugLog(BASE_VIEW_MODEL_TAG, "runTask finally")
                     showLoad.emit(false)
                 }
             }
         }
 
+
     override fun onCleared() {
-        debugLog(TAG, "onCleared")
+        debugLog(BASE_VIEW_MODEL_TAG, "onCleared")
         super.onCleared()
     }
 }

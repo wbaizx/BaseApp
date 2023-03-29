@@ -16,11 +16,10 @@ import coil.disk.DiskCache
 import coil.memory.MemoryCache
 import com.alibaba.android.arouter.launcher.ARouter
 import com.base.common.base.activity.BaseActivity
+import com.base.common.helper.safeLaunch
 import com.base.common.util.debugLog
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -96,7 +95,7 @@ abstract class BaseAPP : Application(), ImageLoaderFactory {
 
         @DelicateCoroutinesApi
         fun exitApp() {
-            GlobalScope.launch(Dispatchers.Main) {
+            GlobalScope.safeLaunch {
                 debugLog(TAG, "exitApp size ${allActivities.size}")
                 allActivities.forEach {
                     if (!it.isDestroyed && !it.isFinishing) {

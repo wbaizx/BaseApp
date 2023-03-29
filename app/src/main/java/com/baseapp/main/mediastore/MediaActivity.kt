@@ -13,10 +13,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.lifecycle.lifecycleScope
 import com.base.common.base.activity.BaseActivity
+import com.base.common.helper.safeLaunch
 import com.base.common.util.debugLog
 import com.baseapp.R
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 private const val TAG = "mediaactivity_tag"
 
@@ -79,7 +79,7 @@ class MediaActivity : BaseActivity() {
     }
 
     private fun query(queryUri: Uri) {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.safeLaunch(Dispatchers.IO) {
             getQueryCursor(queryUri)?.use {
                 val columnId = it.getColumnIndex(MediaStore.Files.FileColumns._ID)
                 val columnData = it.getColumnIndex(MediaStore.Files.FileColumns.DATA)

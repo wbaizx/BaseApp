@@ -11,7 +11,7 @@ class CoilEngine : LoadEngine {
     override fun loadImg(any: Any, img: ImageView) {
         img.load(any) {
             placeholder(R.mipmap.placeholder_icon)
-            error(R.mipmap.test_icon)
+            error(R.mipmap.final_icon)
         }
     }
 

@@ -49,15 +49,14 @@ abstract class BaseListAdapter<M, BH : BaseViewHolder>(@LayoutRes private val la
      * 如果在分页列表中使用自定义空布局并且有点击重新加载的功能，一定要注意调用resetPage()重置分页下标
      */
     fun setDefaultEmptyView(context: Context? = null, root: ViewGroup? = null, emptyClick: ((Int) -> Unit)? = null) {
-        val view: View
-        if (context == null || root == null) {
+        val view = if (context == null || root == null) {
             if (this::rcView.isInitialized) {
-                view = LayoutInflater.from(this.context).inflate(R.layout.list_item_empty, rcView, false)
+                LayoutInflater.from(this.context).inflate(R.layout.list_item_empty, rcView, false)
             } else {
                 throw RuntimeException("调用时机过早，rcView和context还未初始化，需要传递context，root参数")
             }
         } else {
-            view = LayoutInflater.from(context).inflate(R.layout.list_item_empty, root, false)
+            LayoutInflater.from(context).inflate(R.layout.list_item_empty, root, false)
         }
 
         view.setOnClickListener {

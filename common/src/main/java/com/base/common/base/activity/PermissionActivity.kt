@@ -8,10 +8,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
-import com.base.common.util.debugLog
 import com.base.common.helper.iteratorForEach
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.base.common.helper.safeLaunch
+import com.base.common.util.debugLog
 import java.util.*
 
 /**
@@ -54,11 +53,11 @@ abstract class PermissionActivity : AppCompatActivity() {
         perms.any { ActivityCompat.shouldShowRequestPermissionRationale(this, it) }
 
     fun permissionRequest(result: PermissionResult, vararg perms: String) {
-        lifecycleScope.launch(Dispatchers.Main) {
+        lifecycleScope.safeLaunch {
             val requestPerms = perms.filter { !hasPermission(it) }
-            if (requestPerms.isNullOrEmpty()) {
+            if (requestPerms.isEmpty()) {
                 result.onGranted()
-                return@launch
+                return@safeLaunch
             }
 
             if (isShowRequestPermissionRationale(requestPerms)) {

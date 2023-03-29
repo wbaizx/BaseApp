@@ -10,6 +10,7 @@ import com.base.common.BaseAPP
 import com.base.common.base.activity.BaseBindContentActivity
 import com.base.common.base.activity.PermissionResult
 import com.base.common.base.dialog.DialogFactory
+import com.base.common.helper.safeLaunch
 import com.base.common.util.*
 import com.base.common.util.http.ObjectBean
 import com.base.common.util.http.ParcelableBean
@@ -31,7 +32,6 @@ import com.baseapp.main.show_dialog.ShowDialogActivity
 import com.baseapp.main.special_rc.SpecialRCActivity
 import com.baseapp.main.workmanager.MainWork
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "MainActivity"
@@ -52,7 +52,7 @@ class MainActivity : BaseBindContentActivity<ActivityMainBinding>() {
         Debug.stopMethodTracing()
 
         binding.saveImg.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
+            lifecycleScope.safeLaunch(Dispatchers.IO) {
                 val bitmap = ImageUtil.createBitmapFromView(binding.mainImg)
                 val file = ImageUtil.savePicture(bitmap, "test.jpg")
                 if (ImageUtil.updateGallery(file, bitmap.width, bitmap.height)) {

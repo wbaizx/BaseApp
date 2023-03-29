@@ -12,10 +12,11 @@ class LoginViewModel(private val reps: LoginRepository) : BaseViewModel() {
     val successBean by lazy { createMutableStateFlow<LoginBean>() }
     val successResponse by lazy { createMutableStateFlow<Pair<ResponseBody, ResponseBody>>() }
 
-    fun loginBean() = runTask()
-        .showLoading(false)
-        .catch { showToast("error 拦截") }
-        .action { successBean.emit(reps.loginBean()) }
+    fun loginBean() = runTask(false, {
+        showToast("error 拦截")
+    }) {
+        successBean.emit(reps.loginBean())
+    }
 
     fun loginResponseBody() = runTask {
         val async1 = async(Dispatchers.IO) {

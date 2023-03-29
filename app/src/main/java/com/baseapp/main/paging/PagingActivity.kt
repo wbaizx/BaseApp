@@ -3,11 +3,11 @@ package com.baseapp.main.paging
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.base.common.base.activity.BaseBindModelActivity
+import com.base.common.helper.safeLaunch
 import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityPagingDemoBinding
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PagingActivity : BaseBindModelActivity<PagingViewModel, ActivityPagingDemoBinding>() {
@@ -22,14 +22,14 @@ class PagingActivity : BaseBindModelActivity<PagingViewModel, ActivityPagingDemo
     override fun initView() {
         val pagingAdapter = PagingDemoAdapter()
 
-        lifecycleScope.launch {
+        lifecycleScope.safeLaunch {
             vm.flow.collectLatest {
                 debugLog("PagingDemo", "submitData")
                 pagingAdapter.submitData(it)
             }
         }
 
-        lifecycleScope.launch {
+        lifecycleScope.safeLaunch {
             pagingAdapter.loadStateFlow.collectLatest { loadStates ->
                 when (loadStates.refresh) {
                     is LoadState.Loading -> {

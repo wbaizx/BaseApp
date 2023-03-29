@@ -19,11 +19,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.work.await
+import com.base.common.helper.safeLaunch
+import com.base.common.util.debugLog
 import com.base.common.util.getScreenRealHeight
 import com.base.common.util.getScreenWidth
-import com.base.common.util.debugLog
 import com.video.home.SavePicture
-import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
 import java.util.concurrent.Executors
 import kotlin.math.abs
@@ -115,7 +115,7 @@ class CameraControl(private var activity: FragmentActivity?, private var cameraC
         val cameraProvider = cameraProvider ?: throw IllegalStateException("Camera initialization failed.")
 
         debugLog(TAG, "lifecycleScope")
-        activity.lifecycleScope.launch {
+        activity.lifecycleScope.safeLaunch {
             val extensionsManager = ExtensionsManager.getInstanceAsync(activity, cameraProvider).await()
             debugLog(TAG, "BOKEH ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.BOKEH)}")
             debugLog(TAG, "NIGHT ${extensionsManager.isExtensionAvailable(cameraSelector, ExtensionMode.NIGHT)}")

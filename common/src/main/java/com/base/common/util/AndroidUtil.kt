@@ -22,7 +22,6 @@ import com.base.common.util.http.CodeException
 import com.base.common.util.http.NoNetworkException
 import com.google.gson.stream.MalformedJsonException
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.coroutines.CancellationException
 import java.io.File
 import java.lang.ref.WeakReference
 import java.net.SocketTimeoutException
@@ -169,9 +168,8 @@ fun call(photo: String, context: Context = getBaseActOrAppContext()) {
     context.startActivity(intent)
 }
 
-fun showError(e: Exception, context: Context? = null) {
+fun showError(e: Throwable, context: Context? = null) {
     when (e) {
-        is CancellationException -> showToast("协程被取消", context)
         is SocketTimeoutException -> showToast("连接超时", context)
         is UnknownHostException -> showToast("网络错误", context)
         is NoNetworkException -> showToast("无网络", context)

@@ -33,7 +33,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="250dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/test_icon"
+                        android:src="@mipmap/placeholder_icon"
                         app:layout_collapseMode="pin" />
 
                 </LinearLayout>
