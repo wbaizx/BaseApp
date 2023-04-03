@@ -12,14 +12,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlin.coroutines.CoroutineContext
 
-inline fun <T> Flow<T>.lifecycleCollect(
+inline fun <T> Flow<T>.stateFlowLifecycleCollect(
     owner: LifecycleOwner,
     dispatcher: CoroutineContext = Dispatchers.Main,
+    distinctUntilChanged: Boolean = true,
     crossinline block: suspend (T) -> Unit
 ) {
     owner.lifecycleScope.safeLaunch(dispatcher) {
         owner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            distinctUntilChanged().collect { block(it) }
+            if (distinctUntilChanged) {
+                //Invalid for MutableStateFlow
+                distinctUntilChanged().collect { block(it) }
+            } else {
+                collect { block(it) }
+            }
         }
     }
 }

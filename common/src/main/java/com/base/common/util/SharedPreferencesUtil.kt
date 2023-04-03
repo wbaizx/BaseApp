@@ -11,12 +11,11 @@ object SharedPreferencesUtil {
 private val spMap by lazy { HashMap<String, SharedPreferences>() }
 
 fun getSp(key: String = "BASE"): SharedPreferences {
-    var sp = spMap[key]
-    if (sp == null) {
-        sp = getBaseApplication().getSharedPreferences(key, Context.MODE_PRIVATE)
-        spMap[key] = sp
+    return spMap[key] ?: synchronized(spMap) {
+        spMap[key] ?: getBaseApplication().getSharedPreferences(key, Context.MODE_PRIVATE).apply {
+            spMap[key] = this
+        }
     }
-    return sp!!
 }
 
 inline fun SharedPreferences.applyEdit(action: SharedPreferences.Editor.() -> Unit) {

@@ -2,6 +2,7 @@ package com.base.common.helper
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.concurrent.locks.ReentrantLock
 
 inline fun <reified T> List<T>.copyList(): List<T> {
     val gson = Gson()
@@ -23,6 +24,15 @@ inline fun <K, T> MutableMap<K, T>.iteratorForEach(action: MutableIterator<Mutab
         while (hasNext()) {
             action(next().key, next().value)
         }
+    }
+}
+
+inline fun <T> ReentrantLock.safeLock(action: () -> T): T {
+    try {
+        lock()
+        return action()
+    } finally {
+        unlock()
     }
 }
 

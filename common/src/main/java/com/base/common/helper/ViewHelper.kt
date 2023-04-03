@@ -9,27 +9,33 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.base.common.util.debugLog
 
-private var lastTime = 0L
-private const val lock = "lock"
+@Volatile
+var GLOBAL_CLICK_LAST_TIME = 0L
+const val GLOBAL_CLICK_LOOK = "GLOBAL_CLICK_LOOK"
+const val SING_TIME_LIMIT = 500L
 
-fun View.setOnSingleGlobalClickListener(event: (View) -> Unit) {
-    setOnClickListener {
-        synchronized(lock) {
-            if (System.currentTimeMillis() - lastTime > 300L) {
-                lastTime = System.currentTimeMillis()
-                event(it)
-            }
+inline fun checkGlobalClickTime(event: () -> Unit) {
+    synchronized(GLOBAL_CLICK_LOOK) {
+        if (System.currentTimeMillis() - GLOBAL_CLICK_LAST_TIME > SING_TIME_LIMIT) {
+            GLOBAL_CLICK_LAST_TIME = System.currentTimeMillis()
+            event()
         }
     }
 }
 
-/**
- * view防止重复点击的扩展方法
- */
+inline fun View.setOnSingleGlobalClickListener(crossinline event: (View) -> Unit) {
+    setOnClickListener {
+        checkGlobalClickTime {
+            event(it)
+        }
+    }
+}
+
+
 inline fun View.setOnSingleClickListener(crossinline event: (View) -> Unit) {
     var lastTime = 0L
     setOnClickListener {
-        if (System.currentTimeMillis() - lastTime > 800L) {
+        if (System.currentTimeMillis() - lastTime > SING_TIME_LIMIT) {
             lastTime = System.currentTimeMillis()
             event(it)
         } else {

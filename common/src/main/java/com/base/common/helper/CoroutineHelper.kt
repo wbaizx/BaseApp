@@ -2,6 +2,7 @@ package com.base.common.helper
 
 import com.base.common.util.debugLog
 import kotlinx.coroutines.*
+import kotlin.concurrent.thread
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -17,6 +18,7 @@ inline fun CoroutineScope.safeLaunch(
     crossinline block: suspend CoroutineScope.() -> Unit
 ) =
     launch(context = context + CoroutineExceptionHandler { _, e ->
+        //catch回调在启动协程的根context中，例如这里默认Dispatchers.Main，那么catch回调在主线程
         debugLog(COROUTINE_HELPER_TAG, "safeLaunch coroutineExceptionHandler $e")
         catch(e)
 
@@ -32,6 +34,8 @@ inline fun CoroutineScope.safeLaunch(
             } else {
                 throw e
             }
+        } finally {
+            debugLog(COROUTINE_HELPER_TAG, "safeLaunch end")
         }
     }
 
@@ -46,7 +50,7 @@ suspend inline fun <T> withThreadPoolContext(crossinline block: () -> T): T {
     return suspendCancellableCoroutine {
         debugLog(COROUTINE_HELPER_TAG, "suspendCancellableCoroutine")
 
-        Thread {
+        thread {
             try {
                 debugLog(COROUTINE_HELPER_TAG, "suspendCancellableCoroutine start")
                 it.resume(block())
@@ -56,6 +60,6 @@ suspend inline fun <T> withThreadPoolContext(crossinline block: () -> T): T {
 
             }
             debugLog(COROUTINE_HELPER_TAG, "suspendCancellableCoroutine resume")
-        }.start()
+        }
     }
 }

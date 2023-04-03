@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import com.base.common.base.BaseViewModel
 import com.base.common.base.activity.BaseBindModelActivity
-import com.base.common.helper.lifecycleCollect
+import com.base.common.helper.stateFlowLifecycleCollect
 
 abstract class BaseBindModelFragment<VM : BaseViewModel, B : ViewDataBinding> : BaseBindFragment<B>() {
     abstract val vm: VM
@@ -20,7 +20,7 @@ abstract class BaseBindModelFragment<VM : BaseViewModel, B : ViewDataBinding> : 
     }
 
     private fun initBaseObserve() {
-        vm.showLoad.lifecycleCollect(this) {
+        vm.showLoad.stateFlowLifecycleCollect(this) {
             if (it) {
                 showLoadDialog()
             } else {

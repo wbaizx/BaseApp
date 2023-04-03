@@ -30,6 +30,7 @@
         <activity android:name=".main.mvvm.MVVMDemoActivity" />
         <activity android:name=".main.paging.PagingActivity" />
         <activity android:name=".main.mediastore.MediaActivity" />
+        <activity android:name=".main.proxy.ProxyActivity" />
         <activity android:name=".main.shape_btn.ShowShapeBtnActivity" />
         <activity android:name=".main.lyrics.LyricsActivity" />
         <activity android:name=".main.coordinator.CoordinatorActivity" />

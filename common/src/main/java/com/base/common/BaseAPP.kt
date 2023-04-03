@@ -31,7 +31,7 @@ import java.util.*
  * 初始化三方 sdk 还可以可以使用 App Startup 方案
  */
 
-private const val TAG = "Base_Application"
+private const val TAG = "application_tag"
 
 fun isDebug() = BaseAPP.isDebug
 fun getCurrAct(): BaseActivity? {

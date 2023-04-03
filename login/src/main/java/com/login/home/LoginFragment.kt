@@ -4,7 +4,7 @@ import android.view.View
 import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.facade.callback.NavCallback
 import com.base.common.base.fragment.BaseBindModelFragment
-import com.base.common.helper.lifecycleCollect
+import com.base.common.helper.stateFlowLifecycleCollect
 import com.base.common.util.*
 import com.base.common.util.imageload.imgUrl
 import com.base.common.util.imageload.loadImg
@@ -22,12 +22,12 @@ class LoginFragment : BaseBindModelFragment<LoginViewModel, FragmentLoginBinding
     }
 
     override fun initObserve() {
-        vm.successBean.lifecycleCollect(this) {
+        vm.successBean.stateFlowLifecycleCollect(this) {
             debugLog(TAG, "loginSuccessBean -- ${it.data.id}")
             loginSuccess()
         }
 
-        vm.successResponse.lifecycleCollect(this) { (r1, r2) ->
+        vm.successResponse.stateFlowLifecycleCollect(this) { (r1, r2) ->
             debugLog(TAG, "loginSuccessResponseBody -- ${r1.string()} -- ${r2.string()}")
             loginSuccess()
         }

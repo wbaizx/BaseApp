@@ -27,6 +27,7 @@ import com.baseapp.main.lyrics.LyricsActivity
 import com.baseapp.main.mediastore.MediaActivity
 import com.baseapp.main.mvvm.MVVMDemoActivity
 import com.baseapp.main.paging.PagingActivity
+import com.baseapp.main.proxy.ProxyActivity
 import com.baseapp.main.shape_btn.ShowShapeBtnActivity
 import com.baseapp.main.show_dialog.ShowDialogActivity
 import com.baseapp.main.special_rc.SpecialRCActivity
@@ -120,6 +121,10 @@ class MainActivity : BaseBindContentActivity<ActivityMainBinding>() {
             launchActivity(this, MediaActivity::class.java)
         }
 
+        binding.proxy.setOnClickListener {
+            launchActivity(this, ProxyActivity::class.java)
+        }
+
         binding.exit.setOnClickListener {
             DialogFactory.createNormalDialog(
                 this,
@@ -179,7 +184,8 @@ class MainActivity : BaseBindContentActivity<ActivityMainBinding>() {
         WorkManager.getInstance(this).enqueue(mainWorkRequest)
     }
 
-//    override fun onBackPressed() {
+    override fun onBackPressed() {
+        super.onBackPressed()
 //        moveTaskToBack(true)
-//    }
+    }
 }

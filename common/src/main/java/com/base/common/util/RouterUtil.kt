@@ -45,13 +45,6 @@ fun launchActivityForLogin(context: Context, javaClass: Class<out Activity>) {
 }
 
 /**
- * 使用普通模式直接跳转
- */
-fun launchActivity(context: Context, javaClass: Class<out Activity>) {
-    launchActivity(context, Intent(context, javaClass))
-}
-
-/**
  * 使用普通模式判断登录跳转
  */
 fun launchActivityForLogin(context: Context, intent: Intent) {
@@ -61,6 +54,13 @@ fun launchActivityForLogin(context: Context, intent: Intent) {
     } else {
         showToast("未登录", context)
     }
+}
+
+/**
+ * 使用普通模式直接跳转
+ */
+fun launchActivity(context: Context, javaClass: Class<out Activity>) {
+    launchActivity(context, Intent(context, javaClass))
 }
 
 /**

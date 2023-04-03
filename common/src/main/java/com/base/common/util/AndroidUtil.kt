@@ -147,13 +147,8 @@ fun installApk(file: File) {
     intent.addCategory(Intent.CATEGORY_DEFAULT)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     val type = "application/vnd.android.package-archive"
-    val uri: Uri
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        uri = FileProvider.getUriForFile(getBaseApplication(), getBaseApplication().packageName + ".fileProvider", file)
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    } else {
-        uri = Uri.fromFile(file)
-    }
+    val uri = FileProvider.getUriForFile(getBaseApplication(), getBaseApplication().packageName + ".fileProvider", file)
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     intent.setDataAndType(uri, type)
     getBaseActOrAppContext().startActivity(intent)
 }
