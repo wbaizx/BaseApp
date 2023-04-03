@@ -15,8 +15,12 @@ abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
     companion object {
-        private val dao by lazy { Room.databaseBuilder(getBaseApplication(), UserDatabase::class.java, DBNAME).build().userDao() }
+        private val builder by lazy {
+            Room.databaseBuilder(getBaseApplication(), UserDatabase::class.java, DBNAME)
+                .fallbackToDestructiveMigration()
+                .build()
+        }
 
-        fun getUserDao() = dao
+        fun getUserDao() = builder.userDao()
     }
 }
