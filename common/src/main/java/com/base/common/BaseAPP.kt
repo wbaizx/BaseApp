@@ -18,7 +18,6 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.base.common.base.activity.BaseActivity
 import com.base.common.helper.safeLaunch
 import com.base.common.util.debugLog
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import java.lang.ref.WeakReference
 import java.util.*
@@ -93,7 +92,6 @@ abstract class BaseAPP : Application(), ImageLoaderFactory {
             }
         }
 
-        @DelicateCoroutinesApi
         fun exitApp() {
             GlobalScope.safeLaunch {
                 debugLog(TAG, "exitApp size ${allActivities.size}")

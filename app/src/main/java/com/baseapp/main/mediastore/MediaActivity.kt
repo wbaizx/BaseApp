@@ -5,12 +5,12 @@ import android.content.ContentUris
 import android.database.ContentObserver
 import android.database.Cursor
 import android.graphics.BitmapFactory
-import android.media.ExifInterface
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.lifecycleScope
 import com.base.common.base.activity.BaseActivity
 import com.base.common.helper.safeLaunch
