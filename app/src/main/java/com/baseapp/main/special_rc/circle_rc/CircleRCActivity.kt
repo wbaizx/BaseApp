@@ -13,8 +13,7 @@ class CircleRCActivity : BaseBindContentActivity<ActivityCircleRcBinding>() {
 
     override fun initView() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val adapter = CircleAdapter()
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.addItemDecoration(CircleDecoration(adapter))
+        binding.recyclerView.adapter = CircleAdapter()
+        binding.recyclerView.addItemDecoration(CircleDecoration())
     }
 }

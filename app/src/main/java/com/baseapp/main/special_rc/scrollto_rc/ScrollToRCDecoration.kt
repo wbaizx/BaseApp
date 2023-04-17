@@ -6,9 +6,10 @@ import android.graphics.Paint
 import android.graphics.Rect
 import com.base.common.util.dp2px
 import com.base.common.util.sp2px
+import com.base.common.view.OVER_TOP_ANIMATE_PUSH
 import com.base.common.view.SimpleItemDecoration
 
-class ScrollToRCDecoration(adapter: ScrollToRCAdapter) : SimpleItemDecoration<String>(adapter) {
+class ScrollToRCDecoration : SimpleItemDecoration() {
 
     override var decorationHeight: Int = dp2px(90f).toInt()
 
@@ -30,23 +31,21 @@ class ScrollToRCDecoration(adapter: ScrollToRCAdapter) : SimpleItemDecoration<St
         mPaint.textSize = sp2px(18f)
     }
 
-    override fun offsets(outRect: Rect, dataPosition: Int, bean: String) {
+    override fun offsets(outRect: Rect, childPosition: Int) {
         outRect.set(0, decorationHeight, 0, 0)
     }
 
-    override fun drawDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
-        drawTitleArea(c, left, right, top, bottom, dataPosition, bgColor)
+    override fun drawDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, childPosition: Int) {
+        drawTitleArea(c, left, right, top, bottom, childPosition, bgColor)
     }
 
-    override fun needEffects(dataPosition: Int, nextDataPosition: Int, bean: String, nextBean: String): Boolean {
-        return true
+    override fun overTopAnimate(firstVisiblePosition: Int) = OVER_TOP_ANIMATE_PUSH
+
+    override fun drawOverTop(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, firstVisiblePosition: Int) {
+        drawTitleArea(c, left, right, top, bottom, firstVisiblePosition, bgColor2)
     }
 
-    override fun drawOverTop(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
-        drawTitleArea(c, left, right, top, bottom, dataPosition, bgColor2)
-    }
-
-    override fun drawOverDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
+    override fun drawOverDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, childPosition: Int) {
     }
 
     /**

@@ -4,12 +4,17 @@ import android.graphics.*
 import com.base.common.getBaseActOrAppContext
 import com.base.common.util.dp2px
 import com.base.common.util.sp2px
+import com.base.common.view.OVER_TOP_ANIMATE_PUSH
 import com.base.common.view.SimpleItemDecoration
 import com.baseapp.R
+import com.chad.library.adapter.base.BaseQuickAdapter
 
-class Coordinator1Decoration(adapter: Coordinator1Adapter) : SimpleItemDecoration<String>(adapter) {
+class Coordinator1Decoration(private val adapter: BaseQuickAdapter<String, *>) : SimpleItemDecoration() {
 
     override var decorationHeight: Int = dp2px(90f).toInt()
+
+    //列表头部偏移量
+    private val positionOffset = 1
 
     private val bgColor: Int = Color.parseColor("#898989")
     private val bgColor2: Int = Color.parseColor("#FF9500")
@@ -60,29 +65,34 @@ class Coordinator1Decoration(adapter: Coordinator1Adapter) : SimpleItemDecoratio
         mPaint.textAlign = Paint.Align.LEFT
     }
 
-    override fun offsets(outRect: Rect, dataPosition: Int, bean: String) {
-        outRect.set(0, decorationHeight, 0, 0)
+    override fun offsets(outRect: Rect, childPosition: Int) {
+        if (childPosition > -1 + positionOffset)
+            outRect.set(0, decorationHeight, 0, 0)
     }
 
-    override fun drawDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
-        drawTitleArea(c, left, right, top, bottom, dataPosition, bean, bgColor)
+    override fun drawDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, childPosition: Int) {
+        if (childPosition > -1 + positionOffset) {
+            val dataPosition = childPosition - positionOffset
+            drawTitleArea(c, left, right, top, bottom, dataPosition, adapter.getItem(dataPosition) ?: "", bgColor)
+        }
     }
 
-    override fun needEffects(dataPosition: Int, nextDataPosition: Int, bean: String, nextBean: String): Boolean {
-        return true
+    override fun overTopAnimate(firstVisiblePosition: Int) = OVER_TOP_ANIMATE_PUSH
+
+    override fun drawOverTop(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, firstVisiblePosition: Int) {
+        if (firstVisiblePosition > -1 + positionOffset) {
+            val dataPosition = firstVisiblePosition - positionOffset
+            drawTitleArea(c, left, right, top, bottom, dataPosition, adapter.getItem(dataPosition) ?: "", bgColor2)
+        }
     }
 
-    override fun drawOverTop(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
-        drawTitleArea(c, left, right, top, bottom, dataPosition, bean, bgColor2)
-    }
-
-    override fun drawOverDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
+    override fun drawOverDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, childPosition: Int) {
     }
 
     /**
      * 绘制方法
      */
-    private fun drawTitleArea(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, position: Int, bean: String, bgColor: Int) {
+    private fun drawTitleArea(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, position: Int, data: String, bgColor: Int) {
         //画title背景矩形
         mPaint.color = bgColor
         c.drawRect(left, top, right, bottom, mPaint)
@@ -113,7 +123,7 @@ class Coordinator1Decoration(adapter: Coordinator1Adapter) : SimpleItemDecoratio
         //画大title下划线
         mPaint.textSize = textTitleSize
 
-        val titleWidth = mPaint.measureText(bean)
+        val titleWidth = mPaint.measureText(data)
         mPaint.strokeWidth = strokeWidth2
         mPaint.color = textTitleLineColor
         c.drawLine(
@@ -126,7 +136,7 @@ class Coordinator1Decoration(adapter: Coordinator1Adapter) : SimpleItemDecoratio
 
         //画大title字
         mPaint.color = textTitleColor
-        c.drawText(bean, startX, top + decorationHeight / 2 - getTextOffset(mPaint), mPaint)
+        c.drawText(data, startX, top + decorationHeight / 2 - getTextOffset(mPaint), mPaint)
 
 
         //画日期

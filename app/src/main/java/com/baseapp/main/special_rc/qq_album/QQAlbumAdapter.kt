@@ -1,43 +1,50 @@
 package com.baseapp.main.special_rc.qq_album
 
+import android.content.Context
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import com.base.common.base.adapter.BaseHolder
+import com.base.common.base.adapter.mackTestListData
 import com.baseapp.R
-import com.chad.library.adapter.base.BaseDelegateMultiAdapter
-import com.chad.library.adapter.base.delegate.BaseMultiTypeDelegate
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.chad.library.adapter.base.BaseMultiItemAdapter
 
-class QQAlbumAdapter : BaseDelegateMultiAdapter<String, BaseViewHolder>() {
-    private val IMG = 1
-    private val TEXT = 2
+private const val IMG = 1
+private const val TEXT = 2
+
+class QQAlbumAdapter : BaseMultiItemAdapter<String>() {
+    private class ImgHolder(parent: ViewGroup, @LayoutRes id: Int) : BaseHolder(parent, id)
+    private class TextHolder(parent: ViewGroup, @LayoutRes id: Int) : BaseHolder(parent, id)
+
 
     init {
-        repeat(41) {
-            data.add("啦啦")
-        }
+        this.mackTestListData(41)
 
-        setMultiTypeDelegate(object : BaseMultiTypeDelegate<String>() {
-            override fun getItemType(data: List<String>, position: Int): Int {
-                if (position == 0 || position == 4 || position == 12 || position == 17
-                    || position == 22 || position == 28 || position == 36 || position == 39
-                ) {
-                    return TEXT
-                } else {
-                    return IMG
-                }
+        addItemType(TEXT, object : OnMultiItemAdapterListener<String, TextHolder> {
+            override fun onCreate(context: Context, parent: ViewGroup, viewType: Int) = TextHolder(parent, R.layout.multi_text_layout)
+
+            override fun onBind(holder: TextHolder, position: Int, item: String?) {
             }
         })
-        getMultiTypeDelegate()
-            ?.addItemType(TEXT, R.layout.multi_text_layout)
-            ?.addItemType(IMG, R.layout.multi_image_layout)
 
-        setGridSpanSizeLookup { gridLayoutManager, viewType, position ->
-            if (viewType == TEXT) {
-                return@setGridSpanSizeLookup gridLayoutManager.spanCount
+        addItemType(IMG, object : OnMultiItemAdapterListener<String, ImgHolder> {
+            override fun onCreate(context: Context, parent: ViewGroup, viewType: Int) = ImgHolder(parent, R.layout.multi_image_layout)
+
+            override fun onBind(holder: ImgHolder, position: Int, item: String?) {
+            }
+        })
+
+        onItemViewType { position, list -> // 根据数据，返回对应的 ItemViewType
+            if (position == 0 || position == 4 || position == 12 || position == 17
+                || position == 22 || position == 28 || position == 36 || position == 39
+            ) {
+                TEXT
             } else {
-                return@setGridSpanSizeLookup 1
+                IMG
             }
         }
     }
 
-    override fun convert(holder: BaseViewHolder, item: String) {
+    override fun isFullSpanItem(itemType: Int): Boolean {
+        return if (itemType == TEXT) true else super.isFullSpanItem(itemType)
     }
 }

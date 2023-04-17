@@ -1,9 +1,14 @@
 package com.baseapp.main.item_animation.item_animation3
 
 import android.animation.AnimatorListenerAdapter
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.base.common.base.activity.BaseBindContentActivity
+import com.base.common.base.adapter.BaseHolder
+import com.base.common.base.adapter.BaseRecycleAdapter
+import com.base.common.base.adapter.mackTestListData
 import com.baseapp.R
 import com.baseapp.databinding.ActivityItemAnimation3Binding
 
@@ -19,10 +24,23 @@ class ItemAnimation3Activity : BaseBindContentActivity<ActivityItemAnimation3Bin
         binding.recyclerViewV.post { binding.recyclerViewV.translationX = -binding.layout.width.toFloat() }
 
         binding.recyclerViewH.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerViewH.adapter = ItemAnimation3HAdapter()
+        binding.recyclerViewH.adapter = object : BaseRecycleAdapter<String, BaseHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BaseHolder(parent, R.layout.item_anim3h_layout_item)
+
+            override fun onBindViewHolder(holder: BaseHolder, position: Int) {
+                holder.itemView.findViewById<TextView>(R.id.item_text).text = "${getItem(position)} $position"
+            }
+        }.apply { this.mackTestListData() }
 
         binding.recyclerViewV.layoutManager = GridLayoutManager(this, 2)
-        binding.recyclerViewV.adapter = ItemAnimation3VAdapter()
+        binding.recyclerViewV.adapter = object : BaseRecycleAdapter<String, BaseHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BaseHolder(parent, R.layout.item_anim3v_layout_item)
+
+            override fun onBindViewHolder(holder: BaseHolder, position: Int) {
+                holder.itemView.findViewById<TextView>(R.id.item_text).text = "${getItem(position)} $position"
+            }
+        }.apply { this.mackTestListData() }
+
 
         binding.change.setOnClickListener {
             if (isLine) {

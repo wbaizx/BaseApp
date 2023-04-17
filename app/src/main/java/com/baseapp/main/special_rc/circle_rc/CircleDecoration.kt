@@ -5,26 +5,22 @@ import android.graphics.Rect
 import com.base.common.util.dp2px
 import com.base.common.view.SimpleItemDecoration
 
-class CircleDecoration(adapter: CircleAdapter) : SimpleItemDecoration<String>(adapter) {
+class CircleDecoration : SimpleItemDecoration() {
 
     override var decorationHeight: Int = 0
 
-    override fun offsets(outRect: Rect, dataPosition: Int, bean: String) {
-        if (dataPosition != 0) {
+    override fun offsets(outRect: Rect, childPosition: Int) {
+        if (childPosition != 0) {
             outRect.left = -dp2px(22f).toInt()
         }
     }
 
-    override fun drawDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
+    override fun drawDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, childPosition: Int) {
     }
 
-    override fun needEffects(dataPosition: Int, nextDataPosition: Int, bean: String, nextBean: String): Boolean {
-        return false
+    override fun drawOverTop(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, firstVisiblePosition: Int) {
     }
 
-    override fun drawOverTop(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
-    }
-
-    override fun drawOverDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
+    override fun drawOverDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, childPosition: Int) {
     }
 }

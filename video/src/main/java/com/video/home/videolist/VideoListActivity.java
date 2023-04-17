@@ -10,8 +10,6 @@ import com.base.common.base.activity.BaseBindContentActivity;
 import com.base.common.util.FileUtilKt;
 import com.base.common.util.RouterUtilKt;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.chad.library.adapter.base.listener.OnItemLongClickListener;
 import com.video.R;
 import com.video.databinding.ActivityVideoListBinding;
 import com.video.home.play.PlayActivity;
@@ -21,7 +19,7 @@ import java.util.ArrayList;
 
 public class VideoListActivity extends BaseBindContentActivity<ActivityVideoListBinding> {
 
-    private VideoListAdapter videoListAdapter = new VideoListAdapter();
+    private final VideoListAdapter videoListAdapter = new VideoListAdapter();
 
     @Override
     protected int getContentView() {
@@ -51,26 +49,25 @@ public class VideoListActivity extends BaseBindContentActivity<ActivityVideoList
             }
         });
 
-        videoListAdapter.setOnItemClickListener(new OnItemClickListener() {
+        videoListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<VideoListAdapter.FileBean>() {
             @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+            public void onClick(@NonNull BaseQuickAdapter<VideoListAdapter.FileBean, ?> baseQuickAdapter, @NonNull View view, int position) {
                 if (videoListAdapter.isSelectMode()) {
                     videoListAdapter.select(position);
                 } else {
                     Intent intent = new Intent(VideoListActivity.this, PlayActivity.class);
-                    intent.putExtra("path", videoListAdapter.getData().get(position).getFile().getAbsolutePath());
+                    intent.putExtra("path", videoListAdapter.getItem(position).getFile().getAbsolutePath());
                     RouterUtilKt.launchActivity(VideoListActivity.this, intent);
                 }
             }
         });
 
-        videoListAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+        videoListAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener<VideoListAdapter.FileBean>() {
             @Override
-            public boolean onItemLongClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+            public boolean onLongClick(@NonNull BaseQuickAdapter<VideoListAdapter.FileBean, ?> baseQuickAdapter, @NonNull View view, int position) {
                 videoListAdapter.setSelectMode(true);
                 binding.allSelect.setVisibility(View.VISIBLE);
                 binding.delete.setVisibility(View.VISIBLE);
-
                 videoListAdapter.select(position);
                 return true;
             }
@@ -87,7 +84,7 @@ public class VideoListActivity extends BaseBindContentActivity<ActivityVideoList
             for (File f : files) {
                 list.add(new VideoListAdapter.FileBean(f));
             }
-            videoListAdapter.setList(list);
+            videoListAdapter.submitList(list);
         }
     }
 }

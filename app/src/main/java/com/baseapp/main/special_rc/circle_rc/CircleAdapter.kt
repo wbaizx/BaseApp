@@ -1,20 +1,22 @@
 package com.baseapp.main.special_rc.circle_rc
 
+import android.view.ViewGroup
 import android.widget.ImageView
-import com.base.common.base.adapter.BaseListAdapter
+import com.base.common.base.adapter.BaseHolder
+import com.base.common.base.adapter.BaseRecycleAdapter
+import com.base.common.base.adapter.mackTestListData
 import com.base.common.util.imageload.imgUrl
 import com.base.common.util.imageload.loadImg
 import com.baseapp.R
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-class CircleAdapter : BaseListAdapter<String, BaseViewHolder>(R.layout.circle_layout) {
+class CircleAdapter : BaseRecycleAdapter<String, BaseHolder>() {
     init {
-        repeat(15) {
-            data.add("啦啦")
-        }
+        this.mackTestListData()
     }
 
-    override fun convertUI(holder: BaseViewHolder, item: String) {
-        holder.getView<ImageView>(R.id.circleImg).loadImg(imgUrl)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BaseHolder(parent, R.layout.circle_layout)
+
+    override fun onBindViewHolder(holder: BaseHolder, position: Int) {
+        holder.itemView.findViewById<ImageView>(R.id.circleImg).loadImg(imgUrl)
     }
 }

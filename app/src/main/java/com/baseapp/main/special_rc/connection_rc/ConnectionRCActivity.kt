@@ -13,9 +13,7 @@ class ConnectionRCActivity : BaseBindContentActivity<ActivityConnectionRcBinding
 
     override fun initView() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ConnectionAdapter()
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.addItemDecoration(ConnectionDecoration(adapter))
-
+        binding.recyclerView.adapter = ConnectionAdapter()
+        binding.recyclerView.addItemDecoration(ConnectionDecoration())
     }
 }

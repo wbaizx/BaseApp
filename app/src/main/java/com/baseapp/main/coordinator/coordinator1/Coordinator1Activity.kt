@@ -1,13 +1,19 @@
 package com.baseapp.main.coordinator.coordinator1
 
-import android.view.LayoutInflater
-import android.view.View
+import android.content.Context
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.base.common.base.activity.BaseBindContentActivity
+import com.base.common.base.adapter.BaseHolder
+import com.base.common.base.adapter.mackTestListData
 import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityCoordinator1Binding
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseSingleItemAdapter
+import com.chad.library.adapter.base.QuickAdapterHelper
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import kotlin.math.abs
@@ -32,17 +38,26 @@ class Coordinator1Activity : BaseBindContentActivity<ActivityCoordinator1Binding
     }
 
     override fun initView() {
-        val coordinator1Adapter = Coordinator1Adapter()
+        val coordinator1Adapter = object : BaseQuickAdapter<String, BaseHolder>() {
+            override fun onCreateViewHolder(context: Context, parent: ViewGroup, viewType: Int) = BaseHolder(parent, R.layout.item_default_layout)
+
+            override fun onBindViewHolder(holder: BaseHolder, position: Int, item: String?) {
+                holder.itemView.findViewById<TextView>(R.id.item_text).text = "$item ${holder.bindingAdapterPosition}"
+            }
+        }.apply { this.mackTestListData() }
+
+        val helper = QuickAdapterHelper.Builder(coordinator1Adapter).build()
+        helper.addBeforeAdapter(object : BaseSingleItemAdapter<String, BaseHolder>() {
+            override fun onBindViewHolder(holder: BaseHolder, item: String?) {
+            }
+
+            override fun onCreateViewHolder(context: Context, parent: ViewGroup, viewType: Int) = BaseHolder(parent, R.layout.default_header_layout)
+
+        }.apply { item = "" })
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.addItemDecoration(Coordinator1Decoration(coordinator1Adapter))
-        binding.recyclerView.adapter = coordinator1Adapter
-
-        val headerView: View = LayoutInflater.from(this).inflate(
-            R.layout.default_header_layout,
-            binding.recyclerView,
-            false
-        )
-        coordinator1Adapter.addHeaderView(headerView)
+        binding.recyclerView.adapter = helper.adapter
 
         binding.appBar.post {
             val layoutParams = binding.appBar.layoutParams as CoordinatorLayout.LayoutParams

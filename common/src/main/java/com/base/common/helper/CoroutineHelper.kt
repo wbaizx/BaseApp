@@ -56,10 +56,18 @@ suspend inline fun <T> withThreadPoolContext(crossinline block: () -> T): T {
                 it.resume(block())
 
             } catch (e: Exception) {
+                //这里会将异常信息抛向上层
                 it.resumeWithException(e)
-
             }
+
             debugLog(COROUTINE_HELPER_TAG, "suspendCancellableCoroutine resume")
         }
     }
 }
+
+inline fun <T> CoroutineScope.safeLaunchWithThreadPool(crossinline block: () -> T) =
+    safeLaunch {
+        withThreadPoolContext {
+            block()
+        }
+    }

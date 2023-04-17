@@ -6,7 +6,7 @@ import com.base.common.util.dp2px
 import com.base.common.view.SimpleItemDecoration
 import com.baseapp.R
 
-class ConnectionDecoration(adapter: ConnectionAdapter) : SimpleItemDecoration<String>(adapter) {
+class ConnectionDecoration : SimpleItemDecoration() {
     override var decorationHeight: Int = dp2px(8f).toInt()
 
     private val icon = BitmapFactory.decodeResource(getBaseActOrAppContext().resources, R.mipmap.transit_icon)
@@ -23,24 +23,19 @@ class ConnectionDecoration(adapter: ConnectionAdapter) : SimpleItemDecoration<St
         mPaint.isAntiAlias = true
     }
 
-    override fun offsets(outRect: Rect, dataPosition: Int, bean: String) {
-        if (dataPosition != 0) {
+    override fun offsets(outRect: Rect, childPosition: Int) {
+        if (childPosition != 0) {
             outRect.set(0, decorationHeight, 0, 0)
         }
     }
 
-    override fun drawDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
+    override fun drawDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, childPosition: Int) {}
+
+    override fun drawOverTop(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, firstVisiblePosition: Int) {
     }
 
-    override fun needEffects(dataPosition: Int, nextDataPosition: Int, bean: String, nextBean: String): Boolean {
-        return false
-    }
-
-    override fun drawOverTop(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
-    }
-
-    override fun drawOverDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, dataPosition: Int, bean: String) {
-        if (dataPosition != 0) {
+    override fun drawOverDecoration(c: Canvas, left: Float, right: Float, top: Float, bottom: Float, childPosition: Int) {
+        if (childPosition != 0) {
             val dis = (right - left) / 3
 
             drawBitmap(left + dis, top, c)
@@ -49,13 +44,13 @@ class ConnectionDecoration(adapter: ConnectionAdapter) : SimpleItemDecoration<St
     }
 
     private fun drawBitmap(startX: Float, top: Float, c: Canvas) {
-        val X = startX - icon.width / 2
-        val Y = top + decorationHeight / 2 - icon.height / 2
+        val x = startX - icon.width / 2
+        val y = top + decorationHeight / 2 - icon.height / 2
         rectF.set(
-            X,
-            Y,
-            X + icon.width,
-            Y + icon.height
+            x,
+            y,
+            x + icon.width,
+            y + icon.height
         )
         c.drawBitmap(icon, null, rectF, mPaint)
     }

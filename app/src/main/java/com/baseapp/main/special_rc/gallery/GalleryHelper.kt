@@ -183,7 +183,5 @@ class GalleryHelper(private var pageChangeListener: ((Int) -> Unit)? = null) {
 
             return if (position == 0) startOffset else endOffset
         }
-
     }
-
 }

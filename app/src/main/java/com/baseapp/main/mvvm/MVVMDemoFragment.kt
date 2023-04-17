@@ -2,14 +2,18 @@ package com.baseapp.main.mvvm
 
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.base.common.base.fragment.BaseBindModelFragment
+import com.base.common.helper.setOnSingleClickListener
 import com.baseapp.R
 import com.baseapp.databinding.FragmentMvvmDemoFBinding
 import com.baseapp.main.mvvm.adapter.MVVMBindAdapter
-import com.baseapp.main.mvvm.adapter.MVVMListAdapter
 import com.baseapp.main.mvvm.adapter.MVVMBindBean
+import com.baseapp.main.mvvm.adapter.MVVMListAdapter
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
  * 测试 mvvm 下的 adapter
@@ -40,13 +44,17 @@ class MVVMDemoFragment : BaseBindModelFragment<MVVMDemoViewModel, FragmentMvvmDe
 //        refreshLayout1.setRefreshHeader(ClassicsHeader(context))
 //        refreshLayout1.setRefreshFooter(ClassicsFooter(context))
 
-        binding.recyclerView1.adapter = MVVMBindAdapter().apply {
+        val adapter = MVVMBindAdapter()
+        binding.recyclerView1.adapter = adapter
+        adapter.isEmptyViewEnable = true
+        adapter.setEmptyViewLayout(requireContext(), R.layout.list_item_empty)
 
-            setDefaultEmptyView(this@MVVMDemoFragment.context, binding.recyclerView1)
+        binding.refreshLayout1.setOnRefreshListener {
+            binding.refreshLayout1.load(adapter)
+        }
 
-            setRefreshAndLoadMore(binding.refreshLayout1) {
-                Handler(Looper.getMainLooper()).postDelayed({ addPageData(arrayListOf(MVVMBindBean("5"))) }, 1500)
-            }
+        binding.refreshLayout1.setOnLoadMoreListener {
+            binding.refreshLayout1.load(adapter)
         }
     }
 
@@ -54,16 +62,29 @@ class MVVMDemoFragment : BaseBindModelFragment<MVVMDemoViewModel, FragmentMvvmDe
         val adapter = MVVMListAdapter()
 
         binding.recyclerView2.adapter = adapter
+        adapter.isEmptyViewEnable = true
+        val empty = LayoutInflater.from(context).inflate(R.layout.list_item_empty, binding.recyclerView2, false)
+        empty.setOnSingleClickListener {
+            Handler(Looper.getMainLooper()).postDelayed({ adapter.addAll(arrayListOf(MVVMBindBean("5"))) }, 1500)
+        }
+        adapter.emptyView = empty
 
-        adapter.setDefaultEmptyView(emptyClick = {
-            Handler(Looper.getMainLooper()).postDelayed({ adapter.addPageData(arrayListOf(MVVMBindBean("5"))) }, 1500)
-        })
+        binding.refreshLayout2.setOnRefreshListener {
+            binding.refreshLayout2.load(adapter)
+        }
 
-        adapter.setRefreshAndLoadMore(binding.refreshLayout2) {
-            Handler(Looper.getMainLooper()).postDelayed({ adapter.addPageData(null) }, 1500)
+        binding.refreshLayout2.setOnLoadMoreListener {
+            binding.refreshLayout2.load(adapter)
         }
     }
 
+    private fun SmartRefreshLayout.load(adapter: BaseQuickAdapter<MVVMBindBean, *>) {
+        Handler(Looper.getMainLooper()).postDelayed({
+            adapter.addAll(arrayListOf(MVVMBindBean("5")))
+            finishLoadMore()
+            finishRefresh()
+        }, 1500)
+    }
 
     override fun onFirstVisible() {
     }

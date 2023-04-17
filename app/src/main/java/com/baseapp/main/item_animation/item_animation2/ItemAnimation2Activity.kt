@@ -37,7 +37,6 @@ class ItemAnimation2Activity : BaseBindContentActivity<ActivityItemAnimation2Bin
                 adapter.notifyItemRangeChanged(0, adapter.itemCount)
             }
             isLine = !isLine
-
         }
     }
 }

@@ -1,18 +1,16 @@
 package com.baseapp.main.item_animation.item_animation1
 
-import com.base.common.base.adapter.BaseListAdapter
+import android.view.ViewGroup
+import android.widget.TextView
+import com.base.common.base.adapter.BaseHolder
+import com.base.common.base.adapter.BaseRecycleAdapter
 import com.baseapp.R
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-class ItemAnimation1Adapter : BaseListAdapter<String, BaseViewHolder>(R.layout.item_default_layout) {
-    init {
-        repeat(20) {
-            data.add("啦啦")
-        }
+class ItemAnimation1Adapter : BaseRecycleAdapter<String, BaseHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BaseHolder(parent, R.layout.item_default_layout)
+
+    override fun onBindViewHolder(holder: BaseHolder, position: Int) {
+        holder.itemView.findViewById<TextView>(R.id.item_text).text = "${getItem(position)} ${holder.bindingAdapterPosition}"
     }
-
-    override fun convertUI(holder: BaseViewHolder, item: String) {
-        holder.setText(R.id.item_text, "$item --  ${holder.bindingAdapterPosition - headerLayoutCount}")
-    }
-
 }

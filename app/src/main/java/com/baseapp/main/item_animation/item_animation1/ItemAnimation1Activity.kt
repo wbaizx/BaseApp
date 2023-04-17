@@ -2,6 +2,7 @@ package com.baseapp.main.item_animation.item_animation1
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.base.common.base.activity.BaseBindContentActivity
+import com.base.common.base.adapter.mackTestListData
 import com.baseapp.R
 import com.baseapp.databinding.ActivityItemAnimation1Binding
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
@@ -13,10 +14,10 @@ class ItemAnimation1Activity : BaseBindContentActivity<ActivityItemAnimation1Bin
 
     override fun initView() {
         val adapter = ItemAnimation1Adapter()
+        adapter.mackTestListData()
 
         binding.change.setOnClickListener {
-            adapter.data.add(5, "测试")
-            adapter.notifyItemInserted(5)
+            adapter.putData(5, "测试")
         }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)

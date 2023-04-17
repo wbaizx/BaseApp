@@ -1,9 +1,9 @@
 package com.baseapp.main.special_rc.qq_album
 
-import androidx.recyclerview.widget.GridLayoutManager
 import com.base.common.base.activity.BaseBindContentActivity
 import com.baseapp.R
 import com.baseapp.databinding.ActivityQqalbumBinding
+import com.chad.library.adapter.base.layoutmanager.QuickGridLayoutManager
 
 /**
  * 使用 多布局 + setSpanSizeLookup 方式
@@ -17,7 +17,7 @@ class QQAlbumActivity : BaseBindContentActivity<ActivityQqalbumBinding>() {
     override fun viewBind(binding: ActivityQqalbumBinding) {}
 
     override fun initView() {
-        binding.recyclerView.layoutManager = GridLayoutManager(this, 4)
+        binding.recyclerView.layoutManager = QuickGridLayoutManager(this, 4)
         binding.recyclerView.adapter = QQAlbumAdapter()
     }
 }

@@ -1,8 +1,12 @@
 package com.baseapp.main.special_rc.scrollto_rc
 
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.common.base.activity.BaseBindContentActivity
+import com.base.common.base.adapter.BaseHolder
+import com.base.common.base.adapter.BaseRecycleAdapter
 import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityScrollToRcBinding
@@ -11,8 +15,14 @@ class ScrollToRCActivity : BaseBindContentActivity<ActivityScrollToRcBinding>() 
     private val TAG = "ScrollToRCActivity"
 
     private val manager = LinearLayoutManager(this)
-    private val adapter = ScrollToRCAdapter()
-    private val decoration = ScrollToRCDecoration(adapter)
+    private val adapter = object : BaseRecycleAdapter<String, BaseHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BaseHolder(parent, R.layout.scorll_to_rc_layout)
+
+        override fun onBindViewHolder(holder: BaseHolder, position: Int) {
+            holder.itemView.findViewById<TextView>(R.id.item_text).text = "${getItem(position)} ${holder.bindingAdapterPosition}"
+        }
+    }
+    private val decoration = ScrollToRCDecoration()
 
     override fun getContentView() = R.layout.activity_scroll_to_rc
 
@@ -29,7 +39,7 @@ class ScrollToRCActivity : BaseBindContentActivity<ActivityScrollToRcBinding>() 
         repeat(20) {
             data.add("第 $it 个")
         }
-        adapter.setList(data)
+        adapter.submitList(data)
         binding.simpleTabLayout.setData(data)
     }
 

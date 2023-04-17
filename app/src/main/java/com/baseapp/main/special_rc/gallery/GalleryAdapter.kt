@@ -1,18 +1,20 @@
 package com.baseapp.main.special_rc.gallery
 
-import com.base.common.base.adapter.BaseListAdapter
+import android.view.ViewGroup
+import android.widget.TextView
+import com.base.common.base.adapter.BaseHolder
+import com.base.common.base.adapter.BaseRecycleAdapter
+import com.base.common.base.adapter.mackTestListData
 import com.baseapp.R
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
-class GalleryAdapter : BaseListAdapter<String, BaseViewHolder>(R.layout.item_gallery_layout_item) {
+class GalleryAdapter : BaseRecycleAdapter<String, BaseHolder>() {
     init {
-        repeat(20) {
-            data.add("啦啦")
-        }
+        this.mackTestListData()
     }
 
-    override fun convertUI(holder: BaseViewHolder, item: String) {
-        holder.setText(R.id.item_text, "$item --  ${holder.bindingAdapterPosition - headerLayoutCount}")
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BaseHolder(parent, R.layout.item_gallery_layout_item)
 
+    override fun onBindViewHolder(holder: BaseHolder, position: Int) {
+        holder.itemView.findViewById<TextView>(R.id.item_text).text = "${getItem(position)} ${holder.bindingAdapterPosition}"
+    }
 }

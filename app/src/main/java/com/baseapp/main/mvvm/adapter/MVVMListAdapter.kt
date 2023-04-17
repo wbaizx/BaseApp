@@ -1,18 +1,17 @@
 package com.baseapp.main.mvvm.adapter
 
-import com.base.common.base.adapter.BaseListAdapter
+import android.content.Context
+import android.view.ViewGroup
+import android.widget.TextView
+import com.base.common.base.adapter.BaseHolder
 import com.baseapp.R
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.chad.library.adapter.base.BaseQuickAdapter
 
-class MVVMListAdapter : BaseListAdapter<MVVMBindBean, BaseViewHolder>(R.layout.mvvm_list_item) {
+class MVVMListAdapter : BaseQuickAdapter<MVVMBindBean, BaseHolder>() {
 
-    init {
-        repeat(20) {
-            data.add(MVVMBindBean(it.toString()))
-        }
-    }
+    override fun onCreateViewHolder(context: Context, parent: ViewGroup, viewType: Int) = BaseHolder(parent, R.layout.mvvm_list_item)
 
-    override fun convertUI(holder: BaseViewHolder, item: MVVMBindBean) {
-        holder.setText(R.id.tex, item.id)
+    override fun onBindViewHolder(holder: BaseHolder, position: Int, item: MVVMBindBean?) {
+        holder.itemView.findViewById<TextView>(R.id.tex).text = item?.id
     }
 }

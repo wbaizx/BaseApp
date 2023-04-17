@@ -4,22 +4,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.base.common.base.adapter.BaseHolder;
 import com.base.common.util.imageload.LoadImageKt;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.video.R;
 import com.video.home.gl.renderer.filter.FilterType;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 public class FilterDialog {
     private BottomSheetDialog bottomSheetDialog;
@@ -33,19 +32,25 @@ public class FilterDialog {
             bottomSheetDialog.setContentView(recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
 
-            BaseQuickAdapter<FilterType, BaseViewHolder> adapter = new BaseQuickAdapter<FilterType, BaseViewHolder>(R.layout.bottom_filter_item) {
+            BaseQuickAdapter<FilterType, BaseHolder> adapter = new BaseQuickAdapter<FilterType, BaseHolder>() {
+                @NonNull
                 @Override
-                protected void convert(@NotNull BaseViewHolder holder, FilterType type) {
-                    LoadImageKt.loadImg(holder.getView(R.id.filterItemImg), type.getPng());
-                    holder.setText(R.id.name, type.getName());
+                protected BaseHolder onCreateViewHolder(@NonNull Context context, @NonNull ViewGroup viewGroup, int position) {
+                    return new BaseHolder(viewGroup, R.layout.bottom_filter_item);
+                }
+
+                @Override
+                protected void onBindViewHolder(@NonNull BaseHolder baseHolder, int position, @Nullable FilterType type) {
+                    LoadImageKt.loadImg(baseHolder.itemView.findViewById(R.id.filterItemImg), type.getPng());
+                    TextView name = baseHolder.itemView.findViewById(R.id.name);
+                    name.setText(type.getName());
                 }
             };
-            ArrayList<FilterType> filterTypes = FilterType.getList();
-            adapter.setList(filterTypes);
-            adapter.setOnItemClickListener(new com.chad.library.adapter.base.listener.OnItemClickListener() {
+            adapter.submitList(FilterType.getList());
+            adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<FilterType>() {
                 @Override
-                public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                    onItemClickListener.onItemClick(filterTypes.get(position));
+                public void onClick(@NonNull BaseQuickAdapter<FilterType, ?> baseQuickAdapter, @NonNull View view, int position) {
+                    onItemClickListener.onItemClick(adapter.getItem(position));
                 }
             });
             recyclerView.setAdapter(adapter);
