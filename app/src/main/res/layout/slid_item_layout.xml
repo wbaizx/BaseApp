@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.baseapp.main.special_rc.slide_rc.ListSlidMenuItem
+        android:id="@+id/slidMenu"
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/selectIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:src="@mipmap/filter_aestheticism"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/ip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:text="66.66.66.6666.66.66.6666.66.66.6666.66.66.66"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@+id/describe"
+                app:layout_constraintEnd_toStartOf="@+id/port"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/selectIcon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/port"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="5dp"
+                android:text=':1080'
+                app:layout_constraintBottom_toBottomOf="@+id/ip"
+                app:layout_constraintEnd_toStartOf="@+id/info"
+                app:layout_constraintStart_toEndOf="@+id/ip"
+                app:layout_constraintTop_toTopOf="@+id/ip" />
+
+            <TextView
+                android:id="@+id/describe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/ip"
+                app:layout_constraintTop_toBottomOf="@+id/ip"
+                tools:text="connected (ping: 88 ms)" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="11dp"
+                android:padding="5dp"
+                android:src="@mipmap/filter_aestheticism"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/delete"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@color/color_336"
+            android:gravity="center"
+            android:text="remove"
+            android:textColor="@color/color_white"
+            android:textSize="16sp" />
+    </com.baseapp.main.special_rc.slide_rc.ListSlidMenuItem>
+
+</layout>

@@ -50,6 +50,16 @@
             app:layout_constraintTop_toBottomOf="@+id/scrollToRecyclerView" />
 
         <Button
+            android:id="@+id/slid_rc"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="带侧滑菜单的recyclerView"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollToRecyclerView" />
+
+        <Button
             android:id="@+id/connectionRecyclerView"
             android:layout_width="0dp"
             android:layout_height="50dp"

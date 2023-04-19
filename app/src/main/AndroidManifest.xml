@@ -48,6 +48,7 @@
         <activity android:name=".main.special_rc.gallery.GalleryActivity" />
         <activity android:name=".main.special_rc.indicator.PictureIndicatorActivity" />
         <activity android:name=".main.special_rc.qq_album.QQAlbumActivity" />
+        <activity android:name=".main.special_rc.slide_rc.SlideRCActivity" />
         <activity android:name=".main.special_rc.scrollto_rc.ScrollToRCActivity" />
         <activity android:name=".main.special_rc.connection_rc.ConnectionRCActivity" />
         <activity android:name=".main.special_rc.circle_rc.CircleRCActivity" />

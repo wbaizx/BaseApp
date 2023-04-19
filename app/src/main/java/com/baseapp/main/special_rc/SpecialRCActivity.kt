@@ -11,6 +11,7 @@ import com.baseapp.main.special_rc.gallery.GalleryActivity
 import com.baseapp.main.special_rc.indicator.PictureIndicatorActivity
 import com.baseapp.main.special_rc.qq_album.QQAlbumActivity
 import com.baseapp.main.special_rc.scrollto_rc.ScrollToRCActivity
+import com.baseapp.main.special_rc.slide_rc.SlideRCActivity
 
 class SpecialRCActivity : BaseBindContentActivity<ActivitySpecialRcBinding>() {
     override fun getContentView() = R.layout.activity_special_rc
@@ -32,6 +33,10 @@ class SpecialRCActivity : BaseBindContentActivity<ActivitySpecialRcBinding>() {
 
         binding.qqAlbum.setOnClickListener {
             launchActivity(this, QQAlbumActivity::class.java)
+        }
+
+        binding.slidRc.setOnClickListener {
+            launchActivity(this, SlideRCActivity::class.java)
         }
 
         binding.connectionRecyclerView.setOnClickListener {
