@@ -141,7 +141,7 @@ fun getVersionCodeFromApk(filePath: String): Long {
 /**
  * 安装apk
  * 另外还需要在manifest和xml中配置
- * 注意权限 REQUEST_INSTALL_PACKAGES
+ * 注意权限 REQUEST_INSTALL_PACKAGES, canRequestPackageInstalls
  */
 fun installApk(file: File) {
     val intent = Intent(Intent.ACTION_VIEW)

@@ -14,7 +14,12 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup"
         tools:replace="android:label">
-        <!-- 如果 LAUNCHER主页面的 launchMode="singleTask" 只要切换后台重进都会退回到 LAUNCHER主页面 -->
+        <!--
+        如果 LAUNCHER主页面的 launchMode="singleTask" 只要切换后台重进都会退回到 LAUNCHER主页面
+        FLAG_ACTIVITY_NEW_TASK和 singleTask区别:
+        https://www.jianshu.com/p/2c782e2e4be3
+        https://www.jianshu.com/p/05adf5e126e3
+        -->
         <activity
             android:name=".main.MainActivity"
             android:exported="true"
