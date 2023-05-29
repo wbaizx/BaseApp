@@ -22,7 +22,9 @@ inline fun <T> MutableList<T>.iteratorForEach(action: MutableIterator<T>.(T) -> 
 inline fun <K, T> MutableMap<K, T>.iteratorForEach(action: MutableIterator<MutableMap.MutableEntry<K, T>>.(K, T) -> Unit) {
     iterator().run {
         while (hasNext()) {
-            action(next().key, next().value)
+            next().let {
+                action(it.key, it.value)
+            }
         }
     }
 }

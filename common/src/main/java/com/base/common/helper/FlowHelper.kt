@@ -9,9 +9,11 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * don't use distinctUntilChanged()
+ */
 inline fun <T> Flow<T>.stateFlowLifecycleCollect(
     owner: LifecycleOwner,
     dispatcher: CoroutineContext = Dispatchers.Main,
@@ -19,12 +21,15 @@ inline fun <T> Flow<T>.stateFlowLifecycleCollect(
     crossinline block: suspend (T) -> Unit
 ) {
     owner.lifecycleScope.safeLaunch(dispatcher) {
+        var lastValue: T? = null
+        var first = true
         owner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            if (distinctUntilChanged) {
-                //Invalid for MutableStateFlow
-                distinctUntilChanged().collect { block(it) }
-            } else {
-                collect { block(it) }
+            collect {
+                if (!distinctUntilChanged || lastValue != it || first) {
+                    first = false
+                    block(it)
+                }
+                lastValue = it
             }
         }
     }
