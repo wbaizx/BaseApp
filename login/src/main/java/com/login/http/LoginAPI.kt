@@ -9,6 +9,7 @@ import retrofit2.http.Streaming
 interface LoginAPI {
 //    如果同时携带String或json类型数据（Date也是String型），需要使用RequestBody包装，例如
 //    @Part("recordTime") RequestBody recordTime
+//    Response<ResponseBody>是原始返回数据，ResponseBody就是其调用body的值
 //    String传递时这样包装 RequestBody.create(MediaType.parse("multipart/form-data"), Str);
 //    json 传递时这样包装 RequestBody.create(MediaType.parse("application/json; charset=utf-8"), Str);
 
