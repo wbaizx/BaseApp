@@ -24,11 +24,13 @@ inline fun <T> Flow<T>.stateFlowLifecycleCollect(
         var lastValue: T? = null
         var first = true
         owner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            var resume = true
             collect {
-                if (!distinctUntilChanged || lastValue != it || first) {
-                    first = false
+                if (first || lastValue != it || (!distinctUntilChanged && !resume)) {
                     block(it)
                 }
+                resume = false
+                first = false
                 lastValue = it
             }
         }
