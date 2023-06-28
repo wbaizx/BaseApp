@@ -31,6 +31,9 @@ import java.net.UnknownHostException
 /**
  * adb logcat -s commonUtil_tag -f /sdcard/log.txt
  * 输入GL_Thread的Log日志到sd卡中，需要数据线连接电脑
+ *
+ *
+ * 注意屏幕宽高，dp转化等操作中，页面context、application、Resources.getSystem()分别得到的值可能不同
  */
 
 private const val TAG = "commonUtil_tag"
@@ -87,6 +90,21 @@ fun sp2px(f: Float) =
 fun dp2px(f: Float) =
 //    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, getBaseActOrAppContext().resources.displayMetrics)
     TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, Resources.getSystem().displayMetrics)
+
+/**
+ * 屏幕以360dp为准进行适配，应在activity和fragment等页面载体（base基类中）加载view布局前调用
+ */
+fun setDensity(context: Context) {
+    val displayMetrics = context.resources.displayMetrics
+
+    val density = displayMetrics.density
+    val scaledDensity = displayMetrics.scaledDensity
+
+    val targetDisplay = displayMetrics.widthPixels / 360f
+    displayMetrics.density = targetDisplay
+    displayMetrics.scaledDensity = scaledDensity / density * targetDisplay
+    displayMetrics.densityDpi = (targetDisplay * 160).toInt()
+}
 
 /**
  * 获取手机网络连接状况
