@@ -92,18 +92,20 @@ fun dp2px(f: Float) =
     TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, Resources.getSystem().displayMetrics)
 
 /**
- * 屏幕以360dp为准进行适配，应在activity和fragment等页面载体（base基类中）加载view布局前调用
+ * 将屏幕以360dp为准进行适配
+ * 应在activity、fragment、dialog等页面载体（base基类中更方便）加载view布局前调用
  */
 fun setDensity(context: Context) {
-    val displayMetrics = context.resources.displayMetrics
+    val applicationDM = getBaseApplication().resources.displayMetrics
 
-    val density = displayMetrics.density
-    val scaledDensity = displayMetrics.scaledDensity
+    val density = applicationDM.density
+    val scaledDensity = applicationDM.scaledDensity
+    val targetDisplay = applicationDM.widthPixels / 360f
 
-    val targetDisplay = displayMetrics.widthPixels / 360f
-    displayMetrics.density = targetDisplay
-    displayMetrics.scaledDensity = scaledDensity / density * targetDisplay
-    displayMetrics.densityDpi = (targetDisplay * 160).toInt()
+    val pageDM = context.resources.displayMetrics
+    pageDM.density = targetDisplay
+    pageDM.scaledDensity = scaledDensity / density * targetDisplay
+    pageDM.densityDpi = (targetDisplay * 160).toInt()
 }
 
 /**
