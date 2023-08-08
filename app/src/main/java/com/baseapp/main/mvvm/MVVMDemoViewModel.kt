@@ -1,7 +1,7 @@
 package com.baseapp.main.mvvm
 
 import com.base.common.base.BaseViewModel
-import com.base.common.helper.createMutableStateFlow
+import com.base.common.helper.createStickStateFlow
 import com.base.common.util.debugLog
 import com.baseapp.util.room.User
 
@@ -9,7 +9,7 @@ private const val ROOM_TAG = "ROOM_TAG"
 
 class MVVMDemoViewModel(private val reps: MVVMDemoRepository) : BaseViewModel() {
 
-    val name = createMutableStateFlow("")
+    val name = createStickStateFlow("")
 
     fun saveData() = runTask {
         val ls = arrayListOf<User>()

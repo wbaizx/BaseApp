@@ -9,34 +9,69 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlin.coroutines.CoroutineContext
+
+/**
+ *  think Channel
+ */
+
+
+fun <T> createStateFlow() = MutableSharedFlow<T>(0, 1, BufferOverflow.DROP_OLDEST)
+
+fun <T> createStickStateFlow() = MutableSharedFlow<T>(1, 0, BufferOverflow.DROP_OLDEST)
+
+fun <T> createStickStateFlow(default: T) = MutableStateFlow(default)
 
 /**
  * don't use distinctUntilChanged()
  */
-inline fun <T> Flow<T>.stateFlowLifecycleCollect(
-    owner: LifecycleOwner,
-    dispatcher: CoroutineContext = Dispatchers.Main,
-    distinctUntilChanged: Boolean = true,
-    crossinline block: suspend (T) -> Unit
-) {
-    owner.lifecycleScope.safeLaunch(dispatcher) {
-        var lastValue: T? = null
+inline fun <T> Flow<T>.distinctLifecycleCollect(owner: LifecycleOwner, crossinline block: suspend (T) -> Unit) =
+    owner.lifecycleScope.safeLaunch(Dispatchers.Main) {
+        var last: T? = null
+        var first = true
+        owner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            collect {
+                if (first || last != it) {
+                    block(it)
+                }
+                first = false
+                last = it
+            }
+        }
+    }
+
+inline fun <T> Flow<T>.lifecycleCollect(owner: LifecycleOwner, crossinline block: suspend (T) -> Unit) =
+    owner.lifecycleScope.safeLaunch(Dispatchers.Main) {
+        var last: T? = null
         var first = true
         owner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             var resume = true
             collect {
-                if (first || lastValue != it || (!distinctUntilChanged && !resume)) {
+                if (first || !resume || last != it) {
                     block(it)
                 }
                 resume = false
                 first = false
-                lastValue = it
+                last = it
             }
         }
     }
-}
 
-fun <T> createMutableStateFlow() = MutableSharedFlow<T>(1, 0, BufferOverflow.DROP_OLDEST)
-
-fun <T> createMutableStateFlow(default: T) = MutableStateFlow(default)
+//inline fun <T> Flow<T>.distinctCollect(owner: LifecycleOwner, crossinline block: suspend (T) -> Unit) =
+//    owner.lifecycleScope.tryLaunch(Dispatchers.Main) {
+//        var last: T? = null
+//        var first = true
+//        collect {
+//            if (first || last != it) {
+//                block(it)
+//            }
+//            first = false
+//            last = it
+//        }
+//    }
+//
+//inline fun <T> Flow<T>.collect(owner: LifecycleOwner, crossinline block: suspend (T) -> Unit) =
+//    owner.lifecycleScope.tryLaunch(Dispatchers.Main) {
+//        collect {
+//            block(it)
+//        }
+//    }

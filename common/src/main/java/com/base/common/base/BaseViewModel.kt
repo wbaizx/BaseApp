@@ -2,7 +2,7 @@ package com.base.common.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.base.common.helper.createMutableStateFlow
+import com.base.common.helper.createStickStateFlow
 import com.base.common.helper.safeLaunch
 import com.base.common.helper.withThreadPoolContext
 import com.base.common.util.debugLog
@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 const val BASE_VIEW_MODEL_TAG = "BASE_VIEW_MODEL_TAG"
 
 abstract class BaseViewModel : ViewModel() {
-    val showLoad by lazy { createMutableStateFlow<Boolean>() }
+    val showLoad by lazy { createStickStateFlow<Boolean>() }
 
     protected inline fun runTask(
         showLoading: Boolean = true,

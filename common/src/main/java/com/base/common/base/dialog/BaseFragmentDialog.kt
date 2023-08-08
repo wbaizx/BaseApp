@@ -3,7 +3,13 @@ package com.base.common.base.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import com.base.common.R
@@ -15,10 +21,18 @@ import com.base.common.util.debugLog
  * 还可以尝试 BottomSheetDialogFragment
  */
 abstract class BaseFragmentDialog : DialogFragment() {
+    companion object {
+        private const val IS_SHOW = "IS_SHOW"
+        private const val BACK_CANCEL = "BACK_CANCEL"
+        private const val REBUILD_CANCEL = "REBUILD_CANCEL"
+    }
+
     private val TAG = "BaseFragmentDialog"
 
+    //可以去掉这个参数
     protected lateinit var mActivity: FragmentActivity
 
+    //屏幕旋转后，且rebuildCancel=false，则dialog重建后会导致onDismissListener丢失
     private var onDismissListener: (() -> Unit)? = null
 
     /**
@@ -33,22 +47,24 @@ abstract class BaseFragmentDialog : DialogFragment() {
     private var isSaveInstanceState = false
 
     /**
-     * 是否应该关闭，主要用于onSaveInstanceState状态
-     */
-    private var shouldDimiss = false
-
-    /**
      * 点击返回键是否关闭
      */
     private var backCancel = true
+
+    private var rebuildCancel = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         debugLog(TAG, "onCreate")
         super.onCreate(savedInstanceState)
 
-        //屏幕旋转的字段控制
+        //屏幕旋转的字段控制 can arguments
         if (savedInstanceState != null) {
-            isShow = savedInstanceState.getBoolean("show", false)
+            isShow = savedInstanceState.getBoolean(IS_SHOW, isShow)
+            backCancel = savedInstanceState.getBoolean(BACK_CANCEL, backCancel)
+            rebuildCancel = savedInstanceState.getBoolean(REBUILD_CANCEL, rebuildCancel)
+            if (rebuildCancel) {
+                dismiss()
+            }
         }
 
         setStyle(STYLE_NO_FRAME, getStyle())
@@ -80,23 +96,11 @@ abstract class BaseFragmentDialog : DialogFragment() {
 
     override fun onStart() {
         debugLog(TAG, "onStart")
-        val win = dialog!!.window
-        if (win != null) {
-            setWindowConfigure(win)
-            win.setWindowAnimations(getStyleAnimations())
+        dialog?.window?.let {
+            setWindowConfigure(it)
+            it.setWindowAnimations(getStyleAnimations())
         }
         super.onStart()
-    }
-
-    override fun onResume() {
-        debugLog(TAG, "onResume")
-        super.onResume()
-        //onSaveInstanceState调用后做了dimiss操作，在下次可见时执行操作
-        isSaveInstanceState = false
-        if (shouldDimiss) {
-            shouldDimiss = false
-            dismiss()
-        }
     }
 
     /**
@@ -150,10 +154,9 @@ abstract class BaseFragmentDialog : DialogFragment() {
             val tag = getDialogTag()
             debugLog(TAG, "showDialog  $tag")
             val ft = mActivity.supportFragmentManager.beginTransaction()
-            val prev = mActivity.supportFragmentManager.findFragmentByTag(tag)
-            if (prev != null) {
+            mActivity.supportFragmentManager.findFragmentByTag(tag)?.let {
                 //这句话实际效果不行
-                ft.remove(prev)
+                ft.remove(it)
             }
             show(ft, tag)
             isShow = true
@@ -175,9 +178,11 @@ abstract class BaseFragmentDialog : DialogFragment() {
      */
     override fun onSaveInstanceState(outState: Bundle) {
         debugLog(TAG, "onSaveInstanceState")
-        outState.putBoolean("show", isShow)
-        super.onSaveInstanceState(outState)
         isSaveInstanceState = true
+        outState.putBoolean(IS_SHOW, isShow)
+        outState.putBoolean(BACK_CANCEL, backCancel)
+        outState.putBoolean(REBUILD_CANCEL, rebuildCancel)
+        super.onSaveInstanceState(outState)
     }
 
     /**
@@ -195,14 +200,10 @@ abstract class BaseFragmentDialog : DialogFragment() {
      */
     override fun dismiss() {
         //onSaveInstanceState调用后，不能再调dismiss
-        if (isSaveInstanceState) {
-            shouldDimiss = true
-        } else {
-            if (isShow) {
-                isShow = false
-                super.dismiss()
-                onDismissListener?.invoke()
-            }
+        if (isShow && !isSaveInstanceState) {
+            isShow = false
+            super.dismiss()
+            onDismissListener?.invoke()
         }
     }
 
@@ -228,6 +229,10 @@ abstract class BaseFragmentDialog : DialogFragment() {
      */
     fun setCanceledOnBack(backCancel: Boolean) {
         this.backCancel = backCancel
+    }
+
+    fun setRebuildCancel(rebuildCancel: Boolean) {
+        this.rebuildCancel = rebuildCancel
     }
 
     /**

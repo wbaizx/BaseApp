@@ -3,7 +3,7 @@ package com.baseapp.main.mvvm
 import com.base.common.base.activity.BaseBindModelActivity
 import com.base.common.base.adapter.BaseViewPagerAdapter
 import com.base.common.helper.setOnSingleClickListener
-import com.base.common.helper.stateFlowLifecycleCollect
+import com.base.common.helper.distinctLifecycleCollect
 import com.base.common.util.debugLog
 import com.baseapp.R
 import com.baseapp.databinding.ActivityMvvmDemoBinding
@@ -43,7 +43,7 @@ class MVVMDemoActivity : BaseBindModelActivity<MVVMDemoViewModel, ActivityMvvmDe
     }
 
     override fun initObserve() {
-        vm.name.stateFlowLifecycleCollect(this) {
+        vm.name.distinctLifecycleCollect(this) {
             debugLog(TAG, "name ${this.hashCode()}")
         }
     }

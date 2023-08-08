@@ -1,7 +1,7 @@
 package com.login.home
 
 import com.base.common.base.BaseViewModel
-import com.base.common.helper.createMutableStateFlow
+import com.base.common.helper.createStickStateFlow
 import com.base.common.util.showToast
 import com.login.home.bean.LoginBean
 import kotlinx.coroutines.Dispatchers
@@ -9,8 +9,8 @@ import kotlinx.coroutines.async
 import okhttp3.ResponseBody
 
 class LoginViewModel(private val reps: LoginRepository) : BaseViewModel() {
-    val successBean by lazy { createMutableStateFlow<LoginBean>() }
-    val successResponse by lazy { createMutableStateFlow<Pair<ResponseBody, ResponseBody>>() }
+    val successBean by lazy { createStickStateFlow<LoginBean>() }
+    val successResponse by lazy { createStickStateFlow<Pair<ResponseBody, ResponseBody>>() }
 
     fun loginBean() = runTask(false, {
         showToast("error 拦截")
