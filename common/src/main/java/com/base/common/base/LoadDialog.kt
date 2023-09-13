@@ -12,7 +12,7 @@ class LoadDialog : BaseFragmentDialog {
         this.mActivity = mActivity
     }
 
-    override fun setDialogConfigure() {
+    init {
         setCanceledOnTouchOutside(false)
         setCanceledOnBack(false)
     }

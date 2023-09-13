@@ -15,7 +15,7 @@ class DefaultDialog : BaseFragmentDialog {
         this.mActivity = mActivity
     }
 
-    override fun setDialogConfigure() {
+    init {
         setCanceledOnTouchOutside(true)
         setCanceledOnBack(true)
     }

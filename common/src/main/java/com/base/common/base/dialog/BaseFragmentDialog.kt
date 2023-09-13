@@ -4,12 +4,13 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import androidx.activity.ComponentDialog
+import androidx.activity.addCallback
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import com.base.common.R
@@ -17,6 +18,7 @@ import com.base.common.util.debugLog
 
 /**
  * 屏幕旋转后 会重建 Fragment ，可能导致字段，变量重置，需要注意！
+ * can private val vm: VM by viewModels()
  *
  * 还可以尝试 BottomSheetDialogFragment
  */
@@ -24,6 +26,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
     companion object {
         private const val IS_SHOW = "IS_SHOW"
         private const val BACK_CANCEL = "BACK_CANCEL"
+        private const val OUTSIDE_CANCEL = "OUTSIDE_CANCEL"
         private const val REBUILD_CANCEL = "REBUILD_CANCEL"
     }
 
@@ -33,6 +36,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
     protected lateinit var mActivity: FragmentActivity
 
     //屏幕旋转后，且rebuildCancel=false，则dialog重建后会导致onDismissListener丢失
+    //can private val vm: VM by viewModels()
     private var onDismissListener: (() -> Unit)? = null
 
     /**
@@ -49,8 +53,16 @@ abstract class BaseFragmentDialog : DialogFragment() {
     /**
      * 点击返回键是否关闭
      */
-    private var backCancel = true
+    private var backCancel = false
 
+    /**
+     * 点击外部是否关闭
+     */
+    private var outsideCancel = false
+
+    /**
+     * 屏幕旋转后重建是否关闭
+     */
     private var rebuildCancel = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +72,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
         //屏幕旋转的字段控制 can arguments
         if (savedInstanceState != null) {
             isShow = savedInstanceState.getBoolean(IS_SHOW, isShow)
+            outsideCancel = savedInstanceState.getBoolean(OUTSIDE_CANCEL, outsideCancel)
             backCancel = savedInstanceState.getBoolean(BACK_CANCEL, backCancel)
             rebuildCancel = savedInstanceState.getBoolean(REBUILD_CANCEL, rebuildCancel)
             if (rebuildCancel) {
@@ -72,19 +85,18 @@ abstract class BaseFragmentDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         debugLog(TAG, "onCreateDialog")
-        return super.onCreateDialog(savedInstanceState)
+        val onCreateDialog = super.onCreateDialog(savedInstanceState)
+        onCreateDialog.setCanceledOnTouchOutside(outsideCancel)
+        (onCreateDialog as? ComponentDialog)?.onBackPressedDispatcher?.addCallback {
+            if (backCancel) {
+                dismiss()
+            }
+        }
+        return onCreateDialog
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         debugLog(TAG, "onCreateView")
-
-        dialog?.setOnKeyListener { dialog, keyCode, event ->
-            //点击返回键也不关闭
-            (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN && !backCancel)
-        }
-
-        setDialogConfigure()
-
         return inflater.inflate(getLayout(), container, false)
     }
 
@@ -96,6 +108,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
 
     override fun onStart() {
         debugLog(TAG, "onStart")
+        isSaveInstanceState = false
         dialog?.window?.let {
             setWindowConfigure(it)
             it.setWindowAnimations(getStyleAnimations())
@@ -107,12 +120,6 @@ abstract class BaseFragmentDialog : DialogFragment() {
      * 设置主题
      */
     protected open fun getStyle() = R.style.default_fragmentdialog_style
-
-
-    /**
-     * 配置dialog
-     */
-    protected abstract fun setDialogConfigure()
 
     /**
      * 设置布局
@@ -180,6 +187,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
         debugLog(TAG, "onSaveInstanceState")
         isSaveInstanceState = true
         outState.putBoolean(IS_SHOW, isShow)
+        outState.putBoolean(OUTSIDE_CANCEL, outsideCancel)
         outState.putBoolean(BACK_CANCEL, backCancel)
         outState.putBoolean(REBUILD_CANCEL, rebuildCancel)
         super.onSaveInstanceState(outState)
@@ -221,7 +229,7 @@ abstract class BaseFragmentDialog : DialogFragment() {
      * 设置点击外部是否关闭
      */
     fun setCanceledOnTouchOutside(outsideCancel: Boolean) {
-        dialog?.setCanceledOnTouchOutside(outsideCancel)
+        this.outsideCancel = outsideCancel
     }
 
     /**

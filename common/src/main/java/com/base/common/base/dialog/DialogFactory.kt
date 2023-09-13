@@ -42,7 +42,7 @@ class NormalDialog : BaseFragmentDialog() {
     var yesClick: (() -> Unit) = {}
     var noClick: (() -> Unit)? = null
 
-    override fun setDialogConfigure() {
+    init {
         setCanceledOnTouchOutside(false)
         setCanceledOnBack(true)
     }

@@ -23,7 +23,7 @@ abstract class BaseActivity : PermissionActivity() {
         super.onCreate(savedInstanceState)
         //强制竖屏，这里用代码方式，有问题，首次打开页面可能并非竖屏导致闪屏
         //可以使用 xml 中 android:screenOrientation="portrait"，不过每个页面添加有点麻烦
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+//        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         ARouter.getInstance().inject(this)
 
